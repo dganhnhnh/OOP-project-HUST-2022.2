@@ -2,18 +2,23 @@ package com.projectoop;
 
 import com.projectoop.model.Category;
 import com.projectoop.model.CategoryRepo;
+import com.projectoop.model.Question;
+import com.projectoop.model.QuestionRepo;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.stream.Stream;
 
 @Component
 class Initializer implements CommandLineRunner {
-    private final CategoryRepo repository;
+    private final CategoryRepo categoryRepo;
+    private final QuestionRepo questionRepo;
 
-    public Initializer(CategoryRepo repository) {
-        this.repository = repository;
+    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo) {
+        this.categoryRepo = categoryRepo;
+        this.questionRepo = questionRepo;
     }
 
     @Override
@@ -21,8 +26,26 @@ class Initializer implements CommandLineRunner {
         // TODO: category init only "Default"
         Stream.of("Kien truc may tinh", "OOP", "Ky thuat lap trinh","CSDL")
         .forEach(name ->
-            repository.save(new Category(name))
+            categoryRepo.save(new Category(name))
         );
-        repository.findAll().forEach(System.out::println);
+        categoryRepo.findAll().forEach(System.out::println);
+        
+        Stream.of("Question 1","Question 2")
+        .forEach(text ->
+            questionRepo.save(new Question(text))
+        );
+
+        Question ques1 = questionRepo.findByText("Question 1");
+        //co the dinh nghia Choice roi build ra ntn 
+        // Category e = Category.builder().name("Subject A")
+        //         .info("Given x, calculate y.")
+        //         .build();
+        Category e = categoryRepo.findByName("OOP");
+        ques1.setCategory(e);
+        ques1.setDefaultMark(1);
+        ques1.setChoices(null);
+        questionRepo.save(ques1);
+
+        questionRepo.findAll().forEach(System.out::println);
     }
 }
