@@ -12,5 +12,5 @@ import lombok.NonNull;
 public class Choice {
     @NonNull
     private String text;
-    // private float grade;
+    private float grade;
 }
