@@ -1,5 +1,7 @@
 package com.projectoop.model;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
@@ -23,7 +25,10 @@ public class Category {
     private String name;
     
     private String info;
-    private int IDNumber;
+    
+    @ElementCollection (fetch = FetchType.EAGER)
+    private Set<String> questionID;
+    // private int[] questionID;
 
     // @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     // private Set<Int> questionID;
