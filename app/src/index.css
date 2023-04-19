@@ -1,13 +1,158 @@
+html {
+  font-size: 22px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%; 
+}
+
+header {
+  padding: 5px 0px 5px 20px;
+  font-size: 30px;
+  height: 30px;
+  width: 100%;
+  background-color: rgb(75, 175, 247);
+  color: aliceblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header a{
+  padding-right: 30px;
+}
+
+/* Navbar ------------------------------------*/
+
+.navbar{
+  padding-bottom: 50px;
+  border: solid 1px black;
+}
+.navbar_text{
+  padding-bottom: -20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar_text p{
+  padding-left: 10px;
+  margin-top: 10px;
+  font-size: 40px;
+  color: red;
+}
+.navbar_text a{
+  margin-top: -50px;
+  margin-right: 20px;
+}
+.navbar_menu{
+  margin-top: -50px;
+}
+.navbar_menu ul{
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+.navbar_menu ul li {
+  font-size: 20px;
+  text-decoration: none;
+  list-style-type: none;
+  display: inline;
+}
+.navbar_menu ul li a {
+  text-decoration: none;
+}
+.navbar_menu ul li navlink :hover{
+  color: red;
+}
+.navbar_menu.active {
+  background-color: #4CAF50;
+}
+
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+footer {
+  width: 100%;
+  padding: 0.25em;
+  background-color: mediumblue;
+  color: aliceblue;
+  display: grid;
+  place-content: center;
+}
+
+ul {
+  width: 100%;
+  list-style: none;
+  padding: 0 0.25rem 0.25rem;
+}
+
+ul li::before {
+  content: "\200B";
+}
+
+.item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+  margin: 0.25rem 0;
+  background-color: #eee;
+}
+
+.item:first-child {
+  margin: 0;
+}
+
+.item input[type="checkbox"] {
+  text-align: center;
+  width: 2.5rem;
+  width: 48px;
+  min-width: 48px;
+  height: 2.5rem;
+  height: 48px;
+  min-height: 48px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.item input[type="checkbox"]:focus + label {
+  text-decoration: underline;
+}
+
+.item > label {
+  font-size: 0.75rem;
+  flex-grow: 1;
+}
+
+.item svg {
+  width: 48px;
+  min-width: 48px;
+  height: 36px;
+  font-size: 1rem;
+  color: steelblue;
+  cursor: pointer;
+}
+
+.item svg:focus, 
+.item svg:hover {
+  color: red;
+  outline: none;
 }
