@@ -24,7 +24,7 @@ public class Category {
     @GeneratedValue
     private Long id;
 
-    // private Category parent;
+    // private Category parent;     --> dung subCategory vi co yeu cau "show questions from Category"
     @NonNull
     private String name;
     

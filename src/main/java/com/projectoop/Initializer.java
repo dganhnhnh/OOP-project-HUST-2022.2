@@ -28,7 +28,6 @@ class Initializer implements CommandLineRunner {
         .forEach(name ->
             categoryRepo.save(new Category(name))
         );
-        categoryRepo.findAll().forEach(System.out::println);
         
         Stream.of("Question 1","Question 2")
         .forEach(text ->
@@ -41,11 +40,12 @@ class Initializer implements CommandLineRunner {
         //         .info("Given x, calculate y.")
         //         .build();
         Category e = categoryRepo.findByName("OOP");
-        ques1.setCategory(e);
+        ques1.setCategory(e.getName());     //TODO: co the tao moi Category o giao dien tao Question
         ques1.setDefaultMark(1);
         ques1.setChoices(null);
         questionRepo.save(ques1);
 
+        categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
     }
 }
