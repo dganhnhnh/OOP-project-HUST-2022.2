@@ -31,7 +31,7 @@ public class Category {
     private String info;
     
     @ElementCollection (fetch = FetchType.EAGER)
-    private Set<String> questionID;
+    private Set<Long> questionID;
     // private int[] questionID;
 
     // @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)

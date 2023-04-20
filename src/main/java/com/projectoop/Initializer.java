@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Component
@@ -41,6 +42,10 @@ class Initializer implements CommandLineRunner {
         //         .build();
         Category e = categoryRepo.findByName("OOP");
         ques1.setCategory(e.getName());     //TODO: co the tao moi Category o giao dien tao Question
+        Set<Long> a = e.getQuestionID();
+        Long qID = ques1.getId();
+        a.add(qID);
+        e.setQuestionID(a);
         ques1.setDefaultMark(1);
         ques1.setChoices(null);
         questionRepo.save(ques1);

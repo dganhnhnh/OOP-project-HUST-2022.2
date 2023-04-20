@@ -28,6 +28,7 @@ class CategoryController {
 
     @GetMapping("/categories")
     Collection<Category> categories() {
+        log.info(categoryRepo.toString());
         return categoryRepo.findAll();
     }
 
@@ -37,6 +38,12 @@ class CategoryController {
         return category.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    // @GetMapping("/category/{name}")
+    // ResponseEntity<?> getGroup(@PathVariable String name) {
+    //     Category category = categoryRepo.findByName(name);
+    //     return category.map(response -> ResponseEntity.ok().body(response))
+    //             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // }
 
     @PostMapping("/category")
     ResponseEntity<Category> createGroup(@Valid @RequestBody Category category) throws URISyntaxException {
