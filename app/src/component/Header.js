@@ -5,7 +5,7 @@ const Header = () => {
 	return (
 		<header className='header'>
 			<FiMenu />
-			<a href ='#'> < BiUserCircle /> </a>
+			<div className='account'><BiUserCircle /></div>
 		</header>
 	)
 }

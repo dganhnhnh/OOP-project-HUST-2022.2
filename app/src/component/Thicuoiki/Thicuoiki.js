@@ -1,12 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-function Thicuoiki() {
+const Thicuoiki = () => {
   return (
-    <p>
-        Routing tới thi cuoi ki
-    </p>
-  );
+    <div>Thicuoiki</div>
+  )
 }
 
-export default Thicuoiki;
-
+export default Thicuoiki

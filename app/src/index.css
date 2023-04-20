@@ -16,27 +16,28 @@ body {
   width: 100%; 
 }
 
-header {
+.header {
   padding: 5px 0px 5px 20px;
   font-size: 30px;
   height: 30px;
-  width: 100%;
-  background-color: rgb(75, 175, 247);
+  background-color: rgb(5, 102, 172);
   color: aliceblue;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-header a{
+.header .account {
+  padding-top: 10px;
   padding-right: 30px;
 }
 
-/* Navbar ------------------------------------*/
+/*_______________Navbar_____________________*/
 
 .navbar{
   padding-bottom: 50px;
   border: solid 1px black;
+  border-top: 0px;
 }
 .navbar_text{
   padding-bottom: -20px;
@@ -48,7 +49,7 @@ header a{
   padding-left: 10px;
   margin-top: 10px;
   font-size: 40px;
-  color: red;
+  color: rgb(208, 12, 12);
 }
 .navbar_text a{
   margin-top: -50px;
@@ -62,22 +63,23 @@ header a{
   position: sticky;
   top: 0;
 }
-.navbar_menu ul li {
+.navbar_menu ul li  {
   font-size: 20px;
   text-decoration: none;
   list-style-type: none;
   display: inline;
 }
 .navbar_menu ul li a {
+  color: black;
   text-decoration: none;
 }
-.navbar_menu ul li navlink :hover{
+.navbar_menu ul li :hover{
   color: red;
 }
-.navbar_menu.active {
-  background-color: #4CAF50;
-}
 
+.active-link {
+  color: red !important;
+}
 
 main {
   width: 100%;
@@ -155,4 +157,102 @@ ul li::before {
 .item svg:hover {
   color: red;
   outline: none;
+}
+
+/*_______________DropDownMenu_______________*/
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown-btn {
+  position: absolute;
+  top: 70px;
+  right: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 190px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #ffffff;
+  z-index: 1;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.dropdown-section {
+  font-size: 20px;
+  color: black;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown-item {
+  font-size: 20px;
+  color: black;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: auto;
+  top: 0;
+  left: 0;
+  transition: all 0.3s ease-in-out;
+  border-radius: 0px 0px 10px 10px;
+  background-color: #ffffff;
+}
+
+.dropdown-menu::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  border-style: solid;
+  border-width: 0px 10px 8px 10px;
+  border-color: transparent transparent #ffffff transparent;
+}
+
+.dropdown-item:hover {
+  background-color: #f2f2f2;
+}
+ 
+button {
+  font-size: 20px;
+  position: absolute;
+  top: 150px;
+  right: 20px;
+  width: 250px;
+  height: 50px;
+  border-radius: 0%;
+  border: none;
+  color: white;
+  background-color: rgb(5, 102, 172);
+}
+
+.active-link {
+  color: red !important;
 }
