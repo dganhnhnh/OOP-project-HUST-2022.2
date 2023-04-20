@@ -49,6 +49,7 @@ class Initializer implements CommandLineRunner {
         ques1.setDefaultMark(1);
         ques1.setChoices(null);
         questionRepo.save(ques1);
+        categoryRepo.save(e);
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,8 +35,21 @@ class QuestionController {
     }
 
     @GetMapping("/questions")
-    Collection<Question> categories() {
+    Collection<Question> questions() {
+        
         return questionRepo.findAll();
+    }
+    @GetMapping("/category/{name}/questions")
+    Collection<Question> categoryQuestions(@PathVariable String name) {
+        Category category = categoryRepo.findByName(name);
+        Set<Long> qIDSet = category.getQuestionID();
+        List<Long> qIDList = new ArrayList<>(qIDSet);
+        List<Question> questionList = new ArrayList<Question>();
+        for(int i=0; i<qIDList.size(); i++){
+            Optional<Question> a = questionRepo.findById(qIDList.get(i));
+            questionList.add(a.orElseThrow());
+        }
+        return questionList;
     }
 
     @GetMapping("/question/{id}")
@@ -49,7 +64,7 @@ class QuestionController {
             log.info("Request to create Question: {}", ques);
         Question result = questionRepo.save(ques);
 
-        
+        {
             Long qID = ques.getId();
             log.info("categoryRepo: {}", categoryRepo.toString());
             Category cat = categoryRepo.findByName(ques.getCategory());
@@ -59,7 +74,9 @@ class QuestionController {
                 log.info("set of qID: {}", qIDSet);
             qIDSet.add(qID);
             cat.setQuestionID(qIDSet);
-                log.info("set of qID: {}", cat.getQuestionID());
+            categoryRepo.save(cat);
+                log.info("set of qID: {}", qIDSet);
+        }
         
 
         return ResponseEntity.created(new URI("/api/question/" + result.getId()))
@@ -81,6 +98,7 @@ class QuestionController {
             log.info("set of qID: {}", qIDSet);
         qIDSet.add(qID);
         cat.setQuestionID(qIDSet);
+        categoryRepo.save(cat);
             log.info("set of qID: {}", qIDSet);
         }
 
@@ -91,7 +109,19 @@ class QuestionController {
     @DeleteMapping("/question/{id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
         log.info("Request to delete Question: {}", id);
+
+        Optional<Question> question = questionRepo.findById(id);
+        Question ques = question.orElseThrow();
+
         questionRepo.deleteById(id);
+
+        Category cat = categoryRepo.findByName(ques.getCategory());
+        Set<Long> qIDSet = cat.getQuestionID();
+            log.info("set of qID: {}", qIDSet);
+        qIDSet.remove(id);
+        cat.setQuestionID(qIDSet);
+        categoryRepo.save(cat);
+
         return ResponseEntity.ok().build();
     }
 }

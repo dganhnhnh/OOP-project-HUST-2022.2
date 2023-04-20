@@ -13,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 // @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -33,36 +34,47 @@ class CategoryController {
     }
 
     @GetMapping("/category/{id}")
-    ResponseEntity<?> getGroup(@PathVariable Long id) {
+    ResponseEntity<?> getCategory(@PathVariable Long id) {
         Optional<Category> category = categoryRepo.findById(id);
         return category.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    // @GetMapping("/category/{id}/questions")
+    // ResponseEntity<?> getQuestionsOfCategory(@PathVariable Long id) {
+    //     Optional<Category> category = categoryRepo.findById(id);
+    //     Category cat = category.orElseThrow();
+    //     Set<Long> qIDSet = cat.getQuestionID();
+
+    //     return category.map(response -> ResponseEntity.ok().body(response))
+    //             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // }
+
     // @GetMapping("/category/{name}")
-    // ResponseEntity<?> getGroup(@PathVariable String name) {
+    // ResponseEntity<?> getCategory(@PathVariable String name) {
     //     Category category = categoryRepo.findByName(name);
     //     return category.map(response -> ResponseEntity.ok().body(response))
     //             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     // }
 
     @PostMapping("/category")
-    ResponseEntity<Category> createGroup(@Valid @RequestBody Category category) throws URISyntaxException {
-        log.info("Request to create group: {}", category);
+    ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
+        log.info("Request to create Category: {}", category);
         Category result = categoryRepo.save(category);
         return ResponseEntity.created(new URI("/api/category/" + result.getId()))
                 .body(result);
     }
 
     @PutMapping("/category/{id}")
-    ResponseEntity<Category> updateGroup(@Valid @RequestBody Category category) {
-        log.info("Request to update group: {}", category);
+    ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category) {
+        log.info("Request to update Category: {}", category);
         Category result = categoryRepo.save(category);
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/category/{id}")
-    public ResponseEntity<?> deleteGroup(@PathVariable Long id) {
-        log.info("Request to delete group: {}", id);
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+        log.info("Request to delete Category: {}", id);
         categoryRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }
