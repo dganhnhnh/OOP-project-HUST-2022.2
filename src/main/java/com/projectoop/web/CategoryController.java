@@ -13,7 +13,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 // @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -40,26 +39,10 @@ class CategoryController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // @GetMapping("/category/{id}/questions")
-    // ResponseEntity<?> getQuestionsOfCategory(@PathVariable Long id) {
-    //     Optional<Category> category = categoryRepo.findById(id);
-    //     Category cat = category.orElseThrow();
-    //     Set<Long> qIDSet = cat.getQuestionID();
-
-    //     return category.map(response -> ResponseEntity.ok().body(response))
-    //             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    // }
-
-    // @GetMapping("/category/{name}")
-    // ResponseEntity<?> getCategory(@PathVariable String name) {
-    //     Category category = categoryRepo.findByName(name);
-    //     return category.map(response -> ResponseEntity.ok().body(response))
-    //             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    // }
-
     @PostMapping("/category")
     ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
         log.info("Request to create Category: {}", category);
+        
         Category result = categoryRepo.save(category);
         return ResponseEntity.created(new URI("/api/category/" + result.getId()))
                 .body(result);

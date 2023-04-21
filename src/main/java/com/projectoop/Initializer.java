@@ -8,7 +8,6 @@ import com.projectoop.model.QuestionRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -34,12 +33,8 @@ class Initializer implements CommandLineRunner {
         .forEach(text ->
             questionRepo.save(new Question(text))
         );
-
+        {
         Question ques1 = questionRepo.findByText("Question 1");
-        //co the dinh nghia Choice roi build ra ntn 
-        // Category e = Category.builder().name("Subject A")
-        //         .info("Given x, calculate y.")
-        //         .build();
         Category e = categoryRepo.findByName("OOP");
         ques1.setCategory(e.getName());     //TODO: co the tao moi Category o giao dien tao Question
         Set<Long> a = e.getQuestionID();
@@ -50,6 +45,18 @@ class Initializer implements CommandLineRunner {
         ques1.setChoices(null);
         questionRepo.save(ques1);
         categoryRepo.save(e);
+        }
+
+        {
+        Category parentCat = categoryRepo.findByName("OOP");
+        Set<Long> subCat = parentCat.getSubCatID();
+        Category newCat = new Category("thi cuoi ki OOP");
+        categoryRepo.save(newCat);
+        subCat.add(newCat.getId());
+        parentCat.setSubCatID(subCat);
+        categoryRepo.save(parentCat);
+        }
+        
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);

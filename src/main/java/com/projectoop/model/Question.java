@@ -2,7 +2,6 @@ package com.projectoop.model;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 // import org.json.simple.JSONObject;
 
 import jakarta.persistence.*;
@@ -33,8 +32,9 @@ public class Question {
     // @OneToMany
     // private Set<Choice> choices;
 
-
     // @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
-    private Map<Integer, String> choices = new HashMap<Integer, String>();
+    private Map<Float, String> choices = new HashMap<Float, String>();
+    
+    // get mark
 }

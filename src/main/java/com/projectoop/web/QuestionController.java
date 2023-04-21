@@ -51,6 +51,20 @@ class QuestionController {
         }
         return questionList;
     }
+    @GetMapping("/category/{id}/questions")
+    Collection<Question> categoryQuestions(@PathVariable Long id) {
+        Optional<Category> cate = categoryRepo.findById(id);
+        Category category = cate.orElseThrow();
+        
+        Set<Long> qIDSet = category.getQuestionID();
+        List<Long> qIDList = new ArrayList<>(qIDSet);
+        List<Question> questionList = new ArrayList<Question>();
+        for(int i=0; i<qIDList.size(); i++){
+            Optional<Question> a = questionRepo.findById(qIDList.get(i));
+            questionList.add(a.orElseThrow());
+        }
+        return questionList;
+    }
 
     @GetMapping("/question/{id}")
     ResponseEntity<?> getQuestion(@PathVariable Long id) {
@@ -68,8 +82,6 @@ class QuestionController {
             Long qID = ques.getId();
             log.info("categoryRepo: {}", categoryRepo.toString());
             Category cat = categoryRepo.findByName(ques.getCategory());
-                log.info("category of ques:{}",ques.getCategory());
-                log.info("category: {}", cat.toString());
             Set<Long> qIDSet = cat.getQuestionID();
                 log.info("set of qID: {}", qIDSet);
             qIDSet.add(qID);
@@ -92,8 +104,6 @@ class QuestionController {
         Long qID = ques.getId();
         log.info("categoryRepo: {}", categoryRepo.toString());
         Category cat = categoryRepo.findByName(ques.getCategory());
-            log.info("category of ques:{}",ques.getCategory());
-            log.info("category: {}", cat.toString());
         Set<Long> qIDSet = cat.getQuestionID();
             log.info("set of qID: {}", qIDSet);
         qIDSet.add(qID);
