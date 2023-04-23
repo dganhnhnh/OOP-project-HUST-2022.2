@@ -6,6 +6,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MyCourses from './component/MyCourses/MyCourses.js';
 import Thicuoiki from './component/Thicuoiki/Thicuoiki';
+import Question from './component/Thicuoiki/Question';
+import Categories from './component/Thicuoiki/Categories';
+import Import from './component/Thicuoiki/Import';
+import Export from './component/Thicuoiki/Export';
+import Navigation from './component/Navbar/Navigation'
+import Home from './component/Home'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,8 +19,16 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />}>
-          <Route path='MyCourses' element={<MyCourses />} />
-          <Route path='thicuoiki' element={<Thicuoiki />} />
+          <Route path='/Home' element={<Home />} />
+          <Route path='/MyCourses' element={<MyCourses />} />
+          <Route path='/Thicuoiki' element={<Thicuoiki />} />
+
+          <Route path='/' element={<Navigation/>}>
+            <Route path='/Question' element={<Question />} />
+            <Route path='/Categories' element={< Categories/>} />
+            <Route path='/Import' element={<Import/>} />
+            <Route path='/Export' element={<Export/>} />
+          </Route>
       </Route>
     </Routes>
   </BrowserRouter>

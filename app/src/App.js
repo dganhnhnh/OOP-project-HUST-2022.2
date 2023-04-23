@@ -1,7 +1,8 @@
 import React, { Children } from "react";
 import {Outlet } from 'react-router-dom';
-import Header from './Header';
-import Navbar from './component/Navbar';
+import Header from './component/Header';
+import Navbar from './component/Navbar/Navbar';
+
 function App() {
   return (
     <>

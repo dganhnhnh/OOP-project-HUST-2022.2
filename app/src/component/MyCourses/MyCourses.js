@@ -1,11 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-function MyCourses() {
+const MyCourses = () => {
   return (
-    <p>
-        Routing tới mycorses
-    </p>
-  );
+    <div>MyCourses</div>
+  )
 }
 
-export default MyCourses;
+export default MyCourses
