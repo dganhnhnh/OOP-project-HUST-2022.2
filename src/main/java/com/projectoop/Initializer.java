@@ -24,7 +24,7 @@ class Initializer implements CommandLineRunner {
     @Override
     public void run(String... strings) {
         // TODO: category init only "Default"
-        Stream.of("Kien truc may tinh", "OOP", "Ky thuat lap trinh","CSDL")
+        Stream.of("Default","Kien truc may tinh", "OOP","CSDL")
         .forEach(name ->
             categoryRepo.save(new Category(name))
         );
@@ -56,7 +56,6 @@ class Initializer implements CommandLineRunner {
         parentCat.setSubCatID(subCat);
         categoryRepo.save(parentCat);
         }
-        
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);

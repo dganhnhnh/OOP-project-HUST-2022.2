@@ -27,14 +27,8 @@ public class Question {
     
     @ManyToOne(cascade=CascadeType.PERSIST)
     private Category category;
-    // private String category;
-
-    // @OneToMany
-    // private Set<Choice> choices;
 
     // @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
     private Map<Float, String> choices = new HashMap<Float, String>();
-    
-    // get mark
 }

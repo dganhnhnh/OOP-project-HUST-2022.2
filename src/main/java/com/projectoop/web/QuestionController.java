@@ -40,19 +40,6 @@ class QuestionController {
         
         return questionRepo.findAll();
     }
-    // @GetMapping("/category/{name}/questions")
-    // Collection<Question> categoryQuestionsByName(@PathVariable String name) {
-    //     Category category = categoryRepo.findByName(name);
-    //     Set<Long> qIDSet = category.getQuestionID();
-
-    //     List<Long> qIDList = new ArrayList<>(qIDSet);
-    //     List<Question> questionList = new ArrayList<Question>();
-    //     for(int i=0; i<qIDList.size(); i++){
-    //         Optional<Question> a = questionRepo.findById(qIDList.get(i));
-    //         questionList.add(a.orElseThrow());
-    //     }
-    //     return questionList;
-    // }
     @GetMapping("/category/{id}/questions")
     Collection<Question> categoryQuestions(@PathVariable Long id) {
         Optional<Category> cate = categoryRepo.findById(id);
@@ -119,7 +106,6 @@ class QuestionController {
         Optional<Question> question = questionRepo.findById(id);
         Question ques = question.orElseThrow();
 
-        questionRepo.deleteById(id);
 
         Category cat = categoryRepo.findByName(ques.getCategory().getName());
         Set<Long> qIDSet = cat.getQuestionID();
@@ -128,6 +114,7 @@ class QuestionController {
         cat.setQuestionID(qIDSet);
         categoryRepo.save(cat);
 
+        questionRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

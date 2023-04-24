@@ -59,18 +59,6 @@ class CategoryController {
     @PutMapping("/category/{id}")
     ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category) {
         log.info("Request to update Category: {}", category);
-        // //update category ben trong question 
-        // //duyet danh sach qID cua cate
-
-        // Set<Long> qIDSet = category.getQuestionID();
-        // List<Long> qIDList = new ArrayList<Long>(qIDSet);
-        // for(int i=0; i<qIDList.size(); i++){
-        //     Optional<Question> a = questionRepo.findById(qIDList.get(i));
-        //     Question b = a.orElseThrow();
-        //     b.setCategory(category);
-        //     questionRepo.save(b);
-        // }
-
         Category result = categoryRepo.save(category);
         return ResponseEntity.ok().body(result);
     }
@@ -86,10 +74,10 @@ class CategoryController {
         if(!qIDSet.isEmpty()){
             List<Long> qIDList = new ArrayList<Long>(qIDSet);
             for(int i=0; i<qIDList.size(); i++){
-                // Optional<Question> a = questionRepo.findById(qIDList.get(i));
-                // Question b = a.orElseThrow();
-                // b.setCategory(null);
-                questionRepo.deleteById(qIDList.get(i));
+                Optional<Question> a = questionRepo.findById(qIDList.get(i));
+                Question b = a.orElseThrow();
+                b.setCategory(null);
+                // questionRepo.deleteById(qIDList.get(i));
             }
         }
 
