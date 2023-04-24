@@ -10,8 +10,6 @@ import lombok.NonNull;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-// NOTE giong nhu question list 
-
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -24,19 +22,17 @@ public class Category {
     @GeneratedValue
     private Long id;
 
-    // private Category parent;     --> dung subCategory vi co yeu cau "show questions from Category"
     @NonNull
     private String name;
-    
     private String info;
     
+    // @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    // private Set<Category> subCat;
     @ElementCollection (fetch = FetchType.EAGER)
-    private Set<String> questionID;
-    // private int[] questionID;
+    private Set<Long> subCatID;
 
-    // @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    // private Set<Int> questionID;
+    private String parent;
 
-    // @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    // private Set<Event> events;
+    @ElementCollection (fetch = FetchType.EAGER)
+    private Set<Long> questionID;
 }
