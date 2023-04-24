@@ -25,9 +25,9 @@ public class Question {
     private String text;
     private float defaultMark;
     
-    // @ManyToOne(cascade=CascadeType.PERSIST)
-    // private Category category;
-    private String category;
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    private Category category;
+    // private String category;
 
     // @OneToMany
     // private Set<Choice> choices;

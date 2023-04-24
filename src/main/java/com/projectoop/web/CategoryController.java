@@ -2,6 +2,9 @@ package com.projectoop.web;
 
 import com.projectoop.model.Category;
 import com.projectoop.model.CategoryRepo;
+import com.projectoop.model.Question;
+import com.projectoop.model.QuestionRepo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 // @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -21,9 +27,11 @@ class CategoryController {
 
     private final Logger log = LoggerFactory.getLogger(CategoryController.class);
     private CategoryRepo categoryRepo;
+    private QuestionRepo questionRepo;
 
-    public CategoryController(CategoryRepo categoryRepo) {
+    public CategoryController(CategoryRepo categoryRepo,QuestionRepo questionRepo) {
         this.categoryRepo = categoryRepo;
+        this.questionRepo = questionRepo;
     }
 
     @GetMapping("/categories")
@@ -51,6 +59,18 @@ class CategoryController {
     @PutMapping("/category/{id}")
     ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category) {
         log.info("Request to update Category: {}", category);
+        // //update category ben trong question 
+        // //duyet danh sach qID cua cate
+
+        // Set<Long> qIDSet = category.getQuestionID();
+        // List<Long> qIDList = new ArrayList<Long>(qIDSet);
+        // for(int i=0; i<qIDList.size(); i++){
+        //     Optional<Question> a = questionRepo.findById(qIDList.get(i));
+        //     Question b = a.orElseThrow();
+        //     b.setCategory(category);
+        //     questionRepo.save(b);
+        // }
+
         Category result = categoryRepo.save(category);
         return ResponseEntity.ok().body(result);
     }
@@ -58,6 +78,21 @@ class CategoryController {
     @DeleteMapping("/category/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         log.info("Request to delete Category: {}", id);
+
+        Optional<Category> cate = categoryRepo.findById(id);
+        Category category = cate.orElseThrow();
+        
+        Set<Long> qIDSet = category.getQuestionID();
+        if(!qIDSet.isEmpty()){
+            List<Long> qIDList = new ArrayList<Long>(qIDSet);
+            for(int i=0; i<qIDList.size(); i++){
+                // Optional<Question> a = questionRepo.findById(qIDList.get(i));
+                // Question b = a.orElseThrow();
+                // b.setCategory(null);
+                questionRepo.deleteById(qIDList.get(i));
+            }
+        }
+
         categoryRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }

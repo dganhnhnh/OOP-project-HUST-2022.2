@@ -34,29 +34,37 @@ class QuestionController {
         this.categoryRepo = categoryRepo;
     }
 
+
     @GetMapping("/questions")
     Collection<Question> questions() {
         
         return questionRepo.findAll();
     }
-    @GetMapping("/category/{name}/questions")
-    Collection<Question> categoryQuestions(@PathVariable String name) {
-        Category category = categoryRepo.findByName(name);
-        Set<Long> qIDSet = category.getQuestionID();
-        List<Long> qIDList = new ArrayList<>(qIDSet);
-        List<Question> questionList = new ArrayList<Question>();
-        for(int i=0; i<qIDList.size(); i++){
-            Optional<Question> a = questionRepo.findById(qIDList.get(i));
-            questionList.add(a.orElseThrow());
-        }
-        return questionList;
-    }
+    // @GetMapping("/category/{name}/questions")
+    // Collection<Question> categoryQuestionsByName(@PathVariable String name) {
+    //     Category category = categoryRepo.findByName(name);
+    //     Set<Long> qIDSet = category.getQuestionID();
+
+    //     List<Long> qIDList = new ArrayList<>(qIDSet);
+    //     List<Question> questionList = new ArrayList<Question>();
+    //     for(int i=0; i<qIDList.size(); i++){
+    //         Optional<Question> a = questionRepo.findById(qIDList.get(i));
+    //         questionList.add(a.orElseThrow());
+    //     }
+    //     return questionList;
+    // }
     @GetMapping("/category/{id}/questions")
     Collection<Question> categoryQuestions(@PathVariable Long id) {
         Optional<Category> cate = categoryRepo.findById(id);
         Category category = cate.orElseThrow();
         
         Set<Long> qIDSet = category.getQuestionID();
+
+        if (qIDSet.isEmpty() ) {
+            List<Question> questionList = new ArrayList<Question>() ;
+            return questionList;
+        }
+        // if not null 
         List<Long> qIDList = new ArrayList<>(qIDSet);
         List<Question> questionList = new ArrayList<Question>();
         for(int i=0; i<qIDList.size(); i++){
@@ -81,7 +89,7 @@ class QuestionController {
         {
             Long qID = ques.getId();
             log.info("categoryRepo: {}", categoryRepo.toString());
-            Category cat = categoryRepo.findByName(ques.getCategory());
+            Category cat = categoryRepo.findByName(ques.getCategory().getName());
             Set<Long> qIDSet = cat.getQuestionID();
                 log.info("set of qID: {}", qIDSet);
             qIDSet.add(qID);
@@ -89,7 +97,6 @@ class QuestionController {
             categoryRepo.save(cat);
                 log.info("set of qID: {}", qIDSet);
         }
-        
 
         return ResponseEntity.created(new URI("/api/question/" + result.getId()))
                 .body(result);
@@ -100,17 +107,6 @@ class QuestionController {
         log.info("Request to update Question: {}", ques);
         Question result = questionRepo.save(ques);
 
-        {
-        Long qID = ques.getId();
-        log.info("categoryRepo: {}", categoryRepo.toString());
-        Category cat = categoryRepo.findByName(ques.getCategory());
-        Set<Long> qIDSet = cat.getQuestionID();
-            log.info("set of qID: {}", qIDSet);
-        qIDSet.add(qID);
-        cat.setQuestionID(qIDSet);
-        categoryRepo.save(cat);
-            log.info("set of qID: {}", qIDSet);
-        }
 
         return ResponseEntity.ok().body(result);
         
@@ -125,7 +121,7 @@ class QuestionController {
 
         questionRepo.deleteById(id);
 
-        Category cat = categoryRepo.findByName(ques.getCategory());
+        Category cat = categoryRepo.findByName(ques.getCategory().getName());
         Set<Long> qIDSet = cat.getQuestionID();
             log.info("set of qID: {}", qIDSet);
         qIDSet.remove(id);

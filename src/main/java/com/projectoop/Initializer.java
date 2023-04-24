@@ -36,7 +36,7 @@ class Initializer implements CommandLineRunner {
         {
         Question ques1 = questionRepo.findByText("Question 1");
         Category e = categoryRepo.findByName("OOP");
-        ques1.setCategory(e.getName());     //TODO: co the tao moi Category o giao dien tao Question
+        ques1.setCategory(e);
         Set<Long> a = e.getQuestionID();
         Long qID = ques1.getId();
         a.add(qID);
