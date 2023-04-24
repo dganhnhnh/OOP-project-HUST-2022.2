@@ -1,12 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import DropDownMenu from './DropDownMenu';
+import DropDownMenu from '../DropDownMenu/DropDownMenu';
 
 const Navbar = () => {
 	const location = useLocation();
 	return (
 		<>
-			<navbar class='navbar'>
-				<div class='navbar_text'>
+			<navbar className ='navbar'>
+				<div className ='navbar_text'>
 					<p> IT </p>
 				</div>
 				<DropDownMenu/>
@@ -25,7 +25,7 @@ const Navbar = () => {
 						</li>
 					</ul>
 				</div>
-				<button>TURN EDITING ON</button>
+				<button className='button-in-navbar'>TURN EDITING ON</button>
 			</navbar>
 		</>
 	)

@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Optional;
 
-// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept"})
 @RestController
 @RequestMapping("/api")
 class CategoryController {

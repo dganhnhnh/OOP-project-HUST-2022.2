@@ -240,7 +240,7 @@ ul li::before {
   background-color: #f2f2f2;
 }
  
-button {
+.button-in-navbar {
   font-size: 20px;
   position: absolute;
   top: 150px;
@@ -250,7 +250,11 @@ button {
   border-radius: 0%;
   border: none;
   color: white;
-  background-color: rgb(5, 102, 172);
+  background-color: rgb(31, 130, 201);
+}
+
+.button-in-navbar:hover{
+  background-color: rgb(12, 79, 126);
 }
 
 .active-link {
