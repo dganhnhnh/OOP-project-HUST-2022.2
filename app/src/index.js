@@ -12,7 +12,7 @@ import Import from './component/Thicuoiki/Import';
 import Export from './component/Thicuoiki/Export';
 import Navigation from './component/Navbar/Navigation'
 import Home from './component/Home'
-
+import New_quiz from './component/Add_new_quiz/New_quiz';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -29,6 +29,8 @@ root.render(
             <Route path='/Import' element={<Import/>} />
             <Route path='/Export' element={<Export/>} />
           </Route>
+
+          <Route path='/addnewquiz' element={<New_quiz />}  />
       </Route>
     </Routes>
   </BrowserRouter>

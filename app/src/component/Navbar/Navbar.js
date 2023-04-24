@@ -9,15 +9,15 @@ const Navbar = () => {
 				<div class='navbar_text'>
 					<p> IT </p>
 				</div>
-				<DropDownMenu/>
+				<DropDownMenu />
 				<div className="navbar_menu">
 					<ul className='menu'>
 						<li>
-							<NavLink to="/Home" className ={location.pathname === "/Home" ? "active-link" : ""}> Home</NavLink>
+							<NavLink to="/Home" className={location.pathname === "/Home" ? "active-link" : ""}> Home</NavLink>
 						</li>
 						<li> / </li>
 						<li>
-							<NavLink to="/MyCourses" className= {location.pathname === "/MyCourses" ? "active-link" : ""}> My Courses</NavLink>
+							<NavLink to="/MyCourses" className={location.pathname === "/MyCourses" ? "active-link" : ""}> My Courses</NavLink>
 						</li>
 						<li> / </li>
 						<li>
@@ -25,7 +25,9 @@ const Navbar = () => {
 						</li>
 					</ul>
 				</div>
-				<button>TURN EDITING ON</button>
+				<NavLink to="/Addnewquiz" className={location.pathname === "/Newquiz" ? "active-link" : ""}>
+					<button className='button_navbar'>TURN EDITING ON</button>
+				</NavLink>
 			</navbar>
 		</>
 	)
