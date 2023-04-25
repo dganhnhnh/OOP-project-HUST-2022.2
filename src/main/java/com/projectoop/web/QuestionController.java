@@ -48,7 +48,6 @@ class QuestionController {
 
         return questionRepo.findAll();
     }
-<<<<<<< HEAD
 
     @GetMapping("/category/{name}/questions")
     Collection<Question> categoryQuestions(@PathVariable String name) {
@@ -63,8 +62,7 @@ class QuestionController {
         return questionList;
     }
 
-=======
->>>>>>> 6b10c714eac6609b5a3dea014949ada43624b208
+
     @GetMapping("/category/{id}/questions")
     Collection<Question> categoryQuestions(@PathVariable Long id) {
         Optional<Category> cate = categoryRepo.findById(id);
@@ -119,7 +117,6 @@ class QuestionController {
         log.info("Request to update Question: {}", ques);
         Question result = questionRepo.save(ques);
 
-<<<<<<< HEAD
         {
             Long qID = ques.getId();
             log.info("categoryRepo: {}", categoryRepo.toString());
@@ -131,8 +128,6 @@ class QuestionController {
             categoryRepo.save(cat);
             log.info("set of qID: {}", qIDSet);
         }
-=======
->>>>>>> 6b10c714eac6609b5a3dea014949ada43624b208
 
         return ResponseEntity.ok().body(result);
 
