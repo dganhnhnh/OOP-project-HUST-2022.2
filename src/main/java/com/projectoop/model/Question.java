@@ -29,6 +29,7 @@ public class Question {
     private String name;
     @NonNull
     private String text;
+    private String imageURL;
     private float defaultMark;
 
     // @ManyToOne(cascade=CascadeType.PERSIST)

@@ -60,6 +60,14 @@
 			<version>2.3.0</version>
 		</dependency>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.itextpdf/itext7-core
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext7-core</artifactId>
+			<version>7.0.4</version>
+			<type>pom</type>
+		</dependency> -->
+
 
 	
 	</dependencies>

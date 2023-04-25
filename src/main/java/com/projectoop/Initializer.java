@@ -39,6 +39,7 @@ class Initializer implements CommandLineRunner {
             a.add(qID);
             e.setQuestionID(a);
             ques1.setDefaultMark(1);
+            ques1.setImageURL("http://localhost:8080/api/File/Image/6e3660550e6a482d94dc388a82dcc857.png");
             ques1.setChoices(null);
             questionRepo.save(ques1);
             categoryRepo.save(e);
