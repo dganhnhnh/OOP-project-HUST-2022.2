@@ -24,39 +24,35 @@ class Initializer implements CommandLineRunner {
     @Override
     public void run(String... strings) {
         // TODO: category init only "Default"
-        Stream.of("Kien truc may tinh", "OOP", "Ky thuat lap trinh","CSDL")
-        .forEach(name ->
-            categoryRepo.save(new Category(name))
-        );
-        
-        Stream.of("Question 1","Question 2")
-        .forEach(text ->
-            questionRepo.save(new Question(text))
-        );
+        Stream.of("Kien truc may tinh", "OOP", "Ky thuat lap trinh", "CSDL")
+                .forEach(name -> categoryRepo.save(new Category(name)));
+
+        Stream.of("Question 1", "Question 2")
+                .forEach(text -> questionRepo.save(new Question(text)));
         {
-        Question ques1 = questionRepo.findByText("Question 1");
-        Category e = categoryRepo.findByName("OOP");
-        ques1.setCategory(e.getName());     //TODO: co the tao moi Category o giao dien tao Question
-        Set<Long> a = e.getQuestionID();
-        Long qID = ques1.getId();
-        a.add(qID);
-        e.setQuestionID(a);
-        ques1.setDefaultMark(1);
-        ques1.setChoices(null);
-        questionRepo.save(ques1);
-        categoryRepo.save(e);
+            Question ques1 = questionRepo.findByText("Question 1");
+            Category e = categoryRepo.findByName("OOP");
+            ques1.setCategory(e.getName()); // TODO: co the tao moi Category o giao dien
+            // tao Question
+            Set<Long> a = e.getQuestionID();
+            Long qID = ques1.getId();
+            a.add(qID);
+            e.setQuestionID(a);
+            ques1.setDefaultMark(1);
+            ques1.setChoices(null);
+            questionRepo.save(ques1);
+            categoryRepo.save(e);
         }
 
         {
-        Category parentCat = categoryRepo.findByName("OOP");
-        Set<Long> subCat = parentCat.getSubCatID();
-        Category newCat = new Category("thi cuoi ki OOP");
-        categoryRepo.save(newCat);
-        subCat.add(newCat.getId());
-        parentCat.setSubCatID(subCat);
-        categoryRepo.save(parentCat);
+            Category parentCat = categoryRepo.findByName("OOP");
+            Set<Long> subCat = parentCat.getSubCatID();
+            Category newCat = new Category("thi cuoi ki OOP");
+            categoryRepo.save(newCat);
+            subCat.add(newCat.getId());
+            parentCat.setSubCatID(subCat);
+            categoryRepo.save(parentCat);
         }
-        
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);

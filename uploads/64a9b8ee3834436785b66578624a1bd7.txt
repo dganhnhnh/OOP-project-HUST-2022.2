@@ -1,0 +1,21 @@
+4 tính chất của lập trình hướng đối tượng:
+*TÍNH ĐÓNG GÓI (Encapsulation)
+- Bảo vệ đối tượng không bị truy cập từ code bên ngòi để thay thế giá trị các thuộc tính hay có thể truy cập trực tiếp
+- Việc truy cập các giá trị của đối tượng tùy theo sự đồng ý của người viết ra lớp đó
+- Đảm bảo tự bảo mật, toàn vẹn của đối tượng trong Java
+// Phạm vi truy cập, setter getter trong Java
+
+*TÍNH TRỪU TƯỢNG (Abstraction)
+- Chỉ nói ra tính năng, các khái niệm được định nghĩa trong quá trình phát triển, bỏ qua các chi tiết triển khai bên trong
+- public abstract Student{ }
+// Tính trừu tượng trong Java, Interface (tương đương đa kế thừa)
+
+*TÍNH KẾ THỪA (Inheritance)
+// Kế thừa trong lập trình hướng đối tượng
+- Overriding Overloading
+
+*TÍNH ĐA HÌNH (Polymorphism)
+Đi song song với tính kế thừa
+// Overridding overloading trong Java, Interface trong Java
+*Trong Java không có đa kế thừa, thực hiện mục đích này bằng interface
+public class <> extends <> implements <Interface>, <> {}
