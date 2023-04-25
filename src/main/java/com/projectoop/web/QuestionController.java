@@ -41,19 +41,38 @@ class QuestionController {
         return questionRepo.findAll();
     }
     @GetMapping("/category/{id}/questions")
-    Collection<Question> categoryQuestions(@PathVariable Long id) {
+    Collection<Question> categoryQuestions(@PathVariable Long id,@RequestParam("showFromSub") boolean showFromSub) {
         Optional<Category> cate = categoryRepo.findById(id);
         Category category = cate.orElseThrow();
         
         Set<Long> qIDSet = category.getQuestionID();
 
-        if (qIDSet.isEmpty() ) {
-            List<Question> questionList = new ArrayList<Question>() ;
-            return questionList;
+        List<Question> questionList = new ArrayList<Question>() ;
+
+        // chi hien thi tu subCategory lien sau category nay 
+        if(showFromSub == true){
+            Set<Long> subCatID = category.getSubCatID();
+            if (!subCatID.isEmpty() ) {
+                List<Long> subCatIDList = new ArrayList<>(subCatID);
+                for(int i=0; i<subCatIDList.size(); i++){
+                    Optional<Category> subCat = categoryRepo.findById(subCatIDList.get(i));
+                    Category subCategory = subCat.orElseThrow();
+
+                    Set<Long> qIDSetFromSubCat = subCategory.getQuestionID();
+                    if(!qIDSetFromSubCat.isEmpty()){
+                        List<Long> qIDListFromSubCat = new ArrayList<>(qIDSetFromSubCat);
+                        for(int j=0;j<qIDListFromSubCat.size(); j++){
+                            Optional<Question> a = questionRepo.findById(qIDListFromSubCat.get(j));
+                            questionList.add(a.orElseThrow());
+                        }
+                    }
+                }
+            }
         }
+
+        if (qIDSet.isEmpty() ) {return questionList;}
         // if not null 
         List<Long> qIDList = new ArrayList<>(qIDSet);
-        List<Question> questionList = new ArrayList<Question>();
         for(int i=0; i<qIDList.size(); i++){
             Optional<Question> a = questionRepo.findById(qIDList.get(i));
             questionList.add(a.orElseThrow());
@@ -73,7 +92,7 @@ class QuestionController {
             log.info("Request to create Question: {}", ques);
         Question result = questionRepo.save(ques);
 
-        {
+        
             Long qID = ques.getId();
             log.info("categoryRepo: {}", categoryRepo.toString());
             Category cat = categoryRepo.findByName(ques.getCategory().getName());
@@ -83,7 +102,7 @@ class QuestionController {
             cat.setQuestionID(qIDSet);
             categoryRepo.save(cat);
                 log.info("set of qID: {}", qIDSet);
-        }
+        
 
         return ResponseEntity.created(new URI("/api/question/" + result.getId()))
                 .body(result);

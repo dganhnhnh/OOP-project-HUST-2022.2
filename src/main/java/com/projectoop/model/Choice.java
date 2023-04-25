@@ -1,16 +1,19 @@
 package com.projectoop.model;
 
-// import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jakarta.persistence.Embeddable;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-@Getter
-// @Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
+@Embeddable 
 // @Table(name = "choices")
 public class Choice {
     @NonNull
     private String text;
+    @NonNull
     private float grade;
+
+    private boolean chosen;
 }
