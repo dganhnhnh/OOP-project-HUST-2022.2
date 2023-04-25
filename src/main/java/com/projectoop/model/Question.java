@@ -31,6 +31,7 @@ public class Question {
     private String text;
     private String imageURL;
     private float defaultMark;
+<<<<<<< HEAD
 
     // @ManyToOne(cascade=CascadeType.PERSIST)
     // private Category category;
@@ -38,10 +39,18 @@ public class Question {
 
     // @OneToMany
     // private Set<Choice> choices;
+=======
+    
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    private Category category;
+>>>>>>> 6b10c714eac6609b5a3dea014949ada43624b208
 
     // @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
     private Map<Float, String> choices = new HashMap<Float, String>();
+<<<<<<< HEAD
 
     // get mark
+=======
+>>>>>>> 6b10c714eac6609b5a3dea014949ada43624b208
 }
