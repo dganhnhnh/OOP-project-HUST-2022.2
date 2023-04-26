@@ -1,0 +1,94 @@
+.New_quiz{
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	margin-top: 20px;
+	height: 100%;
+	border: 1px solid black;
+  }
+/*----------------------- */
+.line1{
+	margin-left: 20px;
+	display: flex;
+	flex-direction: row;
+	color: rgb(200, 48, 48);
+}
+.icon_test{
+	margin-right: 10px;
+	margin-top: 25px;
+	color: rgb(89, 147, 233);
+}
+.icon_question{
+	font-size: 15px;
+	color: rgb(5, 102, 172);
+}
+
+/*---------------------- */
+.form_add_quizz{
+	display: flex;
+	flex-direction: column;
+}
+.general{
+	margin-left: 15px;
+	font-size: 18px;
+	color:rgb(200, 48, 48) ;
+}
+
+.icon_general{
+	margin-top: 10px;
+	font-size: 15px;
+	color: blue;
+}
+/*------------------------------*/
+.form label {
+	display: flex;
+	padding: 20px;
+	font-size: 15px;
+}
+.form label input{
+	padding-top: -50px;
+}
+.Name {
+	display: flex;
+	flex-direction: row;
+}
+.Name input{    
+    margin-left: 200px;
+    width: 50vw;
+	height: 30px;
+
+}
+.Description input{
+	margin-left: 165px;
+    width: 80vw;
+	height: 200px;
+}
+/*-------------------------*/
+.checkbox{
+	margin-top: -20px;
+	margin-left: 260px;
+	font-size: 14px;
+}
+.icon_c{
+	color: rgb(49, 106, 186);
+}
+/*-------------------------*/
+.button{
+	display: flex;
+	flex-direction: row;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	font-size: 20px;
+	margin-left: 900px;
+}
+.button button{
+	color: white;
+    border-radius: 5px;
+    background-color: rgb(50, 131, 188);
+	border: none;
+	padding: 10px;
+	margin-left: 30px;
+}
+.form button:hover{
+	background-color: rgb(39, 70, 135);
+}
