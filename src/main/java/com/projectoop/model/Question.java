@@ -1,7 +1,7 @@
 package com.projectoop.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 // import org.json.simple.JSONObject;
 
 //import com.itextpdf.text.Element;
@@ -31,26 +31,17 @@ public class Question {
     private String text;
     private String imageURL;
     private float defaultMark;
-<<<<<<< HEAD
-
-    // @ManyToOne(cascade=CascadeType.PERSIST)
-    // private Category category;
-    private String category;
-
-    // @OneToMany
-    // private Set<Choice> choices;
-=======
     
+
     @ManyToOne(cascade=CascadeType.PERSIST)
     private Category category;
->>>>>>> 6b10c714eac6609b5a3dea014949ada43624b208
 
     // @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
-    private Map<Float, String> choices = new HashMap<Float, String>();
-<<<<<<< HEAD
+    @Embedded
+    // private Map<Float, String> choices = new HashMap<Float, String>();
+    private List<Choice> choices = new ArrayList<>();
+    // private Choice choice = new Choice();
 
-    // get mark
-=======
->>>>>>> 6b10c714eac6609b5a3dea014949ada43624b208
+    // getMark = choices[i].grade*choices[i].chosen
 }
