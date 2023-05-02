@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 class QuestionController {
@@ -40,8 +40,10 @@ class QuestionController {
         
         return questionRepo.findAll();
     }
+
+    //TODO: add parent category vao day can duyet roi duyet 1 lan 
     @GetMapping("/category/{id}/questions")
-    Collection<Question> categoryQuestions(@PathVariable Long id,@RequestParam("showFromSub") boolean showFromSub) {
+    Collection<Question> categoryQuestions(@PathVariable Long id,@RequestParam("show_from_subcategory") boolean showFromSub) {
         Optional<Category> cate = categoryRepo.findById(id);
         Category category = cate.orElseThrow();
         
@@ -89,20 +91,14 @@ class QuestionController {
 
     @PostMapping("/question")
     ResponseEntity<Question> createQuestion(@Valid @RequestBody Question ques) throws URISyntaxException {
-            log.info("Request to create Question: {}", ques);
         Question result = questionRepo.save(ques);
-
         
-            Long qID = ques.getId();
-            log.info("categoryRepo: {}", categoryRepo.toString());
-            Category cat = categoryRepo.findByName(ques.getCategory().getName());
-            Set<Long> qIDSet = cat.getQuestionID();
-                log.info("set of qID: {}", qIDSet);
-            qIDSet.add(qID);
-            cat.setQuestionID(qIDSet);
-            categoryRepo.save(cat);
-                log.info("set of qID: {}", qIDSet);
-        
+        Long qID = ques.getId();
+        Category cat = categoryRepo.findByName(ques.getCategory().getName());
+        Set<Long> qIDSet = cat.getQuestionID();
+        qIDSet.add(qID);
+        cat.setQuestionID(qIDSet);
+        categoryRepo.save(cat);        
 
         return ResponseEntity.created(new URI("/api/question/" + result.getId()))
                 .body(result);
@@ -128,7 +124,7 @@ class QuestionController {
 
         Category cat = categoryRepo.findByName(ques.getCategory().getName());
         Set<Long> qIDSet = cat.getQuestionID();
-            log.info("set of qID: {}", qIDSet);
+        log.info("set of qID: {}", qIDSet);
         qIDSet.remove(id);
         cat.setQuestionID(qIDSet);
         categoryRepo.save(cat);
