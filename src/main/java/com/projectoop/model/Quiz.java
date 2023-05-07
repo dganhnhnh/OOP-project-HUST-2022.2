@@ -13,8 +13,12 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "quiz")
+@Entity
+@Table(name = "quiz", schema = "myschema", catalog = "mysql")
 public class Quiz {
+    @Id
+    @GeneratedValue
+    private Long id;
     @NonNull
     private String name;
 
