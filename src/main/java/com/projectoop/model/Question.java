@@ -29,7 +29,7 @@ public class Question {
     @ManyToOne(cascade=CascadeType.PERSIST)
     private Category category;
 
-    // @NonNull
+    
     @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
     // private Map<Float, String> choices = new HashMap<Float, String>();
