@@ -5,6 +5,8 @@ import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Choice;
 import com.projectoop.model.Question;
 import com.projectoop.model.QuestionRepo;
+import com.projectoop.model.Quiz;
+import com.projectoop.model.QuizRepo;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -19,10 +21,12 @@ import java.util.stream.Stream;
 class Initializer implements CommandLineRunner {
     private final CategoryRepo categoryRepo;
     private final QuestionRepo questionRepo;
+    private final QuizRepo quizRepo;
 
-    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo) {
+    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo) {
         this.categoryRepo = categoryRepo;
         this.questionRepo = questionRepo;
+        this.quizRepo = quizRepo;
     }
 
     @Override
@@ -84,8 +88,11 @@ class Initializer implements CommandLineRunner {
         // categoryRepo.save(x);
 
         // TO HERE
+        Quiz a = new Quiz("Quiz 1");
+        quizRepo.save(a);
 
-        categoryRepo.findAll().forEach(System.out::println);
-        questionRepo.findAll().forEach(System.out::println);
+        // categoryRepo.findAll().forEach(System.out::println);
+        // questionRepo.findAll().forEach(System.out::println);
+        quizRepo.findAll().forEach(System.out::println);
     }
 }
