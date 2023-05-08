@@ -1,6 +1,5 @@
 package com.projectoop.model;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 // @Table(name = "choices")
 public class Choice {
-    @Nonnull
-    private String choiceText;
     @NonNull
+    private String choiceText;
     private float grade;
 
     private boolean chosen;
