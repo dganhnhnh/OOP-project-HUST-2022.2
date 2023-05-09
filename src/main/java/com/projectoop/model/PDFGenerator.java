@@ -79,7 +79,6 @@ public class PDFGenerator {
                     }
                 }
             }
-
             for (int k = 0; k < choiceNumber; k++) {
                 if (k != 0) {
                     document.add(new Paragraph(rightans[k], fontBody));
