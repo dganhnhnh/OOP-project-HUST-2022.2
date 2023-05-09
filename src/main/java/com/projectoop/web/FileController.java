@@ -1,5 +1,8 @@
 package com.projectoop.web;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.projectoop.model.Question;
 import com.projectoop.services.IStorageService;
 
 @Controller
@@ -36,7 +40,7 @@ public class FileController {
     @GetMapping("/Image/{fileName:.+}")
     public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName) {
         try {
-            byte[] bytes = storageService.readImageContent(fileName);
+            byte[] bytes = storageService.readFileContent(fileName);
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
 
         } catch (Exception exception) {
@@ -55,6 +59,19 @@ public class FileController {
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
-
     }
+
+    @GetMapping("/readFile/{fileName:.+}")
+    public ResponseEntity<?> creatQuestionFromFile(@PathVariable String fileName) {
+        try {
+            byte[] fileContent = storageService.readFileContent(fileName);
+            String fileText = new String(fileContent, StandardCharsets.UTF_8);
+            String reply = storageService.readQuestionFromFile(fileText);
+
+            return ResponseEntity.ok().body(reply);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot read file");
+        }
+    }
+
 }
