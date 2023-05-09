@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import { RiNewspaperLine } from 'react-icons/ri';
 import { RxTriangleDown } from 'react-icons/rx';
 import './New_quiz.css';
 import "react-datepicker/dist/react-datepicker.css";  //// import required react-datepicker styling file
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 export default function New_quiz() {
 	const [inputValue, setInputValue] = useState("");
 	const [inputValueDes, setInputValueDes] = useState("");
@@ -20,6 +22,21 @@ export default function New_quiz() {
 			setFirst(!first);
 		}
 	}
+	const ImportFileButton = (props) => {
+		const fileInputRef = React.createRef();
+
+		const handleFileImport = (event) => {
+			const file = event.target.files[0];
+			if (file) {
+				// Process the imported file here
+				console.log('Imported file:', file);
+			}
+		};
+	}
+
+	const openFileDialog = () => {
+		fileInputRef.current.click();
+	};
 
 	return (
 		<div className="New_quiz">
@@ -40,6 +57,8 @@ export default function New_quiz() {
 					<div className="form checkbox">
 						<input type="checkbox" value={first} onChange={() => handleChange("first")} /> Display description on course page <BsFillQuestionCircleFill className='icon_c' />
 					</div>
+
+
 				</div>
 				<div className="button">
 					<button type="submit" onClick={handleSave}>CREATE</button>
@@ -48,6 +67,6 @@ export default function New_quiz() {
 
 			</div>
 
-		</div>
+		</div >
 	)
 }

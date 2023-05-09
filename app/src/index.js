@@ -12,7 +12,8 @@ import Import from './component/Thicuoiki/Import';
 import Export from './component/Thicuoiki/Export';
 import Navigation from './component/Navbar/Navigation'
 import Home from './component/Home'
-import New_quiz from './component/Add_new_quiz/New_quiz';
+import New_quiz from './component/Quiz/Add_new_quiz/New_quiz';
+import Quiz_61 from './component/Quiz/Quizz_interface/Quiz_61';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -20,7 +21,11 @@ root.render(
       <Routes>
         <Route path='/' element={<App />}>
           <Route path='/Home' element={<Home />} />
-          <Route path='/MyCourses' element={<MyCourses />} />
+
+          <Route path='/MyCourses' element={<MyCourses />}>
+            <Route path='general/thicuoiki2moncongnghe' element={<Quiz_61 />} />
+          </Route>
+
           <Route path='/Thicuoiki' element={<Thicuoiki />} />
 
           <Route path='/' element={<Navigation/>}>
