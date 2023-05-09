@@ -1,11 +1,7 @@
 package com.projectoop.services;
 
-// import java.io.BufferedReader;
-// import java.io.File;
-// import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-// import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,15 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-// import org.springframework.util.FileCopyUtils;
-// import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +36,7 @@ public class FileStorageService implements IStorageService {
         try {
             Files.createDirectories(storageFolder);
         } catch (IOException exception) {
-            throw new RuntimeErrorException(null);
+            throw new RuntimeException("Cannot create upload folder");
         }
     }
 
@@ -65,11 +56,11 @@ public class FileStorageService implements IStorageService {
     public String storeImageFile(MultipartFile file) {
         try {
             if (file.isEmpty()) {
-                throw new RuntimeErrorException(null, "Cannot upload file");
+                throw new RuntimeException("Cannot upload file");
             }
             // check file is image?
             if (!isImageFile(file)) {
-                throw new RuntimeErrorException(null, "You can upload only image file");
+                throw new RuntimeException("You can upload only image file");
             }
             // rename file
             String fileExtention = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -78,7 +69,7 @@ public class FileStorageService implements IStorageService {
             Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName))
                     .normalize().toAbsolutePath();
             if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())) {
-                throw new RuntimeErrorException(null);
+                throw new RuntimeException();
             }
             // copy to destination file path
             try (InputStream inputStream = file.getInputStream()) {
@@ -115,7 +106,7 @@ public class FileStorageService implements IStorageService {
                     .normalize().toAbsolutePath();
 
             if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())) {
-                throw new RuntimeErrorException(null);
+                throw new RuntimeException();
             }
             // copy to destination file path
             try (InputStream inputStream = file.getInputStream()) {
@@ -145,7 +136,6 @@ public class FileStorageService implements IStorageService {
 
     @Override
     public String readQuestionFromFile(String fileContent) {
-
         // chạy vòng for cho tất cả các line
         // xảy ra các trường hợp: line dạng A. , ANSWER, dạng null, dạng <questiontext>
 
@@ -170,7 +160,7 @@ public class FileStorageService implements IStorageService {
             if (nowline.length() < 2) {
                 continue;
             }
-            if (nowline.matches("^[A-Z][).]\\s(?=\\s*\\S).*$")) {
+            if (nowline.matches("^[A-Z][.]\\s(?=\\s*\\S).*$")) {
                 if (question.getText() == null) {
                     questions = null;
                     break; // thêm bị lỗi tại dòng <linenumber>
@@ -198,8 +188,8 @@ public class FileStorageService implements IStorageService {
                 questions.add(question);
                 question = new Question();
                 choices = new ArrayList<>();
-                ans = new String[1000];
-                anscontent = new String[1000];
+                ans = new String[26];
+                anscontent = new String[26];
                 k = 0;
                 continue;
             } else {
@@ -217,5 +207,4 @@ public class FileStorageService implements IStorageService {
             return "Success " + questions.size();
         }
     }
-
 }

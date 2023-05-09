@@ -15,7 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.net.URL;
+//import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class PDFGenerator {
     private Collection<Question> questions;
@@ -40,8 +42,14 @@ public class PDFGenerator {
         document.add(paragraph);
 
         for (Question question : questions) {
+
             Paragraph paragraphQ = new Paragraph(question.getText(), fontBody);
-            Paragraph paragraphC = new Paragraph(question.getChoices().toString(), fontBody);
+            List<Choice> q_choices = question.getChoices();
+            int choiceCount = q_choices.size();
+            String[] rightans = new String[choiceCount];
+            Image[] image_ans = new Image[choiceCount];
+            int choiceNumber = 0;
+
             document.add(paragraphQ);
             if (question.getImageURL() != null) {
                 Image image = Image.getInstance(new URL(question.getImageURL()));
@@ -50,7 +58,39 @@ public class PDFGenerator {
                 image.scalePercent(scaler);
                 document.add(image);
             }
-            document.add(paragraphC);
+            for (Choice choice : q_choices) {
+                Paragraph paragraphC = new Paragraph(choice.getChoiceText(), fontBody);
+                document.add(paragraphC);
+                if (choice.getC_imageURL() != null) {
+                    Image c_image = Image.getInstance(new URL(choice.getC_imageURL()));
+                    float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
+                            - document.rightMargin()) / c_image.getWidth()) * 25;
+                    c_image.scalePercent(scaler);
+                    document.add(c_image);
+                    if (choice.getGrade() != 0) {
+                        rightans[choiceNumber] = choice.getChoiceText();
+                        image_ans[choiceNumber] = c_image;
+                        choiceNumber++;
+                    }
+                } else {
+                    if (choice.getGrade() != 0) {
+                        rightans[choiceNumber] = choice.getChoiceText();
+                        choiceNumber++;
+                    }
+                }
+            }
+
+            for (int k = 0; k < choiceNumber; k++) {
+                if (k != 0) {
+                    document.add(new Paragraph(rightans[k], fontBody));
+                    if (image_ans[k] != null)
+                        document.add(image_ans[k]);
+                } else {
+                    document.add(new Paragraph("ANSWER: ".concat(rightans[0]), fontBody));
+                    if (image_ans[0] != null)
+                        document.add(image_ans[k]);
+                }
+            }
         }
         document.close();
     }
