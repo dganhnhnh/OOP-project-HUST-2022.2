@@ -11,6 +11,7 @@ import com.projectoop.model.QuizRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -89,6 +90,8 @@ class Initializer implements CommandLineRunner {
 
         // TO HERE
         Quiz a = new Quiz("Quiz 1");
+        a.setTimeOpen(LocalDateTime.now());
+        a.setDefaultTimeClose();
         quizRepo.save(a);
 
         // categoryRepo.findAll().forEach(System.out::println);
