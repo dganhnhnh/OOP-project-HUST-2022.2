@@ -1,19 +1,18 @@
 package com.projectoop.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 // import org.json.simple.JSONObject;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "questions")
 public class Question {
@@ -26,13 +25,16 @@ public class Question {
     private String text;
     private float defaultMark;
     
+
     @ManyToOne(cascade=CascadeType.PERSIST)
     private Category category;
 
-    @NonNull
-    // @OneToMany
-    // private Set<Choice> choices;
-    @ElementCollection
-    // private Set<Choice> choices;
-    private Map<Integer, String> choices = new HashMap<Integer, String>();
+    // @NonNull
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Embedded
+    // private Map<Float, String> choices = new HashMap<Float, String>();
+    private List<Choice> choices = new ArrayList<>();
+    // private Choice choice = new Choice();
+
+    // getMark = choices[i].grade*choices[i].chosen
 }

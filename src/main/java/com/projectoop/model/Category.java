@@ -3,16 +3,18 @@ package com.projectoop.model;
 import java.util.Set;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-// NOTE giong nhu question list 
-
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -20,19 +22,18 @@ public class Category {
     @GeneratedValue
     private Long id;
 
-    // private Category parent;
     @NonNull
     private String name;
-    
     private String info;
     
+    // @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    // private Set<Category> subCat;
     @ElementCollection (fetch = FetchType.EAGER)
-    private Set<String> questionID;
-    // private int[] questionID;
+    private Set<Long> subCatID;
+    //change to List? nullable? can be pushed to?
 
-    // @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    // private Set<Int> questionID;
+    private String parent;
 
-    // @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    // private Set<Event> events;
+    @ElementCollection (fetch = FetchType.EAGER)
+    private Set<Long> questionID;
 }
