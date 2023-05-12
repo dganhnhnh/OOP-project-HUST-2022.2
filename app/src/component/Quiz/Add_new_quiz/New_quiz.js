@@ -33,11 +33,6 @@ export default function New_quiz() {
 			}
 		};
 	}
-
-	const openFileDialog = () => {
-		fileInputRef.current.click();
-	};
-
 	return (
 		<div className="New_quiz">
 			<div className="line1">
