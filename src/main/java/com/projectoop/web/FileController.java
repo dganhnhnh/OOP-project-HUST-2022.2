@@ -2,6 +2,7 @@ package com.projectoop.web;
 
 import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,11 +62,34 @@ public class FileController {
 
     @GetMapping("/createQuestion/{fileName:.+}")
     public ResponseEntity<?> creatQuestionFromFile(@PathVariable String fileName) {
+        // if text file do this, if docx file do that 
         try {
-            byte[] fileContent = storageService.readFileContent(fileName);
-            String fileText = new String(fileContent, StandardCharsets.UTF_8);
-            String reply = storageService.readQuestionFromFile(fileText);
+            String reply = new String();
+            String fileExtention = FilenameUtils.getExtension(fileName);
+            if(fileExtention.equals(new String("txt"))){
+                byte[] fileContent = storageService.readFileContent(fileName);
+                String fileText = new String(fileContent, StandardCharsets.UTF_8);
+                reply += storageService.readQuestionFromFile(fileText);
+            }
+            else if(fileExtention.equals(new String("docx"))){
 
+                String fileText = storageService.readMultimediaFile(fileName);
+                // reply += storageService.readQuestionFromFile(fileText);
+                // hủy comment chỗ này sau khi đã sửa xong readQuestionFromFile
+                // TODO: đọc file text đến đoạn END OF QUESTION TEXT thì đọc URL ảnh và setImageURL trong Question
+                reply += fileText;
+            }
+
+            return ResponseEntity.ok().body(reply);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot read file");
+        }
+    }
+
+    @GetMapping("/readDocxFile/{fileName:.+}")
+    public ResponseEntity<?> readDocxFile(@PathVariable String fileName) {
+        try {
+            String reply = storageService.readMultimediaFile(fileName);
             return ResponseEntity.ok().body(reply);
         } catch (Exception e) {
             throw new RuntimeException("Cannot read file");

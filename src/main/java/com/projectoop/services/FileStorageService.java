@@ -1,7 +1,10 @@
 package com.projectoop.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
+
+import java.awt.image.BufferedImage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -23,6 +30,8 @@ import com.projectoop.model.Question;
 import com.projectoop.model.QuestionRepo;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.*;
 
 @Service
 public class FileStorageService implements IStorageService {
@@ -134,6 +143,51 @@ public class FileStorageService implements IStorageService {
         }
     }
 
+    public String readMultimediaFile(String fileName) {
+        String fileText=new String();
+
+        try {
+            // ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContentBytes);
+
+            Path path = storageFolder.resolve(fileName);
+		    byte[] byteData = Files.readAllBytes(path);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(byteData);
+
+            XWPFDocument document = new XWPFDocument(inputStream);
+            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
+            fileText += extractor.getText();
+            fileText += "END OF QUESTION TEXT\n";
+
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                // Loop through all runs of the paragraph
+                for (XWPFRun run : paragraph.getRuns()) {
+                    if (run.getEmbeddedPictures().size() > 0) {
+                        // This run contains an image
+                        byte[] imageBytes = run.getEmbeddedPictures().get(0).getPictureData().getData();
+                        // do something with imageBytes
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+                        // Create the image file on the server
+                        // image file rename
+                        String generatedFileName = UUID.randomUUID().toString().replace("-", "");
+                        generatedFileName += ".png";
+                        Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName))
+                                .normalize().toAbsolutePath();
+                        File imageFile = new File(destinationFilePath.toString());
+                        ImageIO.write(image, "png", imageFile);
+
+                        // store generated filenames and pass to question's imageURL
+                        fileText += generatedFileName +"\n";
+                    } 
+                }
+            }
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileText;
+    }
+
+    // TODO: đọc file text đến đoạn END OF QUESTION TEXT thì đọc URL ảnh và setImageURL trong Question
     @Override
     public String readQuestionFromFile(String fileContent) {
         // chạy vòng for cho tất cả các line

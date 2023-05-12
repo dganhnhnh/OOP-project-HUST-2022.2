@@ -11,4 +11,6 @@ public interface IStorageService {
 
     public String readQuestionFromFile(String fileContent);
 
+    public String readMultimediaFile(String fileName); 
+
 }
