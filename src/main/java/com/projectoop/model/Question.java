@@ -31,9 +31,8 @@ public class Question {
     private String text;
     private String imageURL;
     private float defaultMark;
-    
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Category category;
 
     // @NonNull
