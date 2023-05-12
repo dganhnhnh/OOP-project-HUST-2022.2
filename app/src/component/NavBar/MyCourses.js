@@ -1,6 +1,5 @@
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import Quiz_61 from '../Quiz/Quizz_interface/Quiz_61'
 const MyCourses = () => {
   const location = useLocation();
   return (
