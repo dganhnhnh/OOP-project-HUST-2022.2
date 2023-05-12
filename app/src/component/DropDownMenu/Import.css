@@ -12,9 +12,13 @@
 	flex-direction: row;
 	color: rgb(200, 48, 48);
 }
-.general {
+.list{
+	margin-top: -50px;
+}
+.list li {
 	border-bottom: 2px solid #e8eef6;
-	margin-top: -40px;
+	margin-top: -30px;
+	color: rgb(200, 48, 48);
 }
 
 /*---------------------- */
@@ -85,12 +89,12 @@
   
   .btnImport {
 	padding: 10px;
-	margin: 1rem;
 	font-size: medium;
 	background-color: rgb(224, 85, 85);
 	color: #ffffff;
 	border: none;
 	border-radius: 10px;
+	margin-top: 10px;
 	margin-left: 10vw;
   }
   .btnImport:hover{

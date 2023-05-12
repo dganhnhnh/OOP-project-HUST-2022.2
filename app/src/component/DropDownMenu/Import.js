@@ -45,9 +45,9 @@ export default function New_quiz() {
 				<p >Import questions from file </p>
 			</div>
 			<ul className="list">
-				<li> <p className='general'><RxTriangleDown className='icon_general' /> File format</p> </li>
-				<li> <p className='general'><RxTriangleDown className='icon_general' /> General</p>     </li>
-				<li> <p className='general'><RxTriangleDown className='icon_general' /> Import question from file</p> </li>
+				<li> <p><RxTriangleDown className='icon_general' /> File format</p> </li>
+				<li> <p><RxTriangleDown className='icon_general' /> General</p>     </li>
+				<li> <p><RxTriangleDown className='icon_general' /> Import question from file</p> </li>
 			</ul>
 
 			<div className="main">

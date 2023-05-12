@@ -4,18 +4,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import MyCourses from './component/NavBar/MyCourses';
+import MyCourses from './component/NavBar/MyCourses.js';
 import Thicuoiki from './component/NavBar/Thicuoiki';
 import Question from './component/Question/Question';
-import Categories from './component/Thicuoiki/Categories';
-import Import from './component/Thicuoiki/Import';
-import Export from './component/Thicuoiki/Export';
-import Navigation from './component/Navbar/Navigation'
-import Home from './component/Home'
-import New_quiz from './component/Quiz/Add_new_quiz/New_quiz';
+import Categories from './component/DropDownMenu/Categories';
+import Import from './component/DropDownMenu/Import';
+import Export from './component/DropDownMenu/Export';
+import Navigation from './component/DropDownMenu/Navigation'
+import Home from './component/NavBar/Home'
 import EditQuestion from './component/Question/EditQuestion';
 import AddNewQuestion from './component/Question/AddNewQuestion';
-import Quiz_61 from './component/Quiz/Quizz_interface'
+import Quiz_61 from './component/Quiz/Quizz_interface/Quiz_61'
+import New_quiz from './component/Quiz/Add_new_quiz/New_quiz';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -27,7 +27,7 @@ root.render(
           <Route path='/MyCourses' element={<MyCourses />}>
             <Route path='general/thicuoiki2moncongnghe' element={<Quiz_61 />} />
           </Route>
-
+          
           <Route path='/Thicuoiki' element={<Thicuoiki />} />
           <Route path='/EditQuestion' element={<EditQuestion />} />
           <Route path='/AddNewQuestion' element={<AddNewQuestion />} />

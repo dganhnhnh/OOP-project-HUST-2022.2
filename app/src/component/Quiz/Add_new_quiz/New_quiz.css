@@ -15,10 +15,12 @@
 }
 .icon_test{
 	margin-right: 10px;
-	margin-top: 25px;
+	margin-top: 35px;
 	color: rgb(89, 147, 233);
 }
 .icon_question{
+	margin-left: 5px;
+	margin-top: 15px;
 	font-size: 15px;
 	color: rgb(5, 102, 172);
 }
@@ -29,6 +31,7 @@
 	flex-direction: column;
 }
 .general{
+	margin-top: 1px;
 	margin-left: 15px;
 	font-size: 18px;
 	color:rgb(200, 48, 48) ;
@@ -65,11 +68,15 @@
 }
 /*-------------------------*/
 .checkbox{
-	margin-top: -20px;
+	display: flex;
+	flex-direction: row;
 	margin-left: 260px;
+	margin-top: -20px;
 	font-size: 14px;
 }
 .icon_c{
+	 margin-top: 3px;
+	 margin-left: 5px;
 	color: rgb(49, 106, 186);
 }
 /*-------------------------*/
@@ -89,6 +96,6 @@
 	padding: 10px;
 	margin-left: 30px;
 }
-.form button:hover{
-	background-color: rgb(39, 70, 135);
+.button button:hover{
+	background-color: rgb(12, 46, 120) !important;
 }
