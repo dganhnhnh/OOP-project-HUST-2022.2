@@ -20,6 +20,11 @@ public class Choice {
 
     private boolean chosen;
 
+    public Choice(@Nonnull String choiceText, @NonNull float grade) {
+        this.choiceText = choiceText;
+        this.grade = grade;
+    }
+    
     @Override
     public String toString() {
         return "text: " + choiceText + ", grade: " + grade;
