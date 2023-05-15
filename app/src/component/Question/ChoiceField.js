@@ -49,7 +49,7 @@ function ChoiceField({label, text, setText, grade, setGrade}) {
         value={grade}
         onChange={(e) => setGrade(e.target.value)}
         options={[
-          { value: "none", label: "None" },
+          { value: "0", label: "None" },
           { value: "1", label: "100%" },
           { value: "0.9", label: "90%" },
           { value: "0.833333", label: "83.33333%" },
