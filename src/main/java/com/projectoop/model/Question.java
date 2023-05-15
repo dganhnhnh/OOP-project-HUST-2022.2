@@ -33,9 +33,8 @@ public class Question {
     // @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
-    // private Map<Float, String> choices = new HashMap<Float, String>();
+    //private Map<Float, String> choices = new HashMap<Float, String>();
     private List<Choice> choices = new ArrayList<>();
-    // private Choice choice = new Choice();
 
     // getMark = choices[i].grade*choices[i].chosen
 }

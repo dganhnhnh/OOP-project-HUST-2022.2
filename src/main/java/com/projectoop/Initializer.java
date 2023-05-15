@@ -56,11 +56,10 @@ class Initializer implements CommandLineRunner {
         a.add(ques1.getId());
         e.setQuestionID(a);
         ques1.setDefaultMark(1);
-        // Choice choice1 = new Choice("Choice 1", 1);
-        // Choice choice2 = new Choice("Choice 2", 0);
-        // List<Choice> choices = Arrays.asList({choice1, choice2});
-        // ques1.setChoices(choices);
-        // ques1.setChoice(choice1);
+         Choice choice1 = new Choice("Choice 1", 1);
+         Choice choice2 = new Choice("Choice 2", 0);
+         List<Choice> choices = Arrays.asList(choice1, choice2);
+         ques1.setChoices(choices);
         //bug neu khai bao chung 1 day choices ntn
         questionRepo.save(ques1);
         categoryRepo.save(e);

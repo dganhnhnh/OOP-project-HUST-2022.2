@@ -27,19 +27,31 @@
     display: inline-block;
   }
   
-  .col-25 {
+  .col-40 {
     float: left;
     width: 40%;
     margin-top: 6px;
   }
   
-  .col-75 {
+  .col-60 {
     float: left;
     width: 60%;
     margin-top: 6px;
   }
 
-.col-75 select{
+  .col-20 {
+    float: left;
+    width: 20%;
+    margin-top: 6px;
+  }
+  
+  .col-80 {
+    float: left;
+    width: 80%;
+    margin-top: 6px;
+  }
+
+.col-60 select{
     height: 35px;
     width: 60%;
     border-radius: 0%;
@@ -80,7 +92,7 @@
   
   /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
   @media screen and (max-width: 600px) {
-    .col-25, .col-75, input[type=submit] {
+    .col-40, .col-60, .col-20, .col-80 input[type=submit] {
       width: 100%;
       margin-top: 0;
     }
@@ -141,4 +153,31 @@
 }
 .button-group button {
   margin: 0.5rem;
+}
+
+.choice{
+  margin-bottom: 20px;
+  background-color: rgba(128, 128, 128, 0.336);
+  margin-left: 40%;
+  padding: 20px 20px;
+}
+
+.choice-field label{
+  font-size: 17px;
+}
+
+.choice-field textarea{
+    height: 30px;
+    width: 100%;
+    border-radius: 0%;
+    background-color: #fff;
+    border: 1px solid black;
+}
+
+.choice-field select{
+    height: 30px;
+    width: 40%;
+    border-radius: 0%;
+    background-color: #fff;
+    border: 1px solid black;
 }
