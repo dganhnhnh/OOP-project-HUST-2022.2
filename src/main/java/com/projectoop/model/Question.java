@@ -26,8 +26,9 @@ public class Question {
     private float defaultMark;
     
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    private Category category;
+    // @ManyToOne(cascade=CascadeType.PERSIST)
+    // private Category category;
+    private Long categoryID;
 
     // @NonNull
     @ElementCollection(fetch = FetchType.EAGER)

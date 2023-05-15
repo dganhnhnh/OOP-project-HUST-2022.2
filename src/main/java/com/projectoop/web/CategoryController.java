@@ -76,7 +76,7 @@ class CategoryController {
             for(int i=0; i<qIDList.size(); i++){
                 Optional<Question> a = questionRepo.findById(qIDList.get(i));
                 Question b = a.orElseThrow();
-                b.setCategory(null);
+                b.setCategoryID(null);
                 // questionRepo.deleteById(qIDList.get(i));
             }
         }
