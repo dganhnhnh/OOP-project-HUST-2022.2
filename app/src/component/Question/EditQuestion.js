@@ -47,19 +47,19 @@ const EditQuestion = () => {
   const [questionsByCategory, setQuestionsByCategory] = useState({});
 
   const [choice1, setChoice1] = useState("");
-  const [choice1Grade, setChoice1Grade] = useState("none");
+  const [choice1Grade, setChoice1Grade] = useState(0);
 
   const [choice2, setChoice2] = useState("");
-  const [choice2Grade, setChoice2Grade] = useState("none");
+  const [choice2Grade, setChoice2Grade] = useState(0);
 
   const [choice3, setChoice3] = useState("");
-  const [choice3Grade, setChoice3Grade] = useState("none");
+  const [choice3Grade, setChoice3Grade] = useState(0);
 
   const [choice4, setChoice4] = useState("");
-  const [choice4Grade, setChoice4Grade] = useState("none");
+  const [choice4Grade, setChoice4Grade] = useState(0);
 
   const [choice5, setChoice5] = useState("");
-  const [choice5Grade, setChoice5Grade] = useState("none");
+  const [choice5Grade, setChoice5Grade] = useState(0);
 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
@@ -140,7 +140,9 @@ const EditQuestion = () => {
       name,
       text,
       defaultMark,
-      category: { id: selectedCategory },
+      category: { 
+        id: selectedCategory,
+        },
       choices: [
         { choiceText: choice1, grade: choice1Grade },
         { choiceText: choice2, grade: choice2Grade },
@@ -169,7 +171,9 @@ const EditQuestion = () => {
       name,
       text,
       defaultMark,
-      category: { id: selectedCategory },
+      category: { 
+        id: selectedCategory,
+      },
       choices: [
           { choiceText: choice1, grade: choice1Grade },
           { choiceText: choice2, grade: choice2Grade },

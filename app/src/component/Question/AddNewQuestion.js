@@ -47,19 +47,19 @@ const AddNewQuestion = () => {
   const [questionsByCategory, setQuestionsByCategory] = useState({});
 
   const [choice1, setChoice1] = useState("");
-  const [choice1Grade, setChoice1Grade] = useState("none");
+  const [choice1Grade, setChoice1Grade] = useState(0);
 
   const [choice2, setChoice2] = useState("");
-  const [choice2Grade, setChoice2Grade] = useState("none");
+  const [choice2Grade, setChoice2Grade] = useState(0);
 
   const [choice3, setChoice3] = useState("");
-  const [choice3Grade, setChoice3Grade] = useState("none");
+  const [choice3Grade, setChoice3Grade] = useState(0);
 
   const [choice4, setChoice4] = useState("");
-  const [choice4Grade, setChoice4Grade] = useState("none");
+  const [choice4Grade, setChoice4Grade] = useState(0);
 
   const [choice5, setChoice5] = useState("");
-  const [choice5Grade, setChoice5Grade] = useState("none");
+  const [choice5Grade, setChoice5Grade] = useState(0);
 
   useEffect(() => {
     fetch('http://localhost:8080/api/categories')
@@ -99,14 +99,13 @@ const AddNewQuestion = () => {
 
   const handleSaveAndContinueEditing = (event) => {
     event.preventDefault();
-
     // Tạo một đối tượng question mới từ các giá trị nhập vào form
     const newQuestion = {
       name: name,
       text: text,
       defaultMark: defaultMark,
       category: {
-        id: selectedCategory
+        id: selectedCategory,
       },
       choices: [
         { choiceText: choice1, grade: choice1Grade },
@@ -139,14 +138,13 @@ const AddNewQuestion = () => {
 
   const handleSaveChanges = (event) => {
     event.preventDefault();
-
     // Tạo một đối tượng question mới từ các giá trị nhập vào form
     const newQuestion = {
       name: name,
       text: text,
       defaultMark: defaultMark,
       category: {
-        id: selectedCategory
+        id: selectedCategory,
       },
       choices: [
         { choiceText: choice1, grade: choice1Grade },
