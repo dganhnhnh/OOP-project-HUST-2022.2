@@ -9,7 +9,7 @@ public interface IStorageService {
 
     public byte[] readFileContent(String fileName);
 
-    public String readQuestionFromFile(String fileContent);
+    public String readQuestionFromFile(String fileContent, String fileName);
 
     public String readMultimediaFile(String fileName); 
 

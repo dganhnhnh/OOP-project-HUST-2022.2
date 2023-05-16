@@ -71,15 +71,14 @@ public class FileController {
             if(fileExtention.equals(new String("txt"))){
                 byte[] fileContent = storageService.readFileContent(fileName);
                 String fileText = new String(fileContent, StandardCharsets.UTF_8);
-                reply += storageService.readQuestionFromFile(fileText);
+                reply += storageService.readQuestionFromFile(fileText, fileName);
             }
             else if(fileExtention.equals(new String("docx"))){
 
                 String fileText = storageService.readMultimediaFile(fileName);
-                // reply += storageService.readQuestionFromFile(fileText);
+                reply += storageService.readQuestionFromFile(fileText, fileName);
                 // hủy comment chỗ này sau khi đã sửa xong readQuestionFromFile
-                // TODO: đọc file text đến đoạn END OF QUESTION TEXT thì đọc URL ảnh và setImageURL trong Question
-                reply += fileText;
+                // reply += fileText;
             }
 
             return ResponseEntity.ok().body(reply);

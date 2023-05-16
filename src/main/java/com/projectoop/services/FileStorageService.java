@@ -156,7 +156,8 @@ public class FileStorageService implements IStorageService {
             XWPFDocument document = new XWPFDocument(inputStream);
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
             fileText += extractor.getText();
-            fileText += "END OF QUESTION TEXT\n";
+            // fileText += "END OF QUESTION TEXT\n";
+            int imgId = 0;
 
             for (XWPFParagraph paragraph : document.getParagraphs()) {
                 // Loop through all runs of the paragraph
@@ -167,16 +168,15 @@ public class FileStorageService implements IStorageService {
                         // do something with imageBytes
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
                         // Create the image file on the server
+
                         // image file rename
-                        String generatedFileName = UUID.randomUUID().toString().replace("-", "");
-                        generatedFileName += ".png";
-                        Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName))
+                        String imgFileName = new String("DocxIm_");
+                        imgFileName += fileName + "_img_"+imgId+".png";
+                        Path destinationFilePath = this.storageFolder.resolve(Paths.get(imgFileName))
                                 .normalize().toAbsolutePath();
                         File imageFile = new File(destinationFilePath.toString());
                         ImageIO.write(image, "png", imageFile);
-
-                        // store generated filenames and pass to question's imageURL
-                        fileText += generatedFileName +"\n";
+                        imgId ++;
                     } 
                 }
             }
@@ -187,9 +187,11 @@ public class FileStorageService implements IStorageService {
         return fileText;
     }
 
-    // TODO: đọc file text đến đoạn END OF QUESTION TEXT thì đọc URL ảnh và setImageURL trong Question
     @Override
-    public String readQuestionFromFile(String fileContent) {
+    public String readQuestionFromFile(String fileContent, String fileName) {
+        String pathForFile = "http://localhost:8080/api/File/";
+        int quesCount = 0;
+
         // chạy vòng for cho tất cả các line
         // xảy ra các trường hợp: line dạng A. , ANSWER, dạng null, dạng <questiontext>
 
@@ -207,6 +209,7 @@ public class FileStorageService implements IStorageService {
         int k = 0; // biến đếm số đáp án
 
         Question question = new Question();
+        
         for (int i = 0; i < linescount; i++) {
             String nowline = lines[i].trim();
             linenumber++;
@@ -239,6 +242,9 @@ public class FileStorageService implements IStorageService {
                         choices.set(j, new Choice(anscontent[j], 1.0f));
                 }
                 question.setChoices(choices);
+                question.setImageURL(pathForFile+"Image/DocxIm_"+fileName + "_img_"+quesCount+".png");
+                quesCount++;
+
                 questions.add(question);
                 question = new Question();
                 choices = new ArrayList<>();
