@@ -24,11 +24,11 @@ public class Quiz {
     @NonNull
     private String name;
 
-    private String Description;
+    private String description;
     private List<Long> questionsID = new ArrayList<>();
     // use for add, edit, delete and shuffle
-    private int timeLimitDay;
 
+    private int timeLimitDay;
     private LocalDateTime timeOpen;
     private LocalDateTime timeClose;
 

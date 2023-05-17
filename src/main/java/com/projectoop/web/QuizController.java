@@ -53,7 +53,7 @@ class QuizController {
     @PostMapping("/quiz")
     ResponseEntity<Quiz> createQuiz(@Valid @RequestBody Quiz quiz) throws URISyntaxException {
         log.info("Request to create Quiz: {}", quiz);
-        quiz.setDefaultTimeClose();
+        if(quiz.getTimeLimitDay()!= 0) quiz.setDefaultTimeClose();
         Quiz result = quizRepo.save(quiz);
         return ResponseEntity.created(new URI("/api/quiz/" + result.getId()))
                 .body(result);
@@ -62,7 +62,7 @@ class QuizController {
     @PutMapping("/quiz/{id}")
     ResponseEntity<Quiz> updateQuiz(@Valid @RequestBody Quiz quiz) {
         log.info("Request to update Quiz: {}", quiz);
-        quiz.setDefaultTimeClose();
+        if(quiz.getTimeLimitDay()!= 0) quiz.setDefaultTimeClose();
         Quiz result = quizRepo.save(quiz);
         return ResponseEntity.ok().body(result);
     }
