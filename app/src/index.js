@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MyCourses from './component/NavBar/MyCourses.js';
 import Thicuoiki from './component/NavBar/Thicuoiki';
-import Question from './component/DropDownMenu/Question';
+import Question from './component/Question/Question';
 import Categories from './component/DropDownMenu/Categories';
 import Import from './component/DropDownMenu/Import';
 import Export from './component/DropDownMenu/Export';
 import Navigation from './component/DropDownMenu/Navigation'
 import Home from './component/NavBar/Home'
+import EditQuestion from './component/Question/EditQuestion';
+import AddNewQuestion from './component/Question/AddNewQuestion';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,6 +24,8 @@ root.render(
           <Route path='/Home' element={<Home />} />
           <Route path='/MyCourses' element={<MyCourses />} />
           <Route path='/Thicuoiki' element={<Thicuoiki />} />
+          <Route path='/EditQuestion' element={<EditQuestion />}/>
+          <Route path='/AddNewQuestion' element={<AddNewQuestion />}/>
           <Route path='/' element={<Navigation/>}>
             <Route path='/Question' element={<Question />} />
             <Route path='/Categories' element={< Categories/>} />
