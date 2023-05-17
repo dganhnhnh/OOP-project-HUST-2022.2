@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "categories")
+@Table(name = "categories", schema = "myschema", catalog = "mysql")
 public class Category {
     @Id
     @GeneratedValue

@@ -18,9 +18,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "questions")
-@Getter
-@Setter
+@Table(name = "questions", schema = "myschema", catalog = "mysql")
 public class Question {
     @Id
     @GeneratedValue
