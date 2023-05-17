@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProjectOopApplication<project-oop>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.projectoop.ProjectOopApplication",
+            "projectName": "project-oop",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

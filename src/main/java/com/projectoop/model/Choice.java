@@ -17,11 +17,8 @@ public class Choice {
     private String choiceText;
     @NonNull
     private float grade;
+    private String c_imageURL;
 
     private boolean chosen;
 
-    @Override
-    public String toString() {
-        return "text: " + choiceText + ", grade: " + grade;
-    }
 }
