@@ -37,7 +37,7 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
 }
 
 const AddNewQuestion = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(1);
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [defaultMark, setDefaultMark] = useState(0);
@@ -104,9 +104,7 @@ const AddNewQuestion = () => {
       name: name,
       text: text,
       defaultMark: defaultMark,
-      category: {
-        id: selectedCategory,
-      },
+      categoryID:selectedCategory,
       choices: [
         { choiceText: choice1, grade: choice1Grade },
         { choiceText: choice2, grade: choice2Grade },
@@ -143,9 +141,7 @@ const AddNewQuestion = () => {
       name: name,
       text: text,
       defaultMark: defaultMark,
-      category: {
-        id: selectedCategory,
-      },
+      categoryID: selectedCategory,
       choices: [
         { choiceText: choice1, grade: choice1Grade },
         { choiceText: choice2, grade: choice2Grade },

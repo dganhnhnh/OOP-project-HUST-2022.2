@@ -48,7 +48,7 @@ class Initializer implements CommandLineRunner {
         
         Question ques1 = questionRepo.findByText("Question 1");
         Category e = categoryRepo.findByName("OOP");
-        ques1.setCategory(e);
+        ques1.setCategoryID(e.getId());
         Set<Long> a = e.getQuestionID();
         a.add(ques1.getId());
         e.setQuestionID(a);
@@ -63,7 +63,7 @@ class Initializer implements CommandLineRunner {
         
         
         Question ques2 = questionRepo.findByText("Question 2");
-        ques2.setCategory(e);
+        ques2.setCategoryID(e.getId());
         a.add(ques2.getId());
         e.setQuestionID(a);
         ques2.setDefaultMark(1);
@@ -72,7 +72,7 @@ class Initializer implements CommandLineRunner {
 
         Question ques3 = questionRepo.findByText("Question 3");
         Category x = categoryRepo.findByName("ck-OOP");
-        ques3.setCategory(x);
+        ques3.setCategoryID(x.getId());
         Set<Long> xx= new HashSet<>();
         xx.add(ques3.getId());
         x.setQuestionID(xx);

@@ -37,7 +37,7 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
 }
 
 const EditQuestion = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(1);
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [defaultMark, setDefaultMark] = useState(0);
@@ -73,7 +73,7 @@ const EditQuestion = () => {
       .then((question) => {
         // set giá trị mặc định cho các input field
         console.log(question);
-        setSelectedCategory(question.category.id);
+        setSelectedCategory(question.categoryID);
         setName(question.name);
         setText(question.text);
         setDefaultMark(question.defaultMark);
@@ -140,9 +140,7 @@ const EditQuestion = () => {
       name,
       text,
       defaultMark,
-      category: { 
-        id: selectedCategory,
-        },
+      categoryID: selectedCategory,
       choices: [
         { choiceText: choice1, grade: choice1Grade },
         { choiceText: choice2, grade: choice2Grade },
@@ -171,9 +169,7 @@ const EditQuestion = () => {
       name,
       text,
       defaultMark,
-      category: { 
-        id: selectedCategory,
-      },
+      categoryID: selectedCategory,
       choices: [
           { choiceText: choice1, grade: choice1Grade },
           { choiceText: choice2, grade: choice2Grade },
