@@ -19,17 +19,4 @@ public class Choice {
     private String c_imageURL;
 
     private boolean chosen;
-
-<<<<<<< HEAD
-    public Choice(@Nonnull String choiceText, @NonNull float grade) {
-        this.choiceText = choiceText;
-        this.grade = grade;
-    }
-    
-    @Override
-    public String toString() {
-        return "text: " + choiceText + ", grade: " + grade;
-    }
-=======
->>>>>>> 73b88983f77f38ef7545a3ebee95609ba04d286b
 }

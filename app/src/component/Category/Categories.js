@@ -75,23 +75,14 @@ const Categories = () => {
     setSelectedCategory(event.target.value);
   };
 
-  function findParentCategory(subCatId) {
-    const subcategory = categories.find(c => c.subCatID.includes(subCatId));
-    if (subcategory && subcategory.parentId) {
-      return categories.find(c => c.id === subcategory.parentId);
-    }
-    return null;
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault();
     
     const url = 'http://localhost:8080/api/category';
-    const parentCategory = findParentCategory(selectedCategory);
     const data = {
       name: name,
       info: info,
-      parent: parentCategory ? parentCategory.name : null
+      parent: selectedCategory,
     };
     
     fetch(url, {

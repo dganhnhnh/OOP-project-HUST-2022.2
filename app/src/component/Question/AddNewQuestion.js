@@ -104,7 +104,7 @@ const AddNewQuestion = () => {
       name: name,
       text: text,
       defaultMark: defaultMark,
-      categoryID:selectedCategory,
+      categoryID: selectedCategory,
       choices: [
         { choiceText: choice1, grade: choice1Grade },
         { choiceText: choice2, grade: choice2Grade },

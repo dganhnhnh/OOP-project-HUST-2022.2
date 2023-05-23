@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept"})
 @RestController
 @RequestMapping("/api")
 class CategoryController {
@@ -76,7 +76,7 @@ class CategoryController {
             for(int i=0; i<qIDList.size(); i++){
                 Optional<Question> a = questionRepo.findById(qIDList.get(i));
                 Question b = a.orElseThrow();
-                b.setCategoryID(null);
+                b.setCategory(null);
                 // questionRepo.deleteById(qIDList.get(i));
             }
         }
