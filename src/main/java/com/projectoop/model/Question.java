@@ -8,9 +8,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -33,12 +31,9 @@ public class Question {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Category category;
 
-    
     @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
-    // private Map<Float, String> choices = new HashMap<Float, String>();
     private List<Choice> choices = new ArrayList<>();
-    // private Choice choice = new Choice();
 
     // getMark = choices[i].grade*choices[i].chosen
 }

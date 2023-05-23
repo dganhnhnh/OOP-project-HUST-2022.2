@@ -41,9 +41,8 @@ public class Quiz {
         System.out.println("After : " + timeClose.toString());
     }
 
-    private String quizAttemp;
+    private List<Long> quizAttemptID = new ArrayList<>();
     private String quizState;
     private float quizMaxGrade;
-    //if (quizMaxGrade<<quizPoint) {quizMaxGrade=quizPoint;}
 
 }
