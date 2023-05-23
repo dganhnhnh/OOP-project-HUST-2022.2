@@ -1,9 +1,9 @@
 package com.projectoop.web;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

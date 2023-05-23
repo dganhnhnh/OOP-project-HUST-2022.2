@@ -1,12 +1,12 @@
 package com.projectoop;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Choice;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
 import com.projectoop.model.Quiz;
-import com.projectoop.model.QuizRepo;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
+import com.projectoop.services.QuizRepo;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
