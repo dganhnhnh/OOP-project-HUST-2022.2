@@ -162,6 +162,7 @@ const AddNewQuestion = () => {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
+      console.log(JSON.stringify(newQuestion))
       alert("Question saved!");
       navigate(`/Question`);
       

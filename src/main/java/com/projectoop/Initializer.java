@@ -40,6 +40,7 @@ class Initializer implements CommandLineRunner {
          Stream.of("Question 1", "Question 2", "mot cong ba bang may")
                  .forEach(text -> questionRepo.save(new Question(text)));
 
+<<<<<<< HEAD
          Question question1 = questionRepo.findByText("Question 1");
          Category e = categoryRepo.findByName("OOP");
         // // tao Question
@@ -60,6 +61,61 @@ class Initializer implements CommandLineRunner {
          ques2.setDefaultMark(1);
          questionRepo.save(ques2);
          categoryRepo.save(e);
+=======
+        // LUU Y: huy comment de khoi tao data lan dau tien
+        // FROM HERE
+
+        // Stream.of("Default","Kien truc may tinh", "OOP","CSDL")
+        // .forEach(name ->
+        //     categoryRepo.save(new Category(name))
+        // );
+        
+        // Category parentCat = categoryRepo.findByName("OOP");
+        // Set<Long> subCat = parentCat.getSubCatID();
+        // Category newCat = new Category("ck-OOP");
+        // categoryRepo.save(newCat);
+        // subCat.add(newCat.getId());
+        // parentCat.setSubCatID(subCat);
+        // categoryRepo.save(parentCat);
+
+        // Stream.of("Question 1","Question 2","Question 3")
+        // .forEach(text ->
+        //     questionRepo.save(new Question(text))
+        // );
+        
+        // Question ques1 = questionRepo.findByText("Question 1");
+        // Category e = categoryRepo.findByName("OOP");
+        // ques1.setCategoryID(e.getId());
+        // Set<Long> a = e.getQuestionID();
+        // a.add(ques1.getId());
+        // e.setQuestionID(a);
+        // ques1.setDefaultMark(1);
+        //  Choice choice1 = new Choice("Choice 1", 1);
+        //  Choice choice2 = new Choice("Choice 2", 0);
+        //  List<Choice> choices = Arrays.asList(choice1, choice2);
+        //  ques1.setChoices(choices);
+        // //bug neu khai bao chung 1 day choices ntn
+        // questionRepo.save(ques1);
+        // categoryRepo.save(e);
+        
+        // Question ques2 = questionRepo.findByText("Question 2");
+        // ques2.setCategoryID(e.getId());
+        // a.add(ques2.getId());
+        // e.setQuestionID(a);
+        // ques2.setDefaultMark(1);
+        // questionRepo.save(ques2);
+        // categoryRepo.save(e);
+
+        // Question ques3 = questionRepo.findByText("Question 3");
+        // Category x = categoryRepo.findByName("ck-OOP");
+        // ques3.setCategoryID(x.getId());
+        // Set<Long> xx= new HashSet<>();
+        // xx.add(ques3.getId());
+        // x.setQuestionID(xx);
+        // ques3.setDefaultMark(1);
+        // questionRepo.save(ques3);
+        // categoryRepo.save(x);
+>>>>>>> 4fd759bb2b1cbce82db680a02b1f8c16d1435e16
 
          Question ques3 = questionRepo.findByText("mot cong ba bang may");
          ques3.setCategory(e);

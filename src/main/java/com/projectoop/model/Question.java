@@ -32,8 +32,9 @@ public class Question {
     private String imageURL;
     private float defaultMark;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Category category;
+    // @ManyToOne(cascade=CascadeType.PERSIST)
+    // private Category category;
+    private Long categoryID;
 
     
     @ElementCollection(fetch = FetchType.EAGER)
