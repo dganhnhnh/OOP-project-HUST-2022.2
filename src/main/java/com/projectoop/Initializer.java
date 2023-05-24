@@ -4,8 +4,10 @@ import com.projectoop.model.Category;
 import com.projectoop.model.Choice;
 import com.projectoop.model.Question;
 import com.projectoop.model.Quiz;
+import com.projectoop.model.QuizAttempt;
 import com.projectoop.services.CategoryRepo;
 import com.projectoop.services.QuestionRepo;
+import com.projectoop.services.QuizAttemptRepo;
 import com.projectoop.services.QuizRepo;
 
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -24,11 +27,13 @@ class Initializer implements CommandLineRunner {
     private final CategoryRepo categoryRepo;
     private final QuestionRepo questionRepo;
     private final QuizRepo quizRepo;
+    private final QuizAttemptRepo quizAttemptRepo;
 
-    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo) {
+    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo, QuizAttemptRepo quizAttemptRepo) {
         this.categoryRepo = categoryRepo;
         this.questionRepo = questionRepo;
         this.quizRepo = quizRepo;
+        this.quizAttemptRepo = quizAttemptRepo;
     }
 
     @Override
@@ -77,16 +82,23 @@ class Initializer implements CommandLineRunner {
         // ques3.setChoices(choices);
         // questionRepo.save(ques3);
         // categoryRepo.save(e);
-        
+
+        // Quiz newQuiz = new Quiz("Quiz 1");
+        // newQuiz.setTimeOpen(LocalDateTime.now());
+        // newQuiz.setTimeLimitDay(2);
+        // newQuiz.setDefaultTimeClose();
+        // quizRepo.save(newQuiz);
+
         // TO HERE
-        Quiz newQuiz = new Quiz("Quiz 1");
-        newQuiz.setTimeOpen(LocalDateTime.now());
-        newQuiz.setTimeLimitDay(2);
-        newQuiz.setDefaultTimeClose();
-        quizRepo.save(newQuiz);
+        
+        // Optional<Quiz> newQuizOptional  = quizRepo.findById(Long.valueOf(1));
+        // Quiz newQuiz =  newQuizOptional.orElseThrow();
+        QuizAttempt newQuizAttempt = new QuizAttempt(new Quiz("Quiz x"));
+        quizAttemptRepo.save(newQuizAttempt);
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
         quizRepo.findAll().forEach(System.out::println);
+        quizAttemptRepo.findAll().forEach(System.out::println);
     }
 }

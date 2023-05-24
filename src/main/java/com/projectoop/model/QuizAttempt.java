@@ -17,10 +17,15 @@ import lombok.NonNull;
 @Entity
 @Table(name = "quiz_attempt", schema = "myschema", catalog = "mysql")
 public class QuizAttempt {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @NonNull
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Quiz quiz;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    // @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
     private List<QuestionInQuiz> ques = new ArrayList<>();
 
