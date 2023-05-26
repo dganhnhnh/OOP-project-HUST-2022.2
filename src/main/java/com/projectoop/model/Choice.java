@@ -20,4 +20,5 @@ public class Choice {
     private String c_imageURL;
 
     private int chosen;
+    //
 }

@@ -26,7 +26,6 @@ public class Quiz {
 
     private String description;
     private List<Long> questionsID = new ArrayList<>();
-    // use for add, edit, delete and shuffle
 
     private int timeLimitDay;
     private LocalDateTime timeOpen;
@@ -43,6 +42,8 @@ public class Quiz {
 
     private List<Long> quizAttemptID = new ArrayList<>();
     private String quizState;
+    //chưa xử lý 
     private float quizMaxGrade;
+    //quy ước mark, grade là số câu hay số điểm trên thang 10
 
 }

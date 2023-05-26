@@ -33,6 +33,7 @@ public class QuestionInQuiz {
             ));
         }
     }
+    //clone choice
     //constructor includes fetchChoices 
 
     public float getMark (){
@@ -42,4 +43,8 @@ public class QuestionInQuiz {
         }
         return result;
     };
+    //tính toán điểm tung cau
+    //so cau đúng,với mark=1; thì point=%X(0,1)
+    //questionsinquiz là định dạng question trong 1 quiz làm bài, không phải trong 1 quiz cụ thể
 }
+
