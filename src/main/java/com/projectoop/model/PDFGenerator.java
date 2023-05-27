@@ -51,7 +51,8 @@ public class PDFGenerator {
             int choiceNumber = 0;
 
             document.add(paragraphQ);
-            if (question.getImageURL() != null) {
+            if (question.getImageURL() != null
+                    && !question.getImageURL().substring(question.getImageURL().length() - 3).equals("mp4")) {
                 Image image = Image.getInstance(new URL(question.getImageURL()));
                 float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
                         - document.rightMargin()) / image.getWidth()) * 50;
@@ -61,7 +62,8 @@ public class PDFGenerator {
             for (Choice choice : q_choices) {
                 Paragraph paragraphC = new Paragraph(choice.getChoiceText(), fontBody);
                 document.add(paragraphC);
-                if (choice.getC_imageURL() != null) {
+                if (choice.getC_imageURL() != null
+                        && !choice.getC_imageURL().substring(choice.getC_imageURL().length() - 3).equals("mp4")) {
                     Image c_image = Image.getInstance(new URL(choice.getC_imageURL()));
                     float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
                             - document.rightMargin()) / c_image.getWidth()) * 25;

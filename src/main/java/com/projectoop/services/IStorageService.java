@@ -7,10 +7,14 @@ public interface IStorageService {
 
     public String storeTextFile(MultipartFile file);
 
+    public String storeVideoFile(MultipartFile file);
+
+    // public void deleteUploadedFile(MultipartFile file);
+
     public byte[] readFileContent(String fileName);
 
     public String readQuestionFromFile(String fileContent, String fileName);
 
-    public String readMultimediaFile(String fileName); 
+    public String readMultimediaFile(String fileName);
 
 }

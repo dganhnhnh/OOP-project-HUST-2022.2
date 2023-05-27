@@ -71,9 +71,9 @@
 			<version>5.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>net.bramp.ffmpeg</groupId>
-			<artifactId>ffmpeg</artifactId>
-			<version>0.7.0</version>
+			<groupId>org.mp4parser</groupId>
+			<artifactId>isoparser</artifactId>
+			<version>1.9.27</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.itextpdf/itext7-core

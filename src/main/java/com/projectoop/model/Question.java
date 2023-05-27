@@ -8,9 +8,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 

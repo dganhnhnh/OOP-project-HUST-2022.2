@@ -61,6 +61,12 @@ public class FileStorageService implements IStorageService {
                 .contains(fileExtension.trim().toLowerCase());
     }
 
+    private boolean isVideo(MultipartFile file) {
+        String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+        return Arrays.asList(new String[] { "mp4" })
+                .contains(fileExtension.trim().toLowerCase());
+    }
+
     private String renameFile(MultipartFile file) {
 
         String fileExtention = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -123,6 +129,22 @@ public class FileStorageService implements IStorageService {
     }
 
     @Override
+    public String storeVideoFile(MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                throw new RuntimeException("Cannot upload file");
+            }
+            if (!isVideo(file)) {
+                throw new RuntimeException("You can upload only video file");
+            }
+            String videoName = renameFile(file);
+            return videoName;
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
     public byte[] readFileContent(String fileName) {
         try {
             Path file = storageFolder.resolve(fileName);
@@ -133,7 +155,7 @@ public class FileStorageService implements IStorageService {
             } else {
                 throw new RuntimeException();
             }
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new RuntimeException();
         }
     }
