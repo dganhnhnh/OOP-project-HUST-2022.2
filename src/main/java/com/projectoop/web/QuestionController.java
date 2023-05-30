@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept"})
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 class QuestionController {
@@ -103,7 +103,7 @@ class QuestionController {
         Question result = questionRepo.save(ques);
         
         Long qID = ques.getId();
-        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategory().getId());
+        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
         Category cat = optionalCat.orElseThrow();
         Set<Long> qIDSet = cat.getQuestionID();
         qIDSet.add(qID);
@@ -133,7 +133,7 @@ class QuestionController {
         Question ques = question.orElseThrow();
 
 
-        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategory().getId());
+        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
         Category cat = optionalCat.orElseThrow();
         Set<Long> qIDSet = cat.getQuestionID();
         log.info("set of qID: {}", qIDSet);

@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import MyCourses from './component/NavBar/MyCourses.js';
 import Thicuoiki from './component/NavBar/Thicuoiki';
 import Question from './component/Question/Question';
-import Categories from './component/DropDownMenu/Categories';
+import Categories from './component/Category/Categories';
 import Import from './component/DropDownMenu/Import';
 import Export from './component/DropDownMenu/Export';
 import Navigation from './component/DropDownMenu/Navigation'

@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +36,7 @@ class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-        // TODO: category init only "Default"
+
         // Stream.of("Kien truc may tinh", "OOP", "Ky thuat lap trinh", "CSDL")
         //         .forEach(name -> categoryRepo.save(new Category(name)));
 
@@ -59,7 +57,7 @@ class Initializer implements CommandLineRunner {
         // categoryRepo.save(e);
 
         // Question ques2 = questionRepo.findByText("Question 2");
-        // ques2.setCategory(e);
+        // ques2.setCategoryID(e.getId());
         // a.add(ques2.getId());
         // e.setQuestionID(a);
         // ques2.setDefaultMark(1);
@@ -67,7 +65,7 @@ class Initializer implements CommandLineRunner {
         // categoryRepo.save(e);
 
         // Question ques3 = questionRepo.findByText("mot cong ba bang may");
-        // ques3.setCategory(e);
+        // ques3.setCategoryID(e.getId());
         // a.add(ques3.getId());
         // e.setQuestionID(a);
         // ques3.setDefaultMark(1);

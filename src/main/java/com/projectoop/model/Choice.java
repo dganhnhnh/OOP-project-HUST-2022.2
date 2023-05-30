@@ -20,5 +20,9 @@ public class Choice {
     private String c_imageURL;
 
     private int chosen;
-    //
+        //
+    @Override
+    public String toString() {
+        return "text: " + choiceText + ", grade: " + grade;
+    }
 }
