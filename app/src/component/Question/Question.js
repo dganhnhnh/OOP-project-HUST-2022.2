@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Question.css';
 
 const deleteQuestion = async (id, setQuestions, questions) => {
@@ -54,8 +55,6 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
   return options;
 }
 
-
-
 const Question = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -63,7 +62,8 @@ const Question = () => {
   const [showOldQuestions, setShowOldQuestions] = useState(false);
   const [categories, setCategories] = useState([]);
   const [questionsByCategory, setQuestionsByCategory] = useState({});
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     fetch('http://localhost:8080/api/categories')
       .then(response => response.json())
@@ -119,7 +119,11 @@ const Question = () => {
 
   function handleEditButtonClick(question) {
     const url = `/EditQuestion?id=${question.id}`;
-    window.location.href = url;}
+    navigate(url);}
+
+    const handleCreateNewQues = () => {
+      navigate("/AddNewQuestion");
+    };
 
   return (
     <div className='questionpage'>
@@ -135,7 +139,11 @@ const Question = () => {
         <Checkbox label="Also show questions from subcategories" checked={showSubcategories} onChange={handleShowSubcategoriesChange} />
         <Checkbox label="Also show old question" checked={showOldQuestions} onChange={handleShowOldQuestionsChange} />
       </div>
-      <button className='button-in-question'>CREATE A NEW QUESTION</button>
+      <button 
+        className='button-in-question'
+        onClick={handleCreateNewQues}>
+          CREATE A NEW QUESTION
+      </button>
 
       <div className='display-question'>
         {questions.length > 0 ? (
