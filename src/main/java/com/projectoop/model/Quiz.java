@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.time.LocalDateTime;  
-import java.time.format.DateTimeFormatter;  
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,7 @@ public class Quiz {
     private List<Long> quizAttemptID = new ArrayList<>();
     private String quizState;
     //chưa xử lý 
+    private boolean ongoingAttempt;
     private float quizMaxGrade;
     //quy ước mark, grade là số câu hay số điểm trên thang 10
 
