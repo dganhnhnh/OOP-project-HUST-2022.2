@@ -103,11 +103,7 @@ class QuestionController {
         Question result = questionRepo.save(ques);
         
         Long qID = ques.getId();
-<<<<<<< HEAD
         Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
-=======
-        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategory().getId());
->>>>>>> 73b88983f77f38ef7545a3ebee95609ba04d286b
         Category cat = optionalCat.orElseThrow();
         Set<Long> qIDSet = cat.getQuestionID();
         qIDSet.add(qID);
@@ -137,11 +133,7 @@ class QuestionController {
         Question ques = question.orElseThrow();
 
 
-<<<<<<< HEAD
         Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
-=======
-        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategory().getId());
->>>>>>> 73b88983f77f38ef7545a3ebee95609ba04d286b
         Category cat = optionalCat.orElseThrow();
         Set<Long> qIDSet = cat.getQuestionID();
         log.info("set of qID: {}", qIDSet);

@@ -18,12 +18,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-<<<<<<< HEAD
-@Table(name = "questions")
-
-=======
 @Table(name = "questions", schema = "myschema", catalog = "mysql")
->>>>>>> 73b88983f77f38ef7545a3ebee95609ba04d286b
 public class Question {
     @Id
     @GeneratedValue
@@ -35,15 +30,7 @@ public class Question {
     private String imageURL;
     private float defaultMark;
 
-<<<<<<< HEAD
-    // @ManyToOne(cascade=CascadeType.PERSIST)
-    // private Category category;
     private Long categoryID;
-=======
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Category category;
->>>>>>> 73b88983f77f38ef7545a3ebee95609ba04d286b
-
     
     @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
