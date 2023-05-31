@@ -1,0 +1,16 @@
+com\projectoop\web\QuestionController.class
+com\projectoop\model\QuestionRepo.class
+com\projectoop\model\CategoryRepo.class
+com\projectoop\model\Question.class
+com\projectoop\model\Category$CategoryBuilder.class
+com\projectoop\services\questionService.class
+com\projectoop\services\IStorageService.class
+com\projectoop\model\File.class
+com\projectoop\model\PDFGenerator.class
+com\projectoop\model\Category.class
+com\projectoop\Initializer.class
+com\projectoop\services\FileStorageService.class
+com\projectoop\model\Choice.class
+com\projectoop\ProjectOopApplication.class
+com\projectoop\web\FileController.class
+com\projectoop\web\CategoryController.class

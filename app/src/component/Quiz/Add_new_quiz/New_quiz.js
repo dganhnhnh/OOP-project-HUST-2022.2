@@ -31,7 +31,7 @@ export default function New_quiz() {
 			<div className='form_add_quizz'>
 				<p className='general'><RxTriangleDown className='icon_general' /> General</p>
 
-				<div className="form">
+				<form className="form">
 					<label className="form Name"> Name: <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)}></input>
 					</label>
 					<label className="form Description"> Description: <input type="text" value={inputValueDes} onChange={(e) => setInputValueDes(e.target.value)}></input>
@@ -41,12 +41,12 @@ export default function New_quiz() {
 						<input type="checkbox" value={first} onChange={() => handleChange("first")} />Display description on course page <BsFillQuestionCircleFill className='icon_c' />
 					</div>
 
+					<div className="button">
+						<button type="submit" onClick={handleSave}>CREATE</button>
+						<button type="submit" onClick={handleCancel}>CANCEL</button>
+					</div>
+				</form>
 
-				</div>
-				<div className="button">
-					<button type="submit" onClick={handleSave}>CREATE</button>
-					<button type="submit" onClick={handleCancel}>CANCEL</button>
-				</div>
 
 			</div>
 

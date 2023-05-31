@@ -19,12 +19,12 @@ export default function New_quiz() {
 		const formData = new FormData();
 		formData.append("Files", files);
 		console.log(formData.getAll())
-		// fetch(
-		//   "link", {
-		//     method: "POST",
-		//     body: formData
-		//   }  
-		// )
+		fetch(
+		  "http://localhost:8080/api/File/uploadTextFile", {
+		    method: "POST",
+		    body: formData
+		  }  
+		)
 	};
 
 	if (files) return (

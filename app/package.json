@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ashwinthomas/react-time-picker-dropdown": "^1.0.4",
+    "@babel/runtime": "^7.22.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.12.1",
