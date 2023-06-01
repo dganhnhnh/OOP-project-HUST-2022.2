@@ -3,8 +3,6 @@ import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import { RiNewspaperLine } from 'react-icons/ri';
 import { RxTriangleDown } from 'react-icons/rx';
 import './New_quiz.css';
-import "react-datepicker/dist/react-datepicker.css";  //// import required react-datepicker styling file
-import 'react-datepicker/dist/react-datepicker.css';
 export default function New_quiz() {
 	const [inputValue, setInputValue] = useState("");
 	const [inputValueDes, setInputValueDes] = useState("");
