@@ -3,6 +3,7 @@ import "./EditQuestion.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import ChoiceField from "./ChoiceField";
+import { Editor} from "@tinymce/tinymce-react";
 
 function renderCategoryOptions(categories, questionsByCategory, level = 0) {
   const options = [];
@@ -41,6 +42,7 @@ const EditQuestion = () => {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [defaultMark, setDefaultMark] = useState(0);
+  const [imageURL, setImageURL] = useState("");
   const [showAdditionalChoices, setShowAdditionalChoices] = useState(false);
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
@@ -48,18 +50,23 @@ const EditQuestion = () => {
 
   const [choice1, setChoice1] = useState("");
   const [choice1Grade, setChoice1Grade] = useState(0);
+  const [c1_imageURL, setC1_ImageURL] = useState("");
 
   const [choice2, setChoice2] = useState("");
   const [choice2Grade, setChoice2Grade] = useState(0);
+  const [c2_imageURL, setC2_ImageURL] = useState("");
 
   const [choice3, setChoice3] = useState("");
   const [choice3Grade, setChoice3Grade] = useState(0);
+  const [c3_imageURL, setC3_ImageURL] = useState("");
 
   const [choice4, setChoice4] = useState("");
   const [choice4Grade, setChoice4Grade] = useState(0);
+  const [c4_imageURL, setC4_ImageURL] = useState("");
 
   const [choice5, setChoice5] = useState("");
   const [choice5Grade, setChoice5Grade] = useState(0);
+  const [c5_imageURL, setC5_ImageURL] = useState("");
 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
@@ -76,22 +83,32 @@ const EditQuestion = () => {
         setSelectedCategory(question.categoryID);
         setName(question.name);
         setText(question.text);
+        setImageURL(question.imageURL);
         setDefaultMark(question.defaultMark);
 
         setChoice1(question.choices[0].choiceText);
-        setChoice1Grade(question.choices[0].grade); 
+        setChoice1Grade(question.choices[0].grade);
+        setC1_ImageURL(question.choices[0].c_imageURL);
+
 
         setChoice2(question.choices[1].choiceText);
-        setChoice2Grade(question.choices[1].grade); 
+        setChoice2Grade(question.choices[1].grade);
+        setC2_ImageURL(question.choices[1].c_imageURL); 
 
         setChoice3(question.choices[2].choiceText);
-        setChoice3Grade(question.choices[2].grade); 
+        setChoice3Grade(question.choices[2].grade);
+        setC3_ImageURL(question.choices[2].c_imageURL); 
+ 
     
         setChoice4(question.choices[3].choiceText);
-        setChoice4Grade(question.choices[3].grade); 
+        setChoice4Grade(question.choices[3].grade);
+        setC4_ImageURL(question.choices[3].c_imageURL); 
+
     
         setChoice5(question.choices[4].choiceText);
         setChoice5Grade(question.choices[4].grade); 
+        setC5_ImageURL(question.choices[4].c_imageURL); 
+
   
       })
       .catch((error) => {
@@ -137,18 +154,55 @@ const EditQuestion = () => {
   const handleSaveChangesAndContinueEditing = (event) => {
     event.preventDefault();
     const questionBody = {
-      name,
-      text,
-      defaultMark,
+      id: id,
+      name: name,
+      text: text,
+      imageURL: imageURL,
+      defaultMark: defaultMark,
       categoryID: selectedCategory,
-      choices: [
-        { choiceText: choice1, grade: choice1Grade },
-        { choiceText: choice2, grade: choice2Grade },
-        { choiceText: choice3, grade: choice3Grade },
-        { choiceText: choice4, grade: choice4Grade },
-        { choiceText: choice5, grade: choice5Grade },
-      ],
+      choices: [],
     };
+    
+    if (choice1) {
+      questionBody.choices.push({
+        choiceText: choice1,
+        grade: choice1Grade,
+        c_imageURL: c1_imageURL,
+      });
+    }
+
+    if (choice2) {
+      questionBody.choices.push({
+        choiceText: choice2,
+        grade: choice2Grade,
+        c_imageURL: c2_imageURL,
+      });
+    }
+
+    if (choice3) {
+      questionBody.choices.push({
+        choiceText: choice3,
+        grade: choice3Grade,
+        c_imageURL: c3_imageURL,
+      });
+    }
+
+    if (choice4) {
+      questionBody.choices.push({
+        choiceText: choice4,
+        grade: choice4Grade,
+        c_imageURL: c4_imageURL,
+      });
+    }
+
+    if (choice5) {
+      questionBody.choices.push({
+        choiceText: choice5,
+        grade: choice5Grade,
+        c_imageURL: c5_imageURL,
+      });
+    }
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -157,8 +211,10 @@ const EditQuestion = () => {
     fetch(`http://localhost:8080/api/question/${id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(id);
         console.log(data);
         alert("Question saved!")
+        
       })
       .catch((error) => console.log(error));
   };
@@ -166,18 +222,55 @@ const EditQuestion = () => {
   const handleSaveChanges = (event) => {
     event.preventDefault();
     const questionBody = {
-      name,
-      text,
-      defaultMark,
+      id: id,
+      name: name,
+      text: text,
+      imageURL: imageURL,
+      defaultMark: defaultMark,
       categoryID: selectedCategory,
-      choices: [
-          { choiceText: choice1, grade: choice1Grade },
-          { choiceText: choice2, grade: choice2Grade },
-          { choiceText: choice3, grade: choice3Grade },
-          { choiceText: choice4, grade: choice4Grade },
-          { choiceText: choice5, grade: choice5Grade },
-      ],
+      choices: [],
     };
+    
+    if (choice1) {
+      questionBody.choices.push({
+        choiceText: choice1,
+        grade: choice1Grade,
+        c_imageURL: c1_imageURL,
+      });
+    }
+
+    if (choice2) {
+      questionBody.choices.push({
+        choiceText: choice2,
+        grade: choice2Grade,
+        c_imageURL: c2_imageURL,
+      });
+    }
+
+    if (choice3) {
+      questionBody.choices.push({
+        choiceText: choice3,
+        grade: choice3Grade,
+        c_imageURL: c3_imageURL,
+      });
+    }
+
+    if (choice4) {
+      questionBody.choices.push({
+        choiceText: choice4,
+        grade: choice4Grade,
+        c_imageURL: c4_imageURL,
+      });
+    }
+
+    if (choice5) {
+      questionBody.choices.push({
+        choiceText: choice5,
+        grade: choice5Grade,
+        c_imageURL: c5_imageURL,
+      });
+    }
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -240,11 +333,11 @@ const EditQuestion = () => {
             <label>Question text</label>
           </div>
           <div className="col-60">
-            <textarea
+          <Editor
               className="text"
-              type="text"
-              value={text}
-              onChange={(event) => setText(event.target.value)}
+              apiKey="joa43a6hj4riv0j75ojawnh5kqsfobdcml2kbcr891d7cgxr"
+              value = {imageURL}
+              onEditorChange={setText}
             />
           </div>
         </div>

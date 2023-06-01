@@ -1,9 +1,11 @@
 import React  from "react";
 import './EditQuestion.css'
+import { Editor } from "@tinymce/tinymce-react";
 
 function InputField({ id, value, onChange}) {
   return (
-    <textarea
+    <Editor
+      apiKey="joa43a6hj4riv0j75ojawnh5kqsfobdcml2kbcr891d7cgxr"
       id={id}
       value={value}
       onChange={onChange}
@@ -24,7 +26,7 @@ function SelectBox({ id, value, onChange, options }) {
   );
 }
 
-function ChoiceField({label, text, setText, grade, setGrade}) {
+function ChoiceField({label, text, setText, grade, setGrade, c_imageURL, setC_ImageURL}) {
 
   return (
     <div className="choice-field">
@@ -34,8 +36,8 @@ function ChoiceField({label, text, setText, grade, setGrade}) {
           </div>
           <div className="col-80">
             <InputField
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+            value={text}
+            onEditorChange={setText}
             />
           </div>
       </div>

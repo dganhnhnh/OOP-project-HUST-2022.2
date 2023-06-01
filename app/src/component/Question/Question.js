@@ -157,7 +157,7 @@ const Question = () => {
             <tbody>
               {questions.map(question => (
                 <tr key={question.id}>
-                  <td>{question.text}</td>
+                  <td>{question.name}</td>
                   <td class="action-btns">
                     <button className="edit-btn" onClick={() => handleEditButtonClick(question)}>Edit</button>
                     <button className="delete-btn" onClick={() => deleteQuestion(question.id, setQuestions, questions)}>Delete</button>
