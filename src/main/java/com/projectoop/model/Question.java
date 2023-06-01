@@ -35,7 +35,6 @@ public class Question {
     // @ManyToOne(cascade=CascadeType.PERSIST)
     // private Category category;
     private Long categoryID;
-
     
     @ElementCollection(fetch = FetchType.EAGER)
     @Embedded

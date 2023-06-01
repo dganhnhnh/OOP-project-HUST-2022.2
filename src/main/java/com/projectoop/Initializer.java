@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -33,6 +31,7 @@ class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
+
         // TODO: category init only "Default"
         // FROM HERE
         /* 
@@ -96,6 +95,7 @@ class Initializer implements CommandLineRunner {
         newQuiz.setDefaultTimeClose();
         quizRepo.save(newQuiz);
         */
+
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
         quizRepo.findAll().forEach(System.out::println);

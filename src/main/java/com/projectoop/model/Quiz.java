@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.time.LocalDateTime;  
-import java.time.format.DateTimeFormatter;  
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class Quiz {
     }
 
     private String quizAttemp;
-    private String quizState;
+    private boolean ongoingAttempt;
     private float quizMaxGrade;
     //if (quizMaxGrade<<quizPoint) {quizMaxGrade=quizPoint;}
 
