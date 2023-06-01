@@ -40,11 +40,13 @@ public class QuestionInQuiz {
         float result = 0;
         for(Choice choice : this.choices){
             result += choice.getGrade()*choice.getChosen();
+            //Tại sao phải cộng trong khi chỉ choice được chosen mới được ghi nhận???
         }
         return result;
     };
     //tính toán điểm tung cau
-    //so cau đúng,với mark=1; thì point=%X(0,1)
+    //so cau đúng,với mark=1; thì point=%X[0,1] (đúng1, sai0)
     //questionsinquiz là định dạng question trong 1 quiz làm bài, không phải trong 1 quiz cụ thể
+    //questionInquiz la lưu lựa chọn và điểm từng câu ccho attempt
 }
 
