@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.projectoop.services.IStorageService;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept" })
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept","Access-Control-Allow-Origin" })
 @Controller
 @RequestMapping(path = "/api/File")
 public class FileController {
@@ -31,7 +31,6 @@ public class FileController {
         try {
             String generatedFileName = storageService.storeImageFile(file);
             return ResponseEntity.status(HttpStatus.OK).body(generatedFileName);
-            // 6e3660550e6a482d94dc388a82dcc857.png
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
