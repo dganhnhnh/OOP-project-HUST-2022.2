@@ -14,22 +14,25 @@ const MyEditor = ({text, setText}) => {
       var json;
 
       if (xhr.status !== 200) {
-        failure('HTTP Error: ' + xhr.status);
+        console.log('HTTP Error: ' + xhr.status);
         return;
       }
 
-      json = JSON.parse(xhr.responseText);
+      json = xhr.responseText;
+      // json = JSON.parse(xhr.responseText);
+      // console.log(xhr.responseText)
 
-      if (!json || typeof json.location !== 'string') {
-        failure('Invalid JSON: ' + xhr.responseText);
-        return;
-      }
+      // if (!json || typeof json.location !== 'string') {
+      //   console.log('Invalid JSON: ' + xhr.responseText);
+      //   return;
+      // }
+      // có cần parse JSON không hay là để yên nó trả về tên file ảnh là đc rồi? 
 
       success(json.location);
     };
 
     formData = new FormData();
-    formData.append('file', blobInfo.blob(), blobInfo.filename());
+    formData.append('image', blobInfo.blob(), blobInfo.filename());
 
     xhr.send(formData);
   };
