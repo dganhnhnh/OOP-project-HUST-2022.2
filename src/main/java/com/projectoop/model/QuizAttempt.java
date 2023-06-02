@@ -21,13 +21,15 @@ public class QuizAttempt {
     @GeneratedValue
     private Long id;
 
-    @NonNull
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Quiz quiz;
 
-    // @ElementCollection(fetch = FetchType.EAGER)
+    @NonNull
+    private Long quizID;
+
+    @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
-    public List<QuestionInQuiz> ques = new ArrayList<>();
+    public List<QuestionInQuiz> quesInQuizList = new ArrayList<>();
 
     //đã lọc được QuestioninQuiz theo id từ controller
     //quizAttempt là Qinquiz nhưng được lọc theo list quiz id;

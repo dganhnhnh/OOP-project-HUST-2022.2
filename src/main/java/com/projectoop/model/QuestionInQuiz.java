@@ -19,27 +19,23 @@ public class QuestionInQuiz {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Question question;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Embedded
-    private List<Choice> choices = new ArrayList<>();
+    // @ElementCollection(fetch = FetchType.EAGER)
+    // @Embedded
+    // private List<Choice> choices = new ArrayList<>();
+
+    private List<Integer> choiceChosen = new ArrayList<>();
 
     public void fetchChoices(){
         for(Choice choice : question.getChoices()){
-            this.choices.add(new Choice(
-                choice.getChoiceText(),
-                choice.getGrade(),
-                choice.getC_imageURL(),
-                choice.getChosen()
-            ));
+            choiceChosen.add(0);
         }
     }
-    //clone choice
-    //constructor includes fetchChoices 
 
-    public float getMark (){
-        float result = 0;
-        for(Choice choice : this.choices){
-            result += choice.getGrade()*choice.getChosen();
+    public float calcMark (){
+        float result = 0; int i=0;
+        for(Choice choice : question.getChoices()){
+            result += choice.getGrade()*choiceChosen.get(i);
+            i++;
         }
         return result;
     };

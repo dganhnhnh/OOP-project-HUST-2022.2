@@ -6,6 +6,7 @@ import com.projectoop.model.Quiz;
 import com.projectoop.model.QuizAttempt;
 import com.projectoop.services.QuestionRepo;
 import com.projectoop.services.QuizAttemptRepo;
+import com.projectoop.services.QuizRepo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,16 +29,19 @@ class QuizAttemptController {
    
     private QuestionRepo questionRepo;
     private QuizAttemptRepo quizAttemptRepo;
+    private QuizRepo quizRepo;
 
-    public QuizAttemptController(QuizAttemptRepo quizAttemptRepo,QuestionRepo questionRepo) {
+    public QuizAttemptController(QuizAttemptRepo quizAttemptRepo,QuestionRepo questionRepo,QuizRepo quizRepo) {
         this.quizAttemptRepo = quizAttemptRepo;
         this.questionRepo = questionRepo;
+        this.quizRepo = quizRepo;
     }
 
     @GetMapping("/quiz_attempts")
-    Collection<QuizAttempt> quiz_attempts() {
+    String quiz_attempts() {
         log.info(quizAttemptRepo.toString());
-        return quizAttemptRepo.findAll();
+        // return quizAttemptRepo.findAll();
+        return quizAttemptRepo.findAll().toString();
     }
 
     @GetMapping("/quiz_attempt/{id}")
@@ -51,12 +55,17 @@ class QuizAttemptController {
     ResponseEntity<QuizAttempt> createQuiz(@Valid @RequestBody QuizAttempt quizAttempt) throws URISyntaxException {
         log.info("Request to create Quiz: {}", quizAttempt);
         
-        Quiz quiz = quizAttempt.getQuiz();
+        // Quiz quiz = quizAttempt.getQuiz();
+        Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
+        Quiz quiz = quizOptional.orElseThrow();
+        log.info(quiz.toString());
+        quizAttempt.setQuiz(quiz);
+
         for(Long questionsID : quiz.getQuestionsID()){
             Optional<Question> questionOptional = questionRepo.findById(questionsID); 
             Question questionbyid = questionOptional.orElseThrow();
             //da loc ra duoc question theo id
-            quizAttempt.ques.add(new QuestionInQuiz(questionbyid)); 
+            quizAttempt.quesInQuizList.add(new QuestionInQuiz(questionbyid)); 
         }
         QuizAttempt  result = quizAttemptRepo.save(quizAttempt);
         return ResponseEntity.created(new URI("/api/quiz_attempt/" + result.getId()))

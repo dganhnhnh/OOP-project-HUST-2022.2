@@ -51,7 +51,6 @@ class Initializer implements CommandLineRunner {
         // a.add(qID);
         // e.setQuestionID(a);
         // question1.setDefaultMark(1);
-        // question1.setImageURL("http://localhost:8080/api/File/Image/6e3660550e6a482d94dc388a82dcc857.png");
         // question1.setChoices(null);
         // questionRepo.save(question1);
         // categoryRepo.save(e);
@@ -73,7 +72,6 @@ class Initializer implements CommandLineRunner {
         // Choice choice1 = new Choice("hai", 0.0f);
         // choices.add(choice1);
         // Choice choice2 = new Choice("bon", 0.5f);
-        // choice2.setC_imageURL("http://localhost:8080/api/File/Image/25ac2a5d4ae345e39c375eec60574ada.jpg");
         // choices.add(choice2);
         // Choice choice3 = new Choice("4", 0.5f);
         // choices.add(choice3);
@@ -86,13 +84,14 @@ class Initializer implements CommandLineRunner {
         // newQuiz.setTimeLimitDay(2);
         // newQuiz.setDefaultTimeClose();
         // quizRepo.save(newQuiz);
-
-        // TO HERE
         
-        // Optional<Quiz> newQuizOptional  = quizRepo.findById(Long.valueOf(1));
-        // Quiz newQuiz =  newQuizOptional.orElseThrow();
-        QuizAttempt newQuizAttempt = new QuizAttempt(new Quiz("Quiz x"));
-        quizAttemptRepo.save(newQuizAttempt);
+        // // Optional<Quiz> newQuizOptional  = quizRepo.findById(Long.valueOf(1));
+        // // Quiz newQuiz =  newQuizOptional.orElseThrow();
+        // // QuizAttempt newQuizAttempt = new QuizAttempt(new Quiz("Quiz x"));
+        // // quizAttemptRepo.save(newQuizAttempt);
+
+        // // TO HERE
+
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
