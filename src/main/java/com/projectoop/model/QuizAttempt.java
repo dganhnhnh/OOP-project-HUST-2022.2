@@ -1,6 +1,7 @@
 package com.projectoop.model;
 
 import java.time.LocalDateTime;  
+import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ public class QuizAttempt {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Quiz quiz;
+    //có cần quiz không khi quiz chỉ liên quan tới quesID đã được lọc ra từ controller và thành ques???
+
 
     @NonNull
     private Long quizID;
@@ -32,13 +35,26 @@ public class QuizAttempt {
     public List<QuestionInQuiz> quesInQuizList = new ArrayList<>();
 
     //đã lọc được QuestioninQuiz theo id từ controller
-    //quizAttempt là Qinquiz nhưng được lọc theo list quiz id;
-    //quizAttempt của các bài quiz khác nhau đang lưu chung với nhau
-    //quizAttempt Id tự tạo giá trị
-    private float mark;
+    //ques là QuestionInquiz nhưng được lọc theo list quiz id;
+    //Trong Attempt cho hiển thị ra thông tin câu hỏi từ QuestionInQuiz luôn  
+    //quizAttempt của các bài quiz khác nhau đang lưu chung với nhau???
+    //quizAttempt Id tự tạo giá trị???
+    private float totalMark;
     private boolean finished;
     private LocalDateTime timeTaken;
     private LocalDateTime timeStart;
     private LocalDateTime timeComplete;
+    // Time ở đây chỉ thời gian làm bài(gồm ngày giờ nhưng timetaken chỉ hiện phút giây )
+    public void calcTimeTaken (){
+       
+        Duration timeTaken = Duration.between(timeStart, timeComplete);
+        // long seconds = timeTaken.getSeconds();
+    }
+    
+    public void calcTotalMark() {
+        for(QuestionInQuiz questionInQuiz : this.quesInQuizList){
+            totalMark += questionInQuiz.calcMark();
+        }
+    }
     
 }

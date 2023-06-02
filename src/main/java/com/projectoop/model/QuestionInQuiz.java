@@ -40,7 +40,8 @@ public class QuestionInQuiz {
         return result;
     };
     //tính toán điểm tung cau
-    //so cau đúng,với mark=1; thì point=%X(0,1)
+    //so cau đúng,với mark=1; thì point=%X[0,1] (đúng1, sai0)
     //questionsinquiz là định dạng question trong 1 quiz làm bài, không phải trong 1 quiz cụ thể
+    //questionInquiz la lưu lựa chọn và điểm từng câu ccho attempt
 }
 
