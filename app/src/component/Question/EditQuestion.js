@@ -3,7 +3,7 @@ import "./EditQuestion.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import ChoiceField from "./ChoiceField";
-import { Editor} from "@tinymce/tinymce-react";
+import MyEditor from "./MyEditor";
 
 function renderCategoryOptions(categories, questionsByCategory, level = 0) {
   const options = [];
@@ -333,12 +333,9 @@ const EditQuestion = () => {
             <label>Question text</label>
           </div>
           <div className="col-60">
-          <Editor
-              className="text"
-              apiKey="joa43a6hj4riv0j75ojawnh5kqsfobdcml2kbcr891d7cgxr"
-              value = {imageURL}
-              onEditorChange={setText}
-            />
+            <MyEditor
+              text = {`<p>${text}</p><p><img src =${imageURL}></p>`}
+              />
           </div>
         </div>
 
@@ -359,7 +356,9 @@ const EditQuestion = () => {
         <div className="choice">
           <ChoiceField 
           label="Choice 1" 
-          text={choice1} 
+          text={choice1}
+          c_imageURL={c1_imageURL}
+          setC_ImageURL={setC1_ImageURL}
           setText={setChoice1} 
           grade={choice1Grade} 
           setGrade={setChoice1Grade} />
@@ -368,7 +367,9 @@ const EditQuestion = () => {
         <div className="choice">
           <ChoiceField 
           label="Choice 2" 
-          text={choice2} 
+          text={choice2}
+          c_imageURL={c2_imageURL}
+          setC_ImageURL={setC2_ImageURL} 
           setText={setChoice2} 
           grade={choice2Grade} 
           setGrade={setChoice2Grade} />
@@ -380,6 +381,8 @@ const EditQuestion = () => {
               <ChoiceField 
               label="Choice 3" 
               text={choice3} 
+              c_imageURL={c3_imageURL}
+              setC_ImageURL={setC3_ImageURL}
               setText={setChoice3} 
               grade={choice3Grade} 
               setGrade={setChoice3Grade} />
@@ -388,7 +391,9 @@ const EditQuestion = () => {
             <div className="choice">
             <ChoiceField 
               label="Choice 4" 
-              text={choice4} 
+              text={choice4}
+              c_imageURL={c4_imageURL}
+              setC_ImageURL={setC4_ImageURL} 
               setText={setChoice4} 
               grade={choice4Grade} 
               setGrade={setChoice4Grade} />
@@ -398,7 +403,9 @@ const EditQuestion = () => {
             <ChoiceField 
               label="Choice 5" 
               text={choice5} 
-              setText={setChoice5} 
+              setText={setChoice5}
+              c_imageURL={c5_imageURL}
+              setC_ImageURL={setC5_ImageURL}
               grade={choice5Grade} 
               setGrade={setChoice5Grade} />
             </div>
