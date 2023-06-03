@@ -14,21 +14,24 @@ import Navigation from './component/DropDownMenu/Navigation'
 import Home from './component/NavBar/Home'
 import EditQuestion from './component/Question/EditQuestion';
 import AddNewQuestion from './component/Question/AddNewQuestion';
-import Quiz_61 from './component/Quiz/Quizz_interface/Quiz_61'
-import New_quiz from './component/Quiz/Add_new_quiz/New_quiz';
+import QuizInterface from './component/Quiz/QuizInterface/QuizInterface';
+import NewQuiz from './component/Quiz/AddNewQuiz/NewQuiz';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
+
         <Route path='/' element={<App />}>
           <Route path='/Home' element={<Home />} />
-
           <Route path='/MyCourses' element={<MyCourses />}>
-            <Route path='general/thicuoiki2moncongnghe' element={<Quiz_61 />} />
           </Route>
-          
-          <Route path='/Thicuoiki' element={<Thicuoiki />} />
+
+          <Route exact path='/Thicuoiki' element={<Thicuoiki />}>
+            {/* <Route path='/quiz/:name' element={QuizInterface} /> */}
+            {/* Mình đang nghiên cứu cái này :>>> */}
+          </Route>
+
           <Route path='/EditQuestion' element={<EditQuestion />} />
           <Route path='/AddNewQuestion' element={<AddNewQuestion />} />
           <Route path='/' element={<Navigation />}>
@@ -38,8 +41,9 @@ root.render(
             <Route path='/Export' element={<Export />} />
           </Route>
 
-          <Route path='/addnewquiz' element={<New_quiz />} />
+          <Route path='/Addnewquiz' element={<NewQuiz />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   </React.StrictMode >

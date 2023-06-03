@@ -24,7 +24,8 @@ const Navbar = () => {
 						</li>
 					</ul>
 				</div>
-				<NavLink to="/Addnewquiz" className={location.pathname === "/New_quiz" ? "active-link" : ""}>
+				
+				<NavLink to="/Addnewquiz" className={location.pathname === "/NewQuiz" ? "active-link" : ""}>
 					<button className='button_navbar'>TURN EDITING ON</button>
 				</NavLink>
 			</navbar>
