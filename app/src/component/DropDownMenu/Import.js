@@ -28,7 +28,7 @@ export default function NewQuiz() {
 		formData.append("text", selectedFile);
 		try {
 			// Replace this URL with your server-side endpoint for handling file uploads
-			const response = await fetch(" ", {
+			const response = await fetch("http://localhost:8080/api/File/uploadTextFile", {
 				method: "POST",
 				body: formData
 			})
@@ -101,7 +101,7 @@ export default function NewQuiz() {
 							hidden
 						/>
 					</div>
-					<button className="btnImport"  onClick={handleUpload}>Import</button>
+					<button className="btnImport" onClick={handleUpload}>Import</button>
 				</form>
 			</div>
 		</div>
