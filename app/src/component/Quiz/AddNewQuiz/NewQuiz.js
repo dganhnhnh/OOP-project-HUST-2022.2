@@ -7,8 +7,15 @@ import './NewQuiz.css';
 
 
 const NewQuiz = () => {
+
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
+	// const [questionID, setQuestionID] = useState("");
+	// const [timeOpen, setTimeOpen] = useState("");
+	// const [timeClose, setTimeClose] = useState("");
+	// const [quizAttemp, setQuizAttemp] = useState(null);
+	// const [quizState, setQuizState ] = useState(null);
+	// const []
 	const [check, setCheck] = useState("")
 	const [numberTime, setNumberTime] = useState("");
 	const [time, setTime] = useState('');
@@ -24,26 +31,25 @@ const NewQuiz = () => {
 
 	// form
 	const handleCancel = () => {
-		setName = ("");
-		setDescription = ("");
-		setNumberTime = ("");
-		setTime = ("")
+		// setName = ("");
+		// setDescription = ("");
+		// setNumberTime = ("");
+		// setTime = ("")
 	}
 
 	const handleSave = async (e) => {
 		e.preventDefault();
-		const formData = new FormData();
-		formData.append("name", name, description, numberTime, time);
-		console.log(formData);
+		const NewQuiz = new FormData();
+		NewQuiz.append("id", name, description, numberTime, time)
 		try {
 			// Replace this URL with your server-side endpoint for handling file uploads
 			const response = await fetch("http://localhost:8080/api/quiz", {
-				method: "POST",
-				body: formData
+				method:"POST",
+				body: NewQuiz
 			})
-			const quiz = response.json();
+			const data = response.json();
 			if (response.ok) {
-				console.log(quiz)
+				console.log(data)
 			} else {
 				alert("ao the nhe");
 			}
@@ -52,10 +58,10 @@ const NewQuiz = () => {
 			alert("Error while add new quiz");
 		}
 		// reset form
-		setName = ("");
-		setDescription = ("");
-		setNumberTime = ("");
-		setTime = ("")
+		// setName = ("");
+		// setDescription = ("");
+		// setNumberTime = ("");
+		// setTime = ("")
 	}
 
 	return (
