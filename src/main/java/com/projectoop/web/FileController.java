@@ -61,13 +61,13 @@ public class FileController {
             String generatedFileName = storageService.storeVideoFile(file);
             File newfile = new File(System.getProperty("java.io.tmpdir") + "/" +
                     file.getOriginalFilename());
-            System.out.println(newfile.getAbsolutePath());
             file.transferTo(newfile);
             IsoFile isoFile = new IsoFile(newfile);
             double actualVideoDurationInSeconds = (double) isoFile.getMovieBox().getMovieHeaderBox().getDuration() /
                     isoFile.getMovieBox().getMovieHeaderBox().getTimescale();
             isoFile.close();
             if (actualVideoDurationInSeconds > 10 || actualVideoDurationInSeconds < 1) {
+                storageService.deleteUploadedFile(generatedFileName);
                 return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                         new ResponseObject("ok", "You can upload only 1-10s video", ""));
             } else {

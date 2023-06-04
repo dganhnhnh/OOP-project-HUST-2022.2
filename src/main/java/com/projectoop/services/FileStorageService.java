@@ -285,4 +285,15 @@ public class FileStorageService implements IStorageService {
             return "Success " + questions.size();
         }
     }
+
+    @Override
+    public void deleteUploadedFile(String fileName) {
+        try {
+            Path file = storageFolder.resolve(fileName);
+            Files.deleteIfExists(file);
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
 }

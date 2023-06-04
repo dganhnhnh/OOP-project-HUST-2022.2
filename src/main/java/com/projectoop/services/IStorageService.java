@@ -9,7 +9,7 @@ public interface IStorageService {
 
     public String storeVideoFile(MultipartFile file);
 
-    // public void deleteUploadedFile(MultipartFile file);
+    public void deleteUploadedFile(String fileName);
 
     public byte[] readFileContent(String fileName);
 
