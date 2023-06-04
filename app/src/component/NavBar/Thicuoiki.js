@@ -1,9 +1,8 @@
-import Feed from '../Quiz/AddNewQuiz/Feed';
 import React from 'react'
 
 const Thicuoiki = () => {
   return (
-    <Feed/>
+    <div>Thicuoiki</div>
   )
 }
 

@@ -25,12 +25,10 @@ root.render(
         <Route path='/' element={<App />}>
           <Route path='/Home' element={<Home />} />
           <Route path='/MyCourses' element={<MyCourses />}>
+            {/* <Route path='/Mycourses/:name' element={<QuizInterface />} /> */}
           </Route>
 
-          <Route exact path='/Thicuoiki' element={<Thicuoiki />}>
-            {/* <Route path='/quiz/:name' element={QuizInterface} /> */}
-            {/* Mình đang nghiên cứu cái này :>>> */}
-          </Route>
+          <Route exact path='/Thicuoiki' element={<Thicuoiki />}/>
 
           <Route path='/EditQuestion' element={<EditQuestion />} />
           <Route path='/AddNewQuestion' element={<AddNewQuestion />} />
