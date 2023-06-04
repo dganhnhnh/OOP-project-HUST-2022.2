@@ -15,29 +15,33 @@ import lombok.RequiredArgsConstructor;
 @Embeddable
 @Data
 public class QuestionInQuiz {
+    private int idInQuiz;
+
     @NonNull
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Question question;
+    // @ManyToOne(cascade = CascadeType.PERSIST)
+    // private Question question;
+    private Long questionID;
 
     // @ElementCollection(fetch = FetchType.EAGER)
     // @Embedded
     // private List<Choice> choices = new ArrayList<>();
 
     private List<Integer> choiceChosen = new ArrayList<>();
+    private List<Float> choiceGrade = new ArrayList<>();
+    private float quesMark;
 
-    public void fetchChoices(){
-        for(Choice choice : question.getChoices()){
-            choiceChosen.add(0);
-        }
-    }
+    // public void fetchChoices(){
+    //     for(Choice choice : question.getChoices()){
+    //         choiceChosen.add(0);
+    //         choiceGrade.add(choice.getGrade());
+    //     }
+    // }
 
-    public float calcMark (){
-        float result = 0; int i=0;
-        for(Choice choice : question.getChoices()){
-            result += choice.getGrade()*choiceChosen.get(i);
-            i++;
+    public void calcMark (){
+        quesMark = 0;
+        for(int i=0; i<choiceGrade.size(); i++){
+            quesMark += choiceGrade.get(i)*choiceChosen.get(i);
         }
-        return result;
     };
     //tính toán điểm tung cau
     //so cau đúng,với mark=1; thì point=%X[0,1] (đúng1, sai0)

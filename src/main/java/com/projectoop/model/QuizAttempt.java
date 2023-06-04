@@ -22,7 +22,7 @@ public class QuizAttempt {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.REFRESH) // thay đổi param này để request không cần truyền nó vào vẫn có nó 
     private Quiz quiz;
     //có cần quiz không khi quiz chỉ liên quan tới quesID đã được lọc ra từ controller và thành ques???
 
@@ -53,7 +53,7 @@ public class QuizAttempt {
     
     public void calcTotalMark() {
         for(QuestionInQuiz questionInQuiz : this.quesInQuizList){
-            totalMark += questionInQuiz.calcMark();
+            totalMark += questionInQuiz.getQuesMark();
         }
     }
     
