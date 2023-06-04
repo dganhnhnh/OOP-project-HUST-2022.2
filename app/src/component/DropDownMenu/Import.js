@@ -3,7 +3,7 @@ import { RxTriangleDown } from 'react-icons/rx';
 import { IoMdCloudUpload } from 'react-icons/io';
 import './Import.css';
 
-export default function NewQuiz() {
+export default function NewQuiz() {	//không nên để tên này vì k phải là tạo quiz, đây là nhập hàng loạt questions thôi
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [nameFile, setNameFile] = useState("");
 
@@ -44,29 +44,9 @@ export default function NewQuiz() {
 		}
 	};
 
-	// const handleSubmit = async ({ nameFile }) => {
-	// 	const formData = new FormData();
-	// 	formData.append("nameFile", nameFile, setNameFile);
-	// 	try {
-	// 		// Replace this URL with your server-side endpoint for handling file uploads
-	// 		const response = await fetch(`http://localhost:8080/api/File/createQuestion/${nameFile}`, {
-	// 			method: "GET",
-	// 			body: formData
-	// 		})
-	// 		const data = JSON.stringify(response);
-
-	// 		if (response.ok) {
-	// 			alert(data);
-	// 		} else {
-	// 			alert("ao the nhe");
-	// 		}
-	// 	} catch (error) {
-	// 		alert("Error occurred while uploading the file");
-	// 	}
-	// };
-
-
-
+	const handleSubmit = (event) => {
+		event.preventDefault();
+	  }
 	return (
 		<div>
 			<div className="line1">
@@ -79,7 +59,14 @@ export default function NewQuiz() {
 			</ul>
 			<div className="main">
 				<p className="textimp"> Import </p>
-				<form method="post" className="importArea">
+				<form	//form này là để dùng hooks
+					// method="post"	
+					// cái này gây vấn đề nhưng nó có nghĩa là gì 
+					onSubmit={handleSubmit}
+					className="importArea"
+				>
+					{/* TODO làm cho file hiện ra */}
+
 					<label onClick={() => document.querySelector(".input-field").click()}>
 						<input className="input-field" type="file" onChange={handleFileChange} />
 						<button className="buttonImport">
