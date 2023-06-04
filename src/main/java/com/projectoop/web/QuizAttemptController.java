@@ -117,7 +117,9 @@ class QuizAttemptController {
 
             if (beanWrapper.isWritableProperty(propertyName) 
                 && !propertyName.equals("id") 
-                && Mergeable.class.isAssignableFrom(descriptor.getPropertyType())) {
+                && !propertyName.equals("class")
+                && descriptor.getPropertyType() != boolean.class
+                ) {
 
                 Object requestValue = new BeanWrapperImpl(quizAttempt).getPropertyValue(propertyName);
                 if (requestValue != null) {
@@ -127,14 +129,23 @@ class QuizAttemptController {
                 if (existingValue != null) {
                     log.info("existingValue: "+existingValue.toString());
                 }else{log.info("existingValue null");}
-
+                
                 if (requestValue != null) {
-                    Mergeable mergeable = (Mergeable) existingValue;
-                    if (mergeable.isMergeEnabled()) {
-                        mergeable.merge(requestValue);
-                        beanWrapper.setPropertyValue(propertyName, mergeable);
-                    }
+                    // if(descriptor.getPropertyType() == List.class){
+                    // }else{
+                        // Mergeable mergeable = (Mergeable) existingValue;
+                        // if (mergeable.isMergeEnabled()) {
+                        //     mergeable.merge(requestValue);
+                        //     beanWrapper.setPropertyValue(propertyName, mergeable);
+                        // }
+                    // }
+                    // vì Mergeable không đc implement cho đống type kia nên không dùng đc
+                    beanWrapper.setPropertyValue(propertyName, requestValue);
                 }
+                else{
+                    beanWrapper.setPropertyValue(propertyName, existingValue);
+                }
+                //TODO: cách này có vấn đề gì không?
             }
         }
         QuizAttempt updatedEntity = quizAttemptRepo.save(existingEntity);
