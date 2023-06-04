@@ -56,5 +56,6 @@ public class QuizAttempt {
             totalMark += questionInQuiz.getQuesMark();
         }
     }
+    // gọi đến cái này sau khi nộp bài
     
 }

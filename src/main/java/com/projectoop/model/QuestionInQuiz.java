@@ -37,6 +37,7 @@ public class QuestionInQuiz {
     //     }
     // }
 
+    //TODO gọi đến cái này chỉ sau khi đã nộp bài
     public void calcMark (){
         quesMark = 0;
         for(int i=0; i<choiceGrade.size(); i++){

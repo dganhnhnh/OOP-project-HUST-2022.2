@@ -77,6 +77,7 @@ class CategoryController {
                 Optional<Question> a = questionRepo.findById(qIDList.get(i));
                 Question b = a.orElseThrow();
                 b.setCategoryID(null);
+                //TODO đưa categoryID về 1 mục mặc định "default" id=1
                 // questionRepo.deleteById(qIDList.get(i));
             }
         }

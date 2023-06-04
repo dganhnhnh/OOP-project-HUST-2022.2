@@ -29,12 +29,14 @@ public class Quiz {
     private int timeLimitDay;
     private LocalDateTime timeOpen;
     private LocalDateTime timeClose;
+    //TODO cơ chế check thời gian quiz mở thì gọi trực tiếp bởi controller trước khi tạo attempt
+    // nhưng cũng cần method setQuizState để FE biết hiển thị ở preview của quiz
 
     public void setDefaultTimeClose (){
        
         System.out.println("Before : " + timeOpen.toString());
 
-        timeClose = timeOpen.plusDays(timeLimitDay);
+        timeClose = timeOpen.plusDays(timeLimitDay); 
 
         System.out.println("After : " + timeClose.toString());
     }

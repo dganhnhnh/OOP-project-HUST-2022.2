@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.Mergeable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -110,10 +109,10 @@ class QuizAttemptController {
         // kiểm tra thuộc tính có được nhắc tới trong request thì sẽ không update lại bằng giá trị mặc định là null hay 0, ..
         for (PropertyDescriptor descriptor : beanWrapper.getPropertyDescriptors()) {
             String propertyName = descriptor.getName();
-            log.info(propertyName); //in ra kiểm tra tên thuộc tính
+            // log.info(propertyName); //in ra kiểm tra tên thuộc tính
 
-            log.info("is writable: "+beanWrapper.isWritableProperty(propertyName));
-            log.info("property type: "+descriptor.getPropertyType());
+            // log.info("is writable: "+beanWrapper.isWritableProperty(propertyName));
+            // log.info("property type: "+descriptor.getPropertyType());
 
             if (beanWrapper.isWritableProperty(propertyName) 
                 && !propertyName.equals("id") 
@@ -122,24 +121,15 @@ class QuizAttemptController {
                 ) {
 
                 Object requestValue = new BeanWrapperImpl(quizAttempt).getPropertyValue(propertyName);
-                if (requestValue != null) {
-                    log.info("requestValue: "+requestValue.toString());
-                }           else{log.info("requestValue null");}     
+                // if (requestValue != null) {
+                //     log.info("requestValue: "+requestValue.toString());
+                // }           else{log.info("requestValue null");}     
                 Object existingValue = beanWrapper.getPropertyValue(propertyName);
-                if (existingValue != null) {
-                    log.info("existingValue: "+existingValue.toString());
-                }else{log.info("existingValue null");}
+                // if (existingValue != null) {
+                //     log.info("existingValue: "+existingValue.toString());
+                // }else{log.info("existingValue null");}
                 
                 if (requestValue != null) {
-                    // if(descriptor.getPropertyType() == List.class){
-                    // }else{
-                        // Mergeable mergeable = (Mergeable) existingValue;
-                        // if (mergeable.isMergeEnabled()) {
-                        //     mergeable.merge(requestValue);
-                        //     beanWrapper.setPropertyValue(propertyName, mergeable);
-                        // }
-                    // }
-                    // vì Mergeable không đc implement cho đống type kia nên không dùng đc
                     beanWrapper.setPropertyValue(propertyName, requestValue);
                 }
                 else{
