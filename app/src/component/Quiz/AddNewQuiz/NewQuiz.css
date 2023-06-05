@@ -9,6 +9,7 @@
 
 /*----------------------- */
 .line1 {
+	margin-top: 20px;
 	margin-left: 20px;
 	display: flex;
 	flex-direction: row;
@@ -17,13 +18,13 @@
 
 .icon_test {
 	margin-right: 10px;
-	margin-top: 35px;
+	margin-top: px;
 	color: rgb(89, 147, 233);
 }
 
 .icon_question {
 	margin-left: 5px;
-	margin-top: 15px;
+	margin-top: 10px;
 	font-size: 15px;
 	color: rgb(5, 102, 172);
 }
@@ -136,8 +137,22 @@
 	border-radius: 5px;
 	border-color: rgb(181, 181, 181);
 }
-.selectedTime{
+
+.selectedTime {
 	border-radius: 5px;
 	width: 150px;
 }
 
+.TimeOpen {
+	margin-left: 180px;
+	width: 50px;
+	border-radius: 5px;
+	border-color: rgb(181, 181, 181);
+}
+
+.TimeClose {
+	margin-left: 180px;
+	width: 50px;
+	border-radius: 5px;
+	border-color: rgb(181, 181, 181);
+}

@@ -1,71 +1,40 @@
-import React from 'react'
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom'
-import { AiOutlineFileDone } from 'react-icons/ai'
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import { AiOutlineFileDone } from 'react-icons/ai';
 import './MyCourse.css';
+
 const MyCourses = () => {
-  // tạo list quiz chung
-  const [quizs, setQuizs] = useState([
-    {
-      "id": 1,
-      "name": "QUIZ1",
-      "description": "kbsajgs",
-      "questionsID": [],
-      "timeLimitDay": 0,
-      "timeOpen": null,
-      "timeClose": null,
-      "quizAttemp": null,
-      "quizState": null,
-      "quizMaxGrade": 0.0
-    },
-    {
-      "id": 2,
-      "name": "QUIZ2",
-      "description": "kbsajgs",
-      "questionsID": [],
-      "timeLimitDay": 0,
-      "timeOpen": null,
-      "timeClose": null,
-      "quizAttemp": null,
-      "quizState": null,
-      "quizMaxGrade": 0.0
-    },
-    {
-      "id": 3,
-      "name": "QUIZ3",
-      "description": "kbsajgs",
-      "questionsID": [],
-      "timeLimitDay": 0,
-      "timeOpen": null,
-      "timeClose": null,
-      "quizAttemp": null,
-      "quizState": null,
-      "quizMaxGrade": 0.0
-    },
-    {
-      "id": 4,
-      "name": "QUIZ4",
-      "description": "kbsajgs",
-      "questionsID": [],
-      "timeLimitDay": 0,
-      "timeOpen": null,
-      "timeClose": null,
-      "quizAttemp": null,
-      "quizState": null,
-      "quizMaxGrade": 0.0
-    }
-  ]);
+  const [quizs, setQuizs] = useState([]);
+
+  // Fetch the quiz list from the server on component mount
+  useEffect(() => {
+    const fetchQuizs = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/quizzes");
+        const data = await response.json();
+        if (response.ok) {
+          setQuizs(data);
+        } else {
+          alert("An error occurred.");
+        }
+      } catch (error) {
+        console.error("Error while fetching quiz list", error);
+        alert("Error while fetching quiz list");
+      }
+    };
+    fetchQuizs();
+  }, []);
+
   return (
     <div className='MyCourse'>
       {quizs.map(quiz => (
-        <NavLink to={`/MyCourse/${quiz.name}`}>
+        <NavLink key={quiz._id} to={`/MyCourse/${quiz.name}`}>
           <p className='listquizs'> <AiOutlineFileDone /> {quiz.name}</p>
         </NavLink>
       ))}
 
     </div>
+  );
+};
 
-  )
-}
-
-export default MyCourses
+export default MyCourses;

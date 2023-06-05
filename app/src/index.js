@@ -22,13 +22,13 @@ root.render(
     <BrowserRouter>
       <Routes>
 
-        <Route path='/' element={<App />}>
+        <Route exact path='/' element={<App />}>
           <Route path='/Home' element={<Home />} />
           <Route path='/MyCourses' element={<MyCourses />}>
-            {/* <Route path='/Mycourses/:name' element={<QuizInterface />} /> */}
+            {/* <Route exact path='/Mycourses/:name' element={<QuizInterface />} /> */}
           </Route>
 
-          <Route exact path='/Thicuoiki' element={<Thicuoiki />}/>
+          <Route exact path='/Thicuoiki' element={<Thicuoiki />} />
 
           <Route path='/EditQuestion' element={<EditQuestion />} />
           <Route path='/AddNewQuestion' element={<AddNewQuestion />} />
