@@ -1,0 +1,23 @@
+.MyCourse {
+	margin-top: 20px;
+	padding-bottom: 300px;
+
+	border: 1px solid black;
+}
+
+.MyCourse a {
+	text-decoration: none;
+}
+
+.listquizs {
+	margin-top: -40px;
+	padding-left: 20px;
+	margin-top: 50px;
+
+}
+
+.listquizs p {
+	padding-left: 20px;
+	margin-top: 10px;
+	text-decoration: none;
+}

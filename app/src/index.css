@@ -91,15 +91,6 @@ main {
   overflow-y: auto;
 }
 
-footer {
-  width: 100%;
-  padding: 0.25em;
-  background-color: mediumblue;
-  color: aliceblue;
-  display: grid;
-  place-content: center;
-}
-
 ul {
   width: 100%;
   list-style: none;
@@ -240,23 +231,25 @@ ul li::before {
   background-color: #f2f2f2;
 }
  
-.button-in-navbar {
+.button_navbar {
   font-size: 20px;
   position: absolute;
   top: 150px;
   right: 20px;
   width: 250px;
   height: 50px;
-  border-radius: 0%;
-  border: none;
   color: white;
-  background-color: rgb(31, 130, 201);
+  border-radius: 5px;
+  background-color: rgb(5, 102, 172);
+  box-shadow: 3px 3px #c5c1c1;
+  border: none;
 }
-
-.button-in-navbar:hover{
-  background-color: rgb(12, 79, 126);
+.button_navbar:hover {
+  background-color: rgb(27, 53, 108);
 }
-
 .active-link {
   color: red !important;
 }
+
+/* ---- New quizz ----- */
+
