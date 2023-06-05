@@ -1,15 +1,13 @@
 import React  from "react";
 import './EditQuestion.css'
-import { Editor } from "@tinymce/tinymce-react";
+import MyEditor from "./MyEditor";
 
 function InputField({ id, value, onChange}) {
   return (
-    <Editor
-      apiKey="joa43a6hj4riv0j75ojawnh5kqsfobdcml2kbcr891d7cgxr"
+    <MyEditor
       id={id}
-      value={value}
-      onChange={onChange}
-      type="text"
+      text={value}
+      setText={onChange}
     />
   );
 }
@@ -36,8 +34,8 @@ function ChoiceField({label, text, setText, grade, setGrade, c_imageURL, setC_Im
           </div>
           <div className="col-80">
             <InputField
-            value={text}
-            onEditorChange={setText}
+            value={`<p>${text}</p><p><img src =${c_imageURL}></p>`}
+            
             />
           </div>
       </div>
