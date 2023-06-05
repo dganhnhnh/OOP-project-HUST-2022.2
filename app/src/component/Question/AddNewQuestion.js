@@ -299,9 +299,11 @@ const AddNewQuestion = () => {
             <label>Question text</label>
           </div>
           <div className="col-60">
-              <MyEditor
-              text = {text}
-              setText = {setText}/>
+            <MyEditor
+              text={text}
+              setText={setText}
+              // text và setText này là thao tác trên Question JSON
+            />
           </div>
         </div>
 

@@ -5,30 +5,23 @@ const MyEditor = ({text, setText}) => {
 
   const handleImageUpload = (blobInfo, success, failure) => {
     var xhr, formData;
+    const endPoint = "http://localhost:8080/api/File/Image/";
 
     xhr = new XMLHttpRequest();
     xhr.withCredentials = false;
     xhr.open('POST', 'http://localhost:8080/api/File/uploadImage');
 
     xhr.onload = function () {
-      var json;
+      var res;
 
       if (xhr.status !== 200) {
         console.log('HTTP Error: ' + xhr.status);
         return;
       }
 
-      json = xhr.responseText;
-      // json = JSON.parse(xhr.responseText);
-      // console.log(xhr.responseText)
-
-      // if (!json || typeof json.location !== 'string') {
-      //   console.log('Invalid JSON: ' + xhr.responseText);
-      //   return;
-      // }
-      // có cần parse JSON không hay là để yên nó trả về tên file ảnh là đc rồi? 
-
-      success(json.location);
+      res = xhr.responseText;
+      setText(prevText => prevText + "<p><img src="+endPoint+res+"></p>");
+      success(res.location);
     };
 
     formData = new FormData();
