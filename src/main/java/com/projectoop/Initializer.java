@@ -1,12 +1,14 @@
 package com.projectoop;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Choice;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
 import com.projectoop.model.Quiz;
-import com.projectoop.model.QuizRepo;
+import com.projectoop.model.QuizAttempt;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
+import com.projectoop.services.QuizAttemptRepo;
+import com.projectoop.services.QuizRepo;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -22,11 +25,13 @@ class Initializer implements CommandLineRunner {
     private final CategoryRepo categoryRepo;
     private final QuestionRepo questionRepo;
     private final QuizRepo quizRepo;
+    private final QuizAttemptRepo quizAttemptRepo;
 
-    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo) {
+    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo, QuizAttemptRepo quizAttemptRepo) {
         this.categoryRepo = categoryRepo;
         this.questionRepo = questionRepo;
         this.quizRepo = quizRepo;
+        this.quizAttemptRepo = quizAttemptRepo;
     }
 
     @Override
@@ -46,7 +51,6 @@ class Initializer implements CommandLineRunner {
         // a.add(qID);
         // e.setQuestionID(a);
         // question1.setDefaultMark(1);
-        // question1.setImageURL("http://localhost:8080/api/File/Image/6e3660550e6a482d94dc388a82dcc857.png");
         // question1.setChoices(null);
         // questionRepo.save(question1);
         // categoryRepo.save(e);
@@ -68,23 +72,23 @@ class Initializer implements CommandLineRunner {
         // Choice choice1 = new Choice("hai", 0.0f);
         // choices.add(choice1);
         // Choice choice2 = new Choice("bon", 0.5f);
-        // choice2.setC_imageURL("http://localhost:8080/api/File/Image/25ac2a5d4ae345e39c375eec60574ada.jpg");
         // choices.add(choice2);
         // Choice choice3 = new Choice("4", 0.5f);
         // choices.add(choice3);
         // ques3.setChoices(choices);
         // questionRepo.save(ques3);
         // categoryRepo.save(e);
-        
-        // TO HERE
-        Quiz newQuiz = new Quiz("Quiz 1");
-        newQuiz.setTimeOpen(LocalDateTime.now());
-        newQuiz.setTimeLimitDay(2);
-        newQuiz.setDefaultTimeClose();
-        quizRepo.save(newQuiz);
+
+        // Quiz newQuiz = new Quiz("Quiz 1");
+        // newQuiz.setTimeOpen(LocalDateTime.now());
+        // newQuiz.setDefaultTimeClose();
+        // quizRepo.save(newQuiz);
+
+        // // TO HERE
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
         quizRepo.findAll().forEach(System.out::println);
+        quizAttemptRepo.findAll().forEach(System.out::println);
     }
 }

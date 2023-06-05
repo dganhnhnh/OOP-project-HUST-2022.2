@@ -25,24 +25,24 @@ public class Quiz {
 
     private String description;
     private List<Long> questionsID = new ArrayList<>();
-    // use for add, edit, delete and shuffle
 
-    private int timeLimitDay;
+    private int timeLimit;      // số phút tương ứng với thời lượng làm bài
     private LocalDateTime timeOpen;
     private LocalDateTime timeClose;
+    //TODO cơ chế check thời gian quiz mở thì gọi trực tiếp bởi controller trước khi tạo attempt
+    // nhưng cũng cần method setQuizState để FE biết hiển thị ở preview của quiz
 
     public void setDefaultTimeClose (){
-       
-        System.out.println("Before : " + timeOpen.toString());
-
-        timeClose = timeOpen.plusDays(timeLimitDay);
-
-        System.out.println("After : " + timeClose.toString());
+        System.out.println("timeOpen: " + timeOpen.toString());
+        timeClose = timeOpen.plusDays(0); 
+        System.out.println("timeClose: " + timeClose.toString());
     }
 
-    private String quizAttemp;
+    private List<Long> quizAttemptID = new ArrayList<>();
+    private String quizState;
+    //chưa xử lý 
     private boolean ongoingAttempt;
     private float quizMaxGrade;
-    //if (quizMaxGrade<<quizPoint) {quizMaxGrade=quizPoint;}
+    //quy ước mark, grade là số câu hay số điểm trên thang 10
 
 }
