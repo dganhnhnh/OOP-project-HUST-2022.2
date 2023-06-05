@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +54,8 @@ class QuizController {
     @PostMapping("/quiz")
     ResponseEntity<Quiz> createQuiz(@Valid @RequestBody Quiz quiz) throws URISyntaxException {
         log.info("Request to create Quiz: {}", quiz);
-        if(quiz.getTimeLimitDay()!= 0) quiz.setDefaultTimeClose();
+        quiz.setTimeOpen(LocalDateTime.now());
+        quiz.setDefaultTimeClose();
         Quiz result = quizRepo.save(quiz);
         return ResponseEntity.created(new URI("/api/quiz/" + result.getId()))
                 .body(result);
@@ -62,7 +64,8 @@ class QuizController {
     @PutMapping("/quiz/{id}")
     ResponseEntity<Quiz> updateQuiz(@Valid @RequestBody Quiz quiz) {
         log.info("Request to update Quiz: {}", quiz);
-        if(quiz.getTimeLimitDay()!= 0) quiz.setDefaultTimeClose();
+        quiz.setTimeOpen(LocalDateTime.now());
+        quiz.setDefaultTimeClose();
         Quiz result = quizRepo.save(quiz);
         return ResponseEntity.ok().body(result);
     }

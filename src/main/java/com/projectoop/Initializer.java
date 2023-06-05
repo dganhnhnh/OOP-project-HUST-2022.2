@@ -81,17 +81,10 @@ class Initializer implements CommandLineRunner {
 
         // Quiz newQuiz = new Quiz("Quiz 1");
         // newQuiz.setTimeOpen(LocalDateTime.now());
-        // newQuiz.setTimeLimitDay(2);
         // newQuiz.setDefaultTimeClose();
         // quizRepo.save(newQuiz);
-        
-        // // Optional<Quiz> newQuizOptional  = quizRepo.findById(Long.valueOf(1));
-        // // Quiz newQuiz =  newQuizOptional.orElseThrow();
-        // // QuizAttempt newQuizAttempt = new QuizAttempt(new Quiz("Quiz x"));
-        // // quizAttemptRepo.save(newQuizAttempt);
 
         // // TO HERE
-
 
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);

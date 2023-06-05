@@ -22,6 +22,7 @@ import jakarta.validation.Valid;
 import java.beans.PropertyDescriptor;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -88,6 +89,12 @@ class QuizAttemptController {
             newQInQuiz.setIdInQuiz(id); id++;
             quizAttempt.quesInQuizList.add(newQInQuiz); 
         }
+
+        quizAttempt.setTimeStart(LocalDateTime.now());
+        quizAttempt.setTimeComplete(quizAttempt.getTimeStart().plusMinutes(quiz.getTimeLimit()));
+        quiz.setOngoingAttempt(true);
+        quizRepo.save(quiz);
+
         QuizAttempt  result = quizAttemptRepo.save(quizAttempt);
         return ResponseEntity.created(new URI("/api/quiz_attempt/" + result.getId()))
                 .body(result);
