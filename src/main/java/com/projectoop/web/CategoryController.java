@@ -1,9 +1,9 @@
 package com.projectoop.web;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +77,7 @@ class CategoryController {
                 Optional<Question> a = questionRepo.findById(qIDList.get(i));
                 Question b = a.orElseThrow();
                 b.setCategoryID(null);
+                //TODO đưa categoryID về 1 mục mặc định "default" id=1
                 // questionRepo.deleteById(qIDList.get(i));
             }
         }

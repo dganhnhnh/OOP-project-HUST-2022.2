@@ -10,13 +10,12 @@ import {HiPlusSm} from 'react-icons/hi'
 const QuizInterface = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  // const [numberTime, setNumberTime] = useState("");
-  // const [time, setTime] = useState('');
   const [questionsID, setQuestionsID] = useState([]);
-  const [timeLimitDay] = useState(0);
+  const [timeLimit, setTimeLimit] = useState(0);
   const [timeOpen, setTimeOpen] = useState(null); // Default value
   const [timeClose, setTimeClose] = useState(null); // Default value
-  const [quizAttempt, setQuizAttempt] = useState(null);
+  const [quizAttemptID, setQuizAttemptID] = useState([]);
+  const [quizState, setQuizState] = useState(null)
   const [ongoingAttempt, setOngoingAttempt] = useState(false);
   const [quizMaxGrade, setQuizMaxGrade] = useState(0.0);
   // lấy giá trị của id từ query parameter

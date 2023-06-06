@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink, Link } from 'react-router-dom';
 import { AiOutlineFileDone } from 'react-icons/ai';
+import { BsFillTrash3Fill } from 'react-icons/bs'
 import './MyCourse.css';
 
 const MyCourses = () => {
@@ -29,6 +30,27 @@ const MyCourses = () => {
     };
     fetchQuizs();
   }, []);
+
+  const handleDeleteQuiz = async (id) => {
+    try
+    {
+      const response = await fetch(`http://localhost:8080/api/quiz/${id}`, {
+        method: 'DELETE'
+      });
+      if (response.ok)
+      {
+        setQuizs(quizs.filter((quiz) => quiz.id !== id));
+      } else
+      {
+        alert("An error occurred.");
+      }
+    } catch (error)
+    {
+      console.error("Error while deleting quiz", error);
+      alert("Error while deleting quiz");
+    }
+  };
+
   const navigate = useNavigate();
 
   function QuizLink(quiz) {
@@ -42,6 +64,7 @@ const MyCourses = () => {
           <p className='listquizs'>
             <AiOutlineFileDone />
             <QuizLink id={quiz.id} name={quiz.name} />
+            <BsFillTrash3Fill onClick={() => handleDeleteQuiz(quiz.id)} />
           </p>
         </div>
       ))}
