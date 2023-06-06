@@ -40,7 +40,7 @@ const NewQuiz = () => {
 	const handleSave = async (e) => {
 		e.preventDefault();
 		// Check if any input field is empty
-		if (!name || !description || !numberTime || !time)
+		if (!name || !numberTime || !time)
 		{
 			alert("Please fill out all fields before submitting.");
 			return;

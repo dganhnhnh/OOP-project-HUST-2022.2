@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import './MyCourse.css';
 
@@ -9,30 +10,41 @@ const MyCourses = () => {
   // Fetch the quiz list from the server on component mount
   useEffect(() => {
     const fetchQuizs = async () => {
-      try {
+      try
+      {
         const response = await fetch("http://localhost:8080/api/quizzes");
         const data = await response.json();
-        if (response.ok) {
+        if (response.ok)
+        {
           setQuizs(data);
-        } else {
+        } else
+        {
           alert("An error occurred.");
         }
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error while fetching quiz list", error);
         alert("Error while fetching quiz list");
       }
     };
     fetchQuizs();
   }, []);
+  const navigate = useNavigate();
+
+  function QuizLink(quiz) {
+    return <Link to={`/QuizInterface?id=${quiz.id}`}>{quiz.name}</Link>;
+  }
 
   return (
     <div className='MyCourse'>
-      {quizs.map(quiz => (
-        <NavLink key={quiz._id} to={`/MyCourse/${quiz.name}`}>
-          <p className='listquizs'> <AiOutlineFileDone /> {quiz.name}</p>
-        </NavLink>
+      {quizs.map((quiz) => (
+        <div key={quiz.id}>
+          <p className='listquizs'>
+            <AiOutlineFileDone />
+            <QuizLink id={quiz.id} name={quiz.name} />
+          </p>
+        </div>
       ))}
-
     </div>
   );
 };

@@ -1,0 +1,74 @@
+.QuizInterface {
+	margin-top: 20px;
+	border: 1px solid black;
+	height: 130vh;
+}
+
+.quizName {
+	font-size: 27px;
+	color: rgb(209, 16, 16);
+	margin-left: 20px;
+}
+
+.line1 {
+	display: inline;
+}
+
+.line1 li p {
+	margin-top: -20px;
+	color: rgb(207, 15, 15);
+}
+
+.editIcon {
+	font-size: 30px;
+	margin-top: -40px;
+	margin-left: auto;
+	text-align: right;
+	margin-right: 40px;
+	color: rgb(6, 91, 147);
+}
+
+.line2 {
+	margin-left: 80vw;
+}
+
+
+/*TABLE*/
+table {
+
+	background-color: rgb(236, 246, 249);
+	border-radius: 5px;
+	margin-left: 20px;
+	text-align: center;
+	width: 95%;
+}
+
+table tr td {
+	text-align: center;
+	height: 40px;
+}
+
+table thead {
+	font-size: 20px;
+	height: 60px;
+	color: white;
+	background-color: rgb(28, 142, 248);
+}
+
+
+.caption {
+	margin-left: 18px;
+	font-size: 25px;
+	color: brown;
+}
+
+.previewQuizButton {
+	margin-top: 50px;
+	font-size: 20px;
+	margin-left: 70vw;
+	background-color: rgb(28, 142, 248);
+	border: none;
+	padding: 15px;
+	color: white;
+	border-radius: 5px;
+}

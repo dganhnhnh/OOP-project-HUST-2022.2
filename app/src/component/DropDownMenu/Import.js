@@ -7,24 +7,74 @@ const Import = () => {
    const [file, setFile] = useState(null);
    const [nameFile, setNameFile] = useState("");
    const dropArea = useRef();
+   const [selectedCategory, setSelectedCategory] = useState('');
    const [categories, setCategories] = useState([]);
+   const [questionsByCategory, setQuestionsByCategory] = useState({});
 
    useEffect(() => {
-      // Fetch the list of categories when the component mounts
-      const fetchCategories = async () => {
-         try
-         {
-            // Replace this URL with the endpoint that fetches the list of categories from your API
-            const response = await fetch("http://localhost:8080/api/categories");
-            const data = await response.json();
-            setCategories(data);
-         } catch (error)
-         {
-            console.error("Error occurred while fetching categories:", error);
-         }
-      };
-      fetchCategories();
+      fetch('http://localhost:8080/api/categories')
+         .then(response => response.json())
+         .then(categories => {
+            const subcategories = categories.flatMap(category => category.subCatID.map(subcatID => ({
+               ...categories.find(c => c.id === subcatID),
+               parentId: category.id
+            })));
+            const allCategories = subcategories.concat(categories);
+            setCategories(allCategories);
+            Promise.all(allCategories.map(category => {
+               const url = `http://localhost:8080/api/category/${category.id}/questions?show_from_subcategory=true`;
+               return fetch(url)
+                  .then(response => response.json())
+                  .then(questions => ({ categoryId: category.id, questions }));
+            })).then(results => {
+               const newQuestionsByCategory = {};
+               results.forEach(({ categoryId, questions }) => {
+                  newQuestionsByCategory[categoryId] = questions;
+               });
+               setQuestionsByCategory(newQuestionsByCategory);
+            });
+         })
+         .catch(error => {
+            console.log(error);
+         });
    }, []);
+
+   function renderCategoryOptions(categories, questionsByCategory, level = 0) {
+      const options = [];
+
+      categories.forEach(category => {
+         const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
+
+         const questions = questionsByCategory[category.id] || [];
+         if (!isSubcategory)
+            options.push(
+               <option key={category.id} value={category.id}>
+                  {category.name} ({questions.length})
+               </option>
+            );
+
+         if (!isSubcategory)
+         {
+            const subcategories = categories.filter(c => c.parentId === category.id);
+
+            subcategories.forEach(subcategory => {
+               const subQuestions = questionsByCategory[subcategory.id] || [];
+
+               options.push(
+                  <option key={subcategory.id} value={subcategory.id}>
+                     {'\u00A0'.repeat(level + 5) + subcategory.name}({subQuestions.length})
+                  </option>
+               );
+            });
+         }
+      });
+
+      return options;
+   }
+   const handleCategoryChange = event => {
+      setSelectedCategory(event.target.value);
+   };
+
    const handleFileChange = async (e) => {
       setFile(e.target.files[0]);
       setNameFile(e.target.files[0].name);
@@ -52,8 +102,14 @@ const Import = () => {
          alert("Please first select a file");
          return;
       }
+      if (!selectedCategory)
+      {
+         alert("Please select a category for the imported questions.");
+         return;
+      }
       const formData = new FormData();
       formData.append("text", file);
+      formData.append("category", selectedCategory);
       try
       {
          // Replace this URL with your server-side endpoint for handling file uploads
@@ -86,7 +142,6 @@ const Import = () => {
                console.error("Error while creating questions", error);
                alert("Error while creating questions");
             }
-
          } else
          {
             alert("Wrong format file, chose .txt or .doc");
@@ -111,11 +166,11 @@ const Import = () => {
                <div>
                   <p><RxTriangleDown className='icon_general' /> General</p>
                </div>
-               <div className="dropdown-content">
-                  <button onClick={() => alert("Selected All Categories")}>Choose Categories</button>
-                  {categories.map((category) => (
-                     <button key={category.id} onClick={() => alert(`Selected ${category.name}`)}>{category.name}</button>
-                  ))}
+               <div className='selected-menu'>
+                  <p>Select a category:</p>
+                  <select value={selectedCategory} onChange={handleCategoryChange}>
+                     {renderCategoryOptions(categories, questionsByCategory)}
+                  </select>
                </div>
             </li>
             <li> <p><RxTriangleDown className='icon_general' /> Import question from file</p> </li>

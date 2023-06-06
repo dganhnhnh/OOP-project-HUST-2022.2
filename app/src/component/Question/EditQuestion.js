@@ -12,14 +12,15 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
     const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
 
     const questions = questionsByCategory[category.id] || [];
-    if(!isSubcategory)
-    options.push(
-      <option key={category.id} value={category.id}>
-        {category.name} ({questions.length})
-      </option>
-    );
+    if (!isSubcategory)
+      options.push(
+        <option key={category.id} value={category.id}>
+          {category.name} ({questions.length})
+        </option>
+      );
 
-    if (!isSubcategory) {
+    if (!isSubcategory)
+    {
       const subcategories = categories.filter(c => c.parentId === category.id);
 
       subcategories.forEach(subcategory => {
@@ -27,7 +28,7 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
 
         options.push(
           <option key={subcategory.id} value={subcategory.id}>
-            { '\u00A0'.repeat(level + 5) + subcategory.name }({subQuestions.length})
+            {'\u00A0'.repeat(level + 5) + subcategory.name}({subQuestions.length})
           </option>
         );
       });
@@ -93,23 +94,23 @@ const EditQuestion = () => {
 
         setChoice2(question.choices[1].choiceText);
         setChoice2Grade(question.choices[1].grade);
-        setC2_ImageURL(question.choices[1].c_imageURL); 
+        setC2_ImageURL(question.choices[1].c_imageURL);
 
         setChoice3(question.choices[2].choiceText);
         setChoice3Grade(question.choices[2].grade);
-        setC3_ImageURL(question.choices[2].c_imageURL); 
- 
-    
+        setC3_ImageURL(question.choices[2].c_imageURL);
+
+
         setChoice4(question.choices[3].choiceText);
         setChoice4Grade(question.choices[3].grade);
-        setC4_ImageURL(question.choices[3].c_imageURL); 
+        setC4_ImageURL(question.choices[3].c_imageURL);
 
-    
+
         setChoice5(question.choices[4].choiceText);
-        setChoice5Grade(question.choices[4].grade); 
-        setC5_ImageURL(question.choices[4].c_imageURL); 
+        setChoice5Grade(question.choices[4].grade);
+        setC5_ImageURL(question.choices[4].c_imageURL);
 
-  
+
       })
       .catch((error) => {
         console.log(error);
@@ -162,8 +163,9 @@ const EditQuestion = () => {
       categoryID: selectedCategory,
       choices: [],
     };
-    
-    if (choice1) {
+
+    if (choice1)
+    {
       questionBody.choices.push({
         choiceText: choice1,
         grade: choice1Grade,
@@ -171,7 +173,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice2) {
+    if (choice2)
+    {
       questionBody.choices.push({
         choiceText: choice2,
         grade: choice2Grade,
@@ -179,7 +182,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice3) {
+    if (choice3)
+    {
       questionBody.choices.push({
         choiceText: choice3,
         grade: choice3Grade,
@@ -187,7 +191,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice4) {
+    if (choice4)
+    {
       questionBody.choices.push({
         choiceText: choice4,
         grade: choice4Grade,
@@ -195,7 +200,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice5) {
+    if (choice5)
+    {
       questionBody.choices.push({
         choiceText: choice5,
         grade: choice5Grade,
@@ -214,7 +220,7 @@ const EditQuestion = () => {
         console.log(id);
         console.log(data);
         alert("Question saved!")
-        
+
       })
       .catch((error) => console.log(error));
   };
@@ -230,8 +236,9 @@ const EditQuestion = () => {
       categoryID: selectedCategory,
       choices: [],
     };
-    
-    if (choice1) {
+
+    if (choice1)
+    {
       questionBody.choices.push({
         choiceText: choice1,
         grade: choice1Grade,
@@ -239,7 +246,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice2) {
+    if (choice2)
+    {
       questionBody.choices.push({
         choiceText: choice2,
         grade: choice2Grade,
@@ -247,7 +255,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice3) {
+    if (choice3)
+    {
       questionBody.choices.push({
         choiceText: choice3,
         grade: choice3Grade,
@@ -255,7 +264,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice4) {
+    if (choice4)
+    {
       questionBody.choices.push({
         choiceText: choice4,
         grade: choice4Grade,
@@ -263,7 +273,8 @@ const EditQuestion = () => {
       });
     }
 
-    if (choice5) {
+    if (choice5)
+    {
       questionBody.choices.push({
         choiceText: choice5,
         grade: choice5Grade,
@@ -290,7 +301,7 @@ const EditQuestion = () => {
   const handleCancel = () => {
     navigate("/Question");
   };
-  
+
 
   return (
     <div className="edit-question">
@@ -334,8 +345,8 @@ const EditQuestion = () => {
           </div>
           <div className="col-60">
             <MyEditor
-              text = {`<p>${text}</p><p><img src =${imageURL}></p>`}
-              />
+              text={`<p>${text}</p><p><img src =${imageURL}></p>`}
+            />
           </div>
         </div>
 
@@ -352,62 +363,62 @@ const EditQuestion = () => {
             />
           </div>
         </div>
-          
+
         <div className="choice">
-          <ChoiceField 
-          label="Choice 1" 
-          text={choice1}
-          c_imageURL={c1_imageURL}
-          setC_ImageURL={setC1_ImageURL}
-          setText={setChoice1} 
-          grade={choice1Grade} 
-          setGrade={setChoice1Grade} />
+          <ChoiceField
+            label="Choice 1"
+            text={choice1}
+            c_imageURL={c1_imageURL}
+            setC_ImageURL={setC1_ImageURL}
+            setText={setChoice1}
+            grade={choice1Grade}
+            setGrade={setChoice1Grade} />
         </div>
 
         <div className="choice">
-          <ChoiceField 
-          label="Choice 2" 
-          text={choice2}
-          c_imageURL={c2_imageURL}
-          setC_ImageURL={setC2_ImageURL} 
-          setText={setChoice2} 
-          grade={choice2Grade} 
-          setGrade={setChoice2Grade} />
+          <ChoiceField
+            label="Choice 2"
+            text={choice2}
+            c_imageURL={c2_imageURL}
+            setC_ImageURL={setC2_ImageURL}
+            setText={setChoice2}
+            grade={choice2Grade}
+            setGrade={setChoice2Grade} />
         </div>
 
         {showAdditionalChoices && (
           <>
             <div className="choice">
-              <ChoiceField 
-              label="Choice 3" 
-              text={choice3} 
-              c_imageURL={c3_imageURL}
-              setC_ImageURL={setC3_ImageURL}
-              setText={setChoice3} 
-              grade={choice3Grade} 
-              setGrade={setChoice3Grade} />
+              <ChoiceField
+                label="Choice 3"
+                text={choice3}
+                c_imageURL={c3_imageURL}
+                setC_ImageURL={setC3_ImageURL}
+                setText={setChoice3}
+                grade={choice3Grade}
+                setGrade={setChoice3Grade} />
             </div>
 
             <div className="choice">
-            <ChoiceField 
-              label="Choice 4" 
-              text={choice4}
-              c_imageURL={c4_imageURL}
-              setC_ImageURL={setC4_ImageURL} 
-              setText={setChoice4} 
-              grade={choice4Grade} 
-              setGrade={setChoice4Grade} />
+              <ChoiceField
+                label="Choice 4"
+                text={choice4}
+                c_imageURL={c4_imageURL}
+                setC_ImageURL={setC4_ImageURL}
+                setText={setChoice4}
+                grade={choice4Grade}
+                setGrade={setChoice4Grade} />
             </div>
 
             <div className="choice">
-            <ChoiceField 
-              label="Choice 5" 
-              text={choice5} 
-              setText={setChoice5}
-              c_imageURL={c5_imageURL}
-              setC_ImageURL={setC5_ImageURL}
-              grade={choice5Grade} 
-              setGrade={setChoice5Grade} />
+              <ChoiceField
+                label="Choice 5"
+                text={choice5}
+                setText={setChoice5}
+                c_imageURL={c5_imageURL}
+                setC_ImageURL={setC5_ImageURL}
+                grade={choice5Grade}
+                setGrade={setChoice5Grade} />
             </div>
           </>
         )}
@@ -419,24 +430,24 @@ const EditQuestion = () => {
             BLANKS FOR 3 MORE CHOICES
           </button>
 
-          <button 
-          className="button-2" 
-          type="submit"
-          onClick={handleSaveChangesAndContinueEditing}>
+          <button
+            className="button-2"
+            type="submit"
+            onClick={handleSaveChangesAndContinueEditing}>
             SAVE CHANGES AND CONTINUE EDITING
           </button>
 
           <div className="button-group button34">
-            <button 
-            className="button-3" 
-            type="submit"
-            onClick={handleSaveChanges}>
+            <button
+              className="button-3"
+              type="submit"
+              onClick={handleSaveChanges}>
               SAVE CHANGES
             </button>
 
-            <button 
-            className="button-4"
-            onClick={handleCancel}>
+            <button
+              className="button-4"
+              onClick={handleCancel}>
               CANCEL
             </button>
 

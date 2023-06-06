@@ -21,7 +21,8 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
         </option>
       );
 
-    if (!isSubcategory) {
+    if (!isSubcategory)
+    {
       const subcategories = categories.filter(
         (c) => c.parentId === category.id
       );
@@ -125,7 +126,8 @@ const AddNewQuestion = () => {
       choices: [],
     };
 
-    if (choice1) {
+    if (choice1)
+    {
       newQuestion.choices.push({
         choiceText: choice1,
         grade: choice1Grade,
@@ -133,7 +135,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice2) {
+    if (choice2)
+    {
       newQuestion.choices.push({
         choiceText: choice2,
         grade: choice2Grade,
@@ -141,7 +144,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice3) {
+    if (choice3)
+    {
       newQuestion.choices.push({
         choiceText: choice3,
         grade: choice3Grade,
@@ -149,7 +153,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice4) {
+    if (choice4)
+    {
       newQuestion.choices.push({
         choiceText: choice4,
         grade: choice4Grade,
@@ -157,7 +162,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice5) {
+    if (choice5)
+    {
       newQuestion.choices.push({
         choiceText: choice5,
         grade: choice5Grade,
@@ -197,7 +203,8 @@ const AddNewQuestion = () => {
       choices: [],
     };
 
-    if (choice1) {
+    if (choice1)
+    {
       newQuestion.choices.push({
         choiceText: choice1,
         grade: choice1Grade,
@@ -205,7 +212,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice2) {
+    if (choice2)
+    {
       newQuestion.choices.push({
         choiceText: choice2,
         grade: choice2Grade,
@@ -213,7 +221,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice3) {
+    if (choice3)
+    {
       newQuestion.choices.push({
         choiceText: choice3,
         grade: choice3Grade,
@@ -221,7 +230,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice4) {
+    if (choice4)
+    {
       newQuestion.choices.push({
         choiceText: choice4,
         grade: choice4Grade,
@@ -229,7 +239,8 @@ const AddNewQuestion = () => {
       });
     }
 
-    if (choice5) {
+    if (choice5)
+    {
       newQuestion.choices.push({
         choiceText: choice5,
         grade: choice5Grade,
@@ -299,9 +310,9 @@ const AddNewQuestion = () => {
             <label>Question text</label>
           </div>
           <div className="col-60">
-              <MyEditor
-              text = {text}
-              setText = {setText}/>
+            <MyEditor
+              text={text}
+              setText={setText} />
           </div>
         </div>
 

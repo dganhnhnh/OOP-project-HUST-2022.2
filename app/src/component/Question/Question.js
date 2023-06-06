@@ -1,15 +1,17 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Question.css';
 
 const deleteQuestion = async (id, setQuestions, questions) => {
-  try {
+  try
+  {
     await fetch(`http://localhost:8080/api/question/${id}`, {
       method: 'DELETE',
     });
     const updatedQuestions = questions.filter(question => question.id !== id);
     setQuestions(updatedQuestions);
-  } catch (error) {
+  } catch (error)
+  {
     console.log(error);
   }
 };
@@ -30,14 +32,15 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
     const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
 
     const questions = questionsByCategory[category.id] || [];
-    if(!isSubcategory)
-    options.push(
-      <option key={category.id} value={category.id}>
-        {category.name} ({questions.length})
-      </option>
-    );
+    if (!isSubcategory)
+      options.push(
+        <option key={category.id} value={category.id}>
+          {category.name} ({questions.length})
+        </option>
+      );
 
-    if (!isSubcategory) {
+    if (!isSubcategory)
+    {
       const subcategories = categories.filter(c => c.parentId === category.id);
 
       subcategories.forEach(subcategory => {
@@ -45,7 +48,7 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
 
         options.push(
           <option key={subcategory.id} value={subcategory.id}>
-            { '\u00A0'.repeat(level + 5) + subcategory.name }({subQuestions.length})
+            {'\u00A0'.repeat(level + 5) + subcategory.name}({subQuestions.length})
           </option>
         );
       });
@@ -63,7 +66,7 @@ const Question = () => {
   const [categories, setCategories] = useState([]);
   const [questionsByCategory, setQuestionsByCategory] = useState({});
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     fetch('http://localhost:8080/api/categories')
       .then(response => response.json())
@@ -119,11 +122,12 @@ const Question = () => {
 
   function handleEditButtonClick(question) {
     const url = `/EditQuestion?id=${question.id}`;
-    navigate(url);}
+    navigate(url);
+  }
 
-    const handleCreateNewQues = () => {
-      navigate("/AddNewQuestion");
-    };
+  const handleCreateNewQues = () => {
+    navigate("/AddNewQuestion");
+  };
 
   return (
     <div className='questionpage'>
@@ -139,10 +143,10 @@ const Question = () => {
         <Checkbox label="Also show questions from subcategories" checked={showSubcategories} onChange={handleShowSubcategoriesChange} />
         <Checkbox label="Also show old question" checked={showOldQuestions} onChange={handleShowOldQuestionsChange} />
       </div>
-      <button 
+      <button
         className='button-in-question'
         onClick={handleCreateNewQues}>
-          CREATE A NEW QUESTION
+        CREATE A NEW QUESTION
       </button>
 
       <div className='display-question'>
