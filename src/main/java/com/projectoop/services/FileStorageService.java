@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.projectoop.model.Choice;
+import com.projectoop.model.ImportResult;
 import com.projectoop.model.Question;
 import com.projectoop.model.QuestionRepo;
 
@@ -35,7 +37,6 @@ import org.apache.poi.xwpf.usermodel.*;
 
 @Service
 public class FileStorageService implements IStorageService {
-
     @Autowired
     private QuestionRepo questionRepo;
 
@@ -206,7 +207,7 @@ public class FileStorageService implements IStorageService {
     }
 
     @Override
-    public String readQuestionFromFile(String fileContent, String fileName) {
+    public ImportResult readQuestionFromFile(String fileContent, String fileName) {
         String pathForFile = "http://localhost:8080/api/File/";
         int quesCount = 0;
 
@@ -279,10 +280,12 @@ public class FileStorageService implements IStorageService {
             }
         }
         if (questions == null) {
-            return "error at " + linenumber;
+            // return "error at " + linenumber;
+            ImportResult importResult = new ImportResult(linenumber, questions);
+            return importResult;
         } else {
-            questionRepo.saveAll(questions);
-            return "Success " + questions.size();
+            ImportResult importResult = new ImportResult(-1, questions);
+            return importResult;
         }
     }
 

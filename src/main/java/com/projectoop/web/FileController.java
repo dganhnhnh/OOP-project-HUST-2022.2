@@ -2,10 +2,15 @@ package com.projectoop.web;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.mp4parser.IsoFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -20,6 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.projectoop.model.Category;
+import com.projectoop.model.CategoryRepo;
+import com.projectoop.model.ImportResult;
+import com.projectoop.model.Question;
+import com.projectoop.model.QuestionRepo;
 import com.projectoop.model.ResponseObject;
 import com.projectoop.services.IStorageService;
 
@@ -29,6 +39,12 @@ import com.projectoop.services.IStorageService;
 public class FileController {
     @Autowired
     private IStorageService storageService;
+
+    @Autowired
+    private QuestionRepo questionRepo;
+
+    @Autowired
+    private CategoryRepo categoryRepo;
 
     // upload image
     @PostMapping("/uploadImage")
@@ -106,21 +122,31 @@ public class FileController {
     public ResponseEntity<?> creatQuestionFromFile(@PathVariable String fileName) {
         // if text file do this, if docx file do that
         try {
-            String reply = new String();
+            String fileText = new String();
             String fileExtention = FilenameUtils.getExtension(fileName);
             if (fileExtention.equals(new String("txt"))) {
                 byte[] fileContent = storageService.readFileContent(fileName);
-                String fileText = new String(fileContent, StandardCharsets.UTF_8);
-                reply += storageService.readQuestionFromFile(fileText, fileName);
+                fileText = new String(fileContent, StandardCharsets.UTF_8);
             } else if (fileExtention.equals(new String("docx"))) {
-
-                String fileText = storageService.readMultimediaFile(fileName);
-                reply += storageService.readQuestionFromFile(fileText, fileName);
-                // hủy comment chỗ này sau khi đã sửa xong readQuestionFromFile
-                // reply += fileText;
+                fileText = storageService.readMultimediaFile(fileName);
             }
-
-            return ResponseEntity.ok().body(reply);
+            ImportResult importResult = storageService.readQuestionFromFile(fileText, fileName);
+            if (importResult.getQuesLine() >= 0) {
+                return ResponseEntity.ok().body("Error at " + importResult.getQuesLine());
+            } else {
+                // for (Question ques : importResult.getQuesList()) {
+                // questionRepo.save(ques);
+                // Long qID = ques.getId();
+                // Optional<Category> optionalCat =
+                // categoryRepo.findById(ques.getCategory().getId());
+                // Category cat = optionalCat.orElseThrow();
+                // Set<Long> qIDSet = cat.getQuestionID();
+                // qIDSet.add(qID);
+                // cat.setQuestionID(qIDSet);
+                // categoryRepo.save(cat);
+                // }
+                return ResponseEntity.ok().body("Success " + importResult.getQuesList());
+            }
         } catch (Exception e) {
             throw new RuntimeException("Cannot read file");
         }
