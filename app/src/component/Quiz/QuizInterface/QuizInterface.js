@@ -6,13 +6,12 @@ import { NavLink, Link } from 'react-router-dom';
 const QuizInterface = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  // const [numberTime, setNumberTime] = useState("");
-  // const [time, setTime] = useState('');
   const [questionsID, setQuestionsID] = useState([]);
-  const [timeLimitDay] = useState(0);
-  const [timeOpen, setTimeOpen] = useState(null); // Default value
-  const [timeClose, setTimeClose] = useState(null); // Default value
-  const [quizAttempt, setQuizAttempt] = useState(null);
+  const [timeLimit, setTimeLimit] = useState(0);
+  const [timeOpen, setTimeOpen] = useState(""); // Default value
+  const [timeClose, setTimeClose] = useState(""); // Default value
+  const [quizAttemptID, setQuizAttemptID] = useState([]);
+  const [quizState, setQuizState] = useState(null)
   const [ongoingAttempt, setOngoingAttempt] = useState(false);
   const [quizMaxGrade, setQuizMaxGrade] = useState(0.0);
   // lấy giá trị của id từ query parameter
@@ -27,6 +26,11 @@ const QuizInterface = () => {
       .then((quiz) => {
         setName(quiz.name);
         setDescription(quiz.description);
+        setTimeLimit(quiz.timeLimit);
+        setQuizAttemptID(quiz.quizAttemptID);
+        setQuizState(quiz.quizState);
+        setOngoingAttempt(quiz.ongoingAttempt);
+        setQuizMaxGrade(quiz.quizMaxGrade);
         // Update other state variables with quiz data as needed
       })
       .catch((error) => {
@@ -43,7 +47,7 @@ const QuizInterface = () => {
       <p className='quizName'>{name}</p>
       <div className='editIcon'>{toEditingQuiz(id)}</div>
       <div className='line2'>
-        <p>Time limit: </p>
+        <p>Time limit: {timeLimit} minutes</p>
         <p>Grading method: Last attempt</p>
       </div>
 
@@ -57,8 +61,8 @@ const QuizInterface = () => {
           </tr>
         </thead>
         <tr>
-          <td>1</td>
-          <td>Mặt hàng A</td>
+          <td>Preview</td>
+          <td>Never submited</td>
 
         </tr>
 
