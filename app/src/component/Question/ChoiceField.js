@@ -24,7 +24,7 @@ function SelectBox({ id, value, onChange, options }) {
   );
 }
 
-function ChoiceField({label, text, setText, grade, setGrade, c_imageURL, setC_ImageURL}) {
+function ChoiceField({label, text, setText, grade, setGrade}) {
 
   return (
     <div className="choice-field">
@@ -34,8 +34,8 @@ function ChoiceField({label, text, setText, grade, setGrade, c_imageURL, setC_Im
           </div>
           <div className="col-80">
             <InputField
-            value={`<p>${text}</p><p><img src =${c_imageURL}></p>`}
-            
+            value={text}
+            onChange ={setText}
             />
           </div>
       </div>

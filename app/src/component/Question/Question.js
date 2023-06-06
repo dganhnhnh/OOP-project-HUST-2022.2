@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Question.css';
+import { decode } from 'html-entities';
 
 const deleteQuestion = async (id, setQuestions, questions) => {
   try {
@@ -135,7 +136,7 @@ const Question = () => {
           {renderCategoryOptions(categories, questionsByCategory)}
         </select>
       </div>
-      <div className='checkbox'>
+      <div className='checkbox-in-question'>
         <Checkbox label="Also show questions from subcategories" checked={showSubcategories} onChange={handleShowSubcategoriesChange} />
         <Checkbox label="Also show old question" checked={showOldQuestions} onChange={handleShowOldQuestionsChange} />
       </div>
@@ -155,15 +156,18 @@ const Question = () => {
               </tr>
             </thead>
             <tbody>
-              {questions.map(question => (
+            {questions.map(question => {
+              const plainText = decode(question.text).replace(/<[^>]+>/g, '');
+              return (
                 <tr key={question.id}>
-                  <td>{question.name}</td>
-                  <td class="action-btns">
+                  <td>{plainText}</td>
+                  <td className="action-btns">
                     <button className="edit-btn" onClick={() => handleEditButtonClick(question)}>Edit</button>
                     <button className="delete-btn" onClick={() => deleteQuestion(question.id, setQuestions, questions)}>Delete</button>
                   </td>
                 </tr>
-              ))}
+              );
+            })}
             </tbody>
           </table>
         ) : (

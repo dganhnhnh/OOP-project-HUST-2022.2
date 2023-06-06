@@ -27,7 +27,7 @@ p{
     font-size: 18px;
 }
 
-.checkbox{
+.checkbox-in-question{
     display: flex;
     flex-direction: column;
     font-size: 17px;

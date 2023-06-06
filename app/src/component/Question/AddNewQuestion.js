@@ -47,7 +47,6 @@ const AddNewQuestion = () => {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [defaultMark, setDefaultMark] = useState(0);
-  const [imageURL, setImageURL] = useState("");
   const [showAdditionalChoices, setShowAdditionalChoices] = useState(false);
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
@@ -55,23 +54,18 @@ const AddNewQuestion = () => {
 
   const [choice1, setChoice1] = useState("");
   const [choice1Grade, setChoice1Grade] = useState(0);
-  const [c1_imageURL, setC1_ImageURL] = useState("");
 
   const [choice2, setChoice2] = useState("");
   const [choice2Grade, setChoice2Grade] = useState(0);
-  const [c2_imageURL, setC2_ImageURL] = useState("");
 
   const [choice3, setChoice3] = useState("");
   const [choice3Grade, setChoice3Grade] = useState(0);
-  const [c3_imageURL, setC3_ImageURL] = useState("");
 
   const [choice4, setChoice4] = useState("");
   const [choice4Grade, setChoice4Grade] = useState(0);
-  const [c4_imageURL, setC4_ImageURL] = useState("");
 
   const [choice5, setChoice5] = useState("");
   const [choice5Grade, setChoice5Grade] = useState(0);
-  const [c5_imageURL, setC5_ImageURL] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8080/api/categories")
@@ -119,7 +113,6 @@ const AddNewQuestion = () => {
     const newQuestion = {
       name: name,
       text: text,
-      imageURL: imageURL,
       defaultMark: defaultMark,
       categoryID: selectedCategory,
       choices: [],
@@ -129,7 +122,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice1,
         grade: choice1Grade,
-        c_imageURL: c1_imageURL,
       });
     }
 
@@ -137,7 +129,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice2,
         grade: choice2Grade,
-        c_imageURL: c2_imageURL,
       });
     }
 
@@ -145,7 +136,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice3,
         grade: choice3Grade,
-        c_imageURL: c3_imageURL,
       });
     }
 
@@ -153,7 +143,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice4,
         grade: choice4Grade,
-        c_imageURL: c4_imageURL,
       });
     }
 
@@ -161,7 +150,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice5,
         grade: choice5Grade,
-        c_imageURL: c5_imageURL,
       });
     }
 
@@ -201,7 +189,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice1,
         grade: choice1Grade,
-        c_imageURL: c1_imageURL,
       });
     }
 
@@ -209,7 +196,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice2,
         grade: choice2Grade,
-        c_imageURL: c2_imageURL,
       });
     }
 
@@ -217,7 +203,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice3,
         grade: choice3Grade,
-        c_imageURL: c3_imageURL,
       });
     }
 
@@ -225,7 +210,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice4,
         grade: choice4Grade,
-        c_imageURL: c4_imageURL,
       });
     }
 
@@ -233,7 +217,6 @@ const AddNewQuestion = () => {
       newQuestion.choices.push({
         choiceText: choice5,
         grade: choice5Grade,
-        c_imageURL: c5_imageURL,
       });
     }
 
@@ -328,8 +311,6 @@ const AddNewQuestion = () => {
             setText={setChoice1}
             grade={choice1Grade}
             setGrade={setChoice1Grade}
-            c_imageURL={c1_imageURL}
-            setC_ImageURL={setC1_ImageURL}
           />
         </div>
 
@@ -340,8 +321,6 @@ const AddNewQuestion = () => {
             setText={setChoice2}
             grade={choice2Grade}
             setGrade={setChoice2Grade}
-            c_imageURL={c2_imageURL}
-            setC_ImageURL={setC2_ImageURL}
           />
         </div>
 
@@ -354,8 +333,6 @@ const AddNewQuestion = () => {
                 setText={setChoice3}
                 grade={choice3Grade}
                 setGrade={setChoice3Grade}
-                c_imageURL={c3_imageURL}
-                setC_ImageURL={setC3_ImageURL}
               />
             </div>
 
@@ -366,8 +343,6 @@ const AddNewQuestion = () => {
                 setText={setChoice4}
                 grade={choice4Grade}
                 setGrade={setChoice4Grade}
-                c_imageURL={c4_imageURL}
-                setC_ImageURL={setC4_ImageURL}
               />
             </div>
 
@@ -378,8 +353,6 @@ const AddNewQuestion = () => {
                 setText={setChoice5}
                 grade={choice5Grade}
                 setGrade={setChoice5Grade}
-                c_imageURL={c5_imageURL}
-                setC_ImageURL={setC5_ImageURL}
               />
             </div>
           </>

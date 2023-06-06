@@ -36,7 +36,7 @@ class Initializer implements CommandLineRunner {
 
         // TODO: category init only "Default"
         // FROM HERE
-        /* 
+         /* 
          Stream.of("Default","Kien truc may tinh", "OOP","CSDL")
          .forEach(name ->
              categoryRepo.save(new Category(name))
