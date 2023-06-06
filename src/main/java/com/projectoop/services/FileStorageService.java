@@ -51,7 +51,7 @@ public class FileStorageService implements IStorageService {
 
     private boolean isImageFile(MultipartFile file) {
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-        return Arrays.asList(new String[] { "png", "jpg", "jpeg", "bmp" })
+        return Arrays.asList(new String[] { "png", "jpg", "jpeg", "bmp", "gif" })
                 .contains(fileExtension.trim().toLowerCase());
     }
 
@@ -59,6 +59,32 @@ public class FileStorageService implements IStorageService {
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
         return Arrays.asList(new String[] { "txt", "docx" })
                 .contains(fileExtension.trim().toLowerCase());
+    }
+
+    private boolean isVideo(MultipartFile file) {
+        String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+        return Arrays.asList(new String[] { "mp4" })
+                .contains(fileExtension.trim().toLowerCase());
+    }
+
+    private String renameFile(MultipartFile file) {
+
+        String fileExtention = FilenameUtils.getExtension(file.getOriginalFilename());
+        String generatedFileName = UUID.randomUUID().toString().replace("-", "");
+        generatedFileName = generatedFileName + "." + fileExtention;
+        Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName))
+                .normalize().toAbsolutePath();
+        if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())) {
+            throw new RuntimeException();
+        }
+        // copy to destination file path
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+        return generatedFileName;
+
     }
 
     @Override
@@ -71,21 +97,8 @@ public class FileStorageService implements IStorageService {
             if (!isImageFile(file)) {
                 throw new RuntimeException("You can upload only image file");
             }
-            // rename file
-            String fileExtention = FilenameUtils.getExtension(file.getOriginalFilename());
-            String generatedFileName = UUID.randomUUID().toString().replace("-", "");
-            generatedFileName = generatedFileName + "." + fileExtention;
-            Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName))
-                    .normalize().toAbsolutePath();
-            if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())) {
-                throw new RuntimeException();
-            }
-            // copy to destination file path
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
-            }
-            return generatedFileName;
-
+            String imageName = renameFile(file);
+            return imageName;
         } catch (Exception exception) {
             throw new RuntimeException();
         }
@@ -108,20 +121,24 @@ public class FileStorageService implements IStorageService {
                 throw new RuntimeException("File must be <=100Mb");
             }
             // rename file
-            String fileExtention = FilenameUtils.getExtension(file.getOriginalFilename());
-            String generatedFileName = UUID.randomUUID().toString().replace("-", "");
-            generatedFileName = generatedFileName + "." + fileExtention;
-            Path destinationFilePath = this.storageFolder.resolve(Paths.get(generatedFileName))
-                    .normalize().toAbsolutePath();
+            String textName = renameFile(file);
+            return textName;
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+    }
 
-            if (!destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath())) {
-                throw new RuntimeException();
+    @Override
+    public String storeVideoFile(MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                throw new RuntimeException("Cannot upload file");
             }
-            // copy to destination file path
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
+            if (!isVideo(file)) {
+                throw new RuntimeException("You can upload only video file");
             }
-            return generatedFileName;
+            String videoName = renameFile(file);
+            return videoName;
         } catch (Exception exception) {
             throw new RuntimeException();
         }
@@ -138,19 +155,20 @@ public class FileStorageService implements IStorageService {
             } else {
                 throw new RuntimeException();
             }
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new RuntimeException();
         }
     }
 
     public String readMultimediaFile(String fileName) {
-        String fileText=new String();
+        String fileText = new String();
 
         try {
-            // ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContentBytes);
+            // ByteArrayInputStream inputStream = new
+            // ByteArrayInputStream(fileContentBytes);
 
             Path path = storageFolder.resolve(fileName);
-		    byte[] byteData = Files.readAllBytes(path);
+            byte[] byteData = Files.readAllBytes(path);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(byteData);
 
             XWPFDocument document = new XWPFDocument(inputStream);
@@ -171,13 +189,13 @@ public class FileStorageService implements IStorageService {
 
                         // image file rename
                         String imgFileName = new String("DocxIm_");
-                        imgFileName += fileName + "_img_"+imgId+".png";
+                        imgFileName += fileName + "_img_" + imgId + ".png";
                         Path destinationFilePath = this.storageFolder.resolve(Paths.get(imgFileName))
                                 .normalize().toAbsolutePath();
                         File imageFile = new File(destinationFilePath.toString());
                         ImageIO.write(image, "png", imageFile);
-                        imgId ++;
-                    } 
+                        imgId++;
+                    }
                 }
             }
             document.close();
@@ -209,7 +227,7 @@ public class FileStorageService implements IStorageService {
         int k = 0; // biến đếm số đáp án
 
         Question question = new Question();
-        
+
         for (int i = 0; i < linescount; i++) {
             String nowline = lines[i].trim();
             linenumber++;
@@ -242,7 +260,7 @@ public class FileStorageService implements IStorageService {
                         choices.set(j, new Choice(anscontent[j], 1.0f));
                 }
                 question.setChoices(choices);
-                question.setImageURL(pathForFile+"Image/DocxIm_"+fileName + "_img_"+quesCount+".png");
+                question.setImageURL(pathForFile + "Image/DocxIm_" + fileName + "_img_" + quesCount + ".png");
                 quesCount++;
 
                 questions.add(question);
@@ -267,4 +285,15 @@ public class FileStorageService implements IStorageService {
             return "Success " + questions.size();
         }
     }
+
+    @Override
+    public void deleteUploadedFile(String fileName) {
+        try {
+            Path file = storageFolder.resolve(fileName);
+            Files.deleteIfExists(file);
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+    }
+
 }
