@@ -18,7 +18,10 @@
 .list {
 	margin-top: -10px;
 }
-
+.selected-menu{
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
 .list li {
 	border-bottom: 2px solid #e8eef6;
 	margin-top: -40px;
@@ -154,6 +157,6 @@
 }
 
 /*-----------------------------------*/
-.timeOpen{
+.timeOpen {
 	margin-left: 200px !important;
 }

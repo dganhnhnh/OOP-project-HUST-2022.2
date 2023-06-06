@@ -1,39 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Category.css";
 import { FaChevronDown } from "react-icons/fa";
-
-
-function renderCategoryOptions(categories, questionsByCategory, level = 0) {
-  const options = [];
-
-  categories.forEach(category => {
-    const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
-
-    const questions = questionsByCategory[category.id] || [];
-    if(!isSubcategory)
-    options.push(
-      <option key={category.id} value={category.id}>
-        {category.name} ({questions.length})
-      </option>
-    );
-
-    if (!isSubcategory) {
-      const subcategories = categories.filter(c => c.parentId === category.id);
-
-      subcategories.forEach(subcategory => {
-        const subQuestions = questionsByCategory[subcategory.id] || [];
-
-        options.push(
-          <option key={subcategory.id} value={subcategory.id}>
-            { '\u00A0'.repeat(level + 5) + subcategory.name }({subQuestions.length})
-          </option>
-        );
-      });
-    }
-  });
-
-  return options;
-}
+import SelectCategory from "../Category/SelectCategory";
 
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -41,39 +9,6 @@ const Categories = () => {
   const [info, setInfo] = useState("");
   const [categories, setCategories] = useState([]);
   const [questionsByCategory, setQuestionsByCategory] = useState({});
-
-  useEffect(() => {
-    // lấy danh sách các category
-    fetch('http://localhost:8080/api/categories')
-      .then(response => response.json())
-      .then(categories => {
-        const subcategories = categories.flatMap(category => category.subCatID.map(subcatID => ({
-          ...categories.find(c => c.id === subcatID),
-          parentId: category.id
-        })));
-        const allCategories = subcategories.concat(categories);
-        setCategories(allCategories);
-        Promise.all(allCategories.map(category => {
-          const url = `http://localhost:8080/api/category/${category.id}/questions?show_from_subcategory=true`;
-          return fetch(url)
-            .then(response => response.json())
-            .then(questions => ({ categoryId: category.id, questions }));
-        })).then(results => {
-          const newQuestionsByCategory = {};
-          results.forEach(({ categoryId, questions }) => {
-            newQuestionsByCategory[categoryId] = questions;
-          });
-          setQuestionsByCategory(newQuestionsByCategory);
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
-
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -119,12 +54,14 @@ const Categories = () => {
           <p>Parent category</p>
         </div>
         <div className="col-60">
-          <select
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            {renderCategoryOptions(categories, questionsByCategory)}
-          </select>
+        <SelectCategory
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          categories={categories}
+          setCategories={setCategories}
+          questionsByCategory={questionsByCategory}
+          setQuestionsByCategory={setQuestionsByCategory}
+        />
         </div>
       </div>
 

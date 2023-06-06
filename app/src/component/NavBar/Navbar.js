@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import DropDownMenu from '../DropDownMenu/DropDownMenu';
+import PopUpMenu from '../DropDownMenu/PopUpMenu';
 const Navbar = () => {
 	const location = useLocation();
 	return (
@@ -8,7 +8,7 @@ const Navbar = () => {
 				<div className ='navbar_text'>
 					<p> IT </p>
 				</div>
-				<DropDownMenu />
+				<PopUpMenu />
 				<div className="navbar_menu">
 					<ul className='menu'>
 						<li>

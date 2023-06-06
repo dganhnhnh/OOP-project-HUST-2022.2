@@ -1,23 +1,33 @@
 .MyCourse {
+	border: 1px solid #ccc;
+	padding: 20px;
 	margin-top: 20px;
-	padding-bottom: 300px;
-
-	border: 1px solid black;
-}
-
-.MyCourse a {
+	border-radius: 5px;
+  }
+  
+  .listquizs {
+	margin-top:30px;
+	display: flex;
+	align-items: center;
+  }
+  
+  .listquizs svg {
+	margin-right: 10px;
+	font-size: 20px;
+  }
+  
+  .listquizs a {
+	
+	font-size: 25px;
 	text-decoration: none;
-}
-
-.listquizs {
-	margin-top: -40px;
-	padding-left: 20px;
-	margin-top: 50px;
-
-}
-
-.listquizs p {
-	padding-left: 20px;
-	margin-top: 10px;
-	text-decoration: none;
-}
+	color: #313030;
+	margin-right: 10px;
+  }
+  
+  .trash-icon {
+	cursor: pointer;
+	font-size: 20px;
+	color: #333;
+	margin-left: auto;
+  }
+  

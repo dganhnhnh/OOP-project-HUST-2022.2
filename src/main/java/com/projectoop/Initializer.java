@@ -1,12 +1,14 @@
 package com.projectoop;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Choice;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
 import com.projectoop.model.Quiz;
-import com.projectoop.model.QuizRepo;
+import com.projectoop.model.QuizAttempt;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
+import com.projectoop.services.QuizAttemptRepo;
+import com.projectoop.services.QuizRepo;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -24,11 +27,13 @@ class Initializer implements CommandLineRunner {
     private final CategoryRepo categoryRepo;
     private final QuestionRepo questionRepo;
     private final QuizRepo quizRepo;
+    private final QuizAttemptRepo quizAttemptRepo;
 
-    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo) {
+    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo, QuizAttemptRepo quizAttemptRepo) {
         this.categoryRepo = categoryRepo;
         this.questionRepo = questionRepo;
         this.quizRepo = quizRepo;
+        this.quizAttemptRepo = quizAttemptRepo;
     }
 
     @Override

@@ -3,22 +3,34 @@ import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import { RiNewspaperLine } from 'react-icons/ri';
 import { RxTriangleDown } from 'react-icons/rx';
 import Datetime from "react-datetime";
+import { DatetimepickerProps } from "react-datetime";
 import "react-datetime/css/react-datetime.css"
 import './NewQuiz.css';
-
+import moment from "moment";
 
 const NewQuiz = () => {
 
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [check, setCheck] = useState("")
-	const [numberTime, setNumberTime] = useState("");
-	const [time, setTime] = useState('');
-	const [timeOpen, setTimeOpen] = useState("2023-06-05T00:00:00Z"); // Default value
-	const [timeClose, setTimeClose] = useState("2023-06-06T23:59:59Z"); // Default value
+	const [questionsID, setQuestionsID] = useState([]);
+	const [timeLimit, setTimeLimit] = useState(0);
+	const [timeOpen, setTimeOpen] = useState(""); // Default value
+	const [timeClose, setTimeClose] = useState(""); // Default value
+	const [quizAttemptID, setQuizAttemptID] = useState([]);
+	const [quizState, setQuizState] = useState(null)
+	const [ongoingAttempt, setOngoingAttempt] = useState(false);
+	const [quizMaxGrade, setQuizMaxGrade] = useState(0.0);
 	const [isEnabled, setIsEnabled] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [check, setCheck] = useState(true)
 
+	function handleTimeOpenChange(event) {
+		setTimeOpen(event.target.value);
+	}
+
+	function handleTimeCloseChange(event) {
+		setTimeClose(event.target.value);
+	}
 
 	//general
 	const handleChangeCheck = (data) => {
@@ -33,14 +45,15 @@ const NewQuiz = () => {
 	const handleCancel = () => {
 		setName = ("");
 		setDescription = ("");
-		setNumberTime = ("");
-		setTime = ("")
+		setTimeOpen = (null);
+		setTimeClose = (null);
+		setTimeLimit = ("");
 	}
 
 	const handleSave = async (e) => {
 		e.preventDefault();
 		// Check if any input field is empty
-		if (!name || !description || !numberTime || !time)
+		if (!name || !timeClose || !timeOpen || !timeLimit)
 		{
 			alert("Please fill out all fields before submitting.");
 			return;
@@ -49,15 +62,14 @@ const NewQuiz = () => {
 		const NewQuiz = {
 			name,
 			description,
-			numberTime,
-			time,
-			"questionsID": [],
-			"timeLimitDay": 0,
-			"timeOpen": null,
-			"timeClose": null,
-			"quizAttemp": null,
-			"quizState": null,
-			"quizMaxGrade": 0.0
+			questionsID,
+			timeLimit,
+			timeOpen,
+			timeClose,
+			quizAttemptID,
+			quizState,
+			ongoingAttempt,
+			quizMaxGrade
 		};
 
 		try
@@ -87,8 +99,9 @@ const NewQuiz = () => {
 		// reset form
 		setName = ("");
 		setDescription = ("");
-		setNumberTime = ("");
-		setTime = ("")
+		setTimeOpen = (null);
+		setTimeClose = (null);
+		setTimeLimit = ("");
 	}
 
 	return (
@@ -117,32 +130,29 @@ const NewQuiz = () => {
 
 					<label htmlFor="TimeOpenQuiz">
 						Time Open:
-						<Datetime
-							className="form TimeOpen"
+						<input
+							id="TimeOpenQuiz"
+							type="datetime-local"
+							name="partydate"
 							value={timeOpen}
-							onChange={(date) => isEnabled && setTimeOpen(date.format())}
-							dateFormat="YYYY-MM-DD"
-							timeFormat="HH:mm:ss"
-							inputProps={{ disabled: !isEnabled, placeholder: 'Select time open...', readOnly: true }}
+							onChange={handleTimeOpenChange}
 						/>
 					</label>
+
 					<label htmlFor="TimeCloseQuiz">
 						Time Close:
-						<Datetime
-							className="form TimeClose"
+						<input
+							id="TimeCloseQuiz"
+							type="datetime-local"
+							name="partydate"
 							value={timeClose}
-							onChange={(date) => isEnabled && setTimeClose(date.format())}
-							dateFormat="YYYY-MM-DD"
-							timeFormat="HH:mm:ss"
-							inputProps={{ disabled: !isEnabled, placeholder: 'Select time close...', readOnly: true }}
+							onChange={handleTimeCloseChange}
 						/>
 					</label>
 					<label htmlFor="TimeLimit">
-						Timelimit: <input type="number" className="timeNumber" value={numberTime} onChange={(e) => setNumberTime(e.target.value)}></input>
-						<select className="selectedTime" onChange={(e) => setTime(e.target.value)}>
+						Timelimit: <input type="number" className="timeNumber" value={timeLimit} onChange={(e) => setTimeLimit(e.target.value)}></input>
+						<select className="selectedTime" >
 							<option value="Minutes">Minutes</option>
-							<option value="Hours">Hours</option>
-							<option value="Day">Day</option>
 						</select>
 					</label>
 					<div className="button">

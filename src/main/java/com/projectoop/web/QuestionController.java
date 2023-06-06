@@ -2,10 +2,10 @@ package com.projectoop.web;
 
 import com.itextpdf.text.DocumentException;
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.PDFGenerator;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept","Access-Control-Allow-Origin"})
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept",
+        "Access-Control-Allow-Origin" })
 @RestController
 @RequestMapping("/api")
 class QuestionController {
@@ -160,4 +161,5 @@ class QuestionController {
         generator.generate(response);
     }
 
+    
 }

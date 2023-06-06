@@ -27,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.projectoop.model.Choice;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;

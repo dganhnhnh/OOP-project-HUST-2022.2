@@ -2,9 +2,6 @@ package com.projectoop.model;
 
 import java.util.ArrayList;
 import java.util.List;
-// import org.json.simple.JSONObject;
-
-//import com.itextpdf.text.Element;
 
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
