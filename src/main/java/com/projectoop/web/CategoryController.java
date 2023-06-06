@@ -1,9 +1,9 @@
 package com.projectoop.web;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept"})
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 class CategoryController {
@@ -76,7 +76,8 @@ class CategoryController {
             for(int i=0; i<qIDList.size(); i++){
                 Optional<Question> a = questionRepo.findById(qIDList.get(i));
                 Question b = a.orElseThrow();
-                b.setCategory(null);
+                b.setCategoryID(null);
+                //TODO đưa categoryID về 1 mục mặc định "default" id=1
                 // questionRepo.deleteById(qIDList.get(i));
             }
         }

@@ -32,7 +32,7 @@ public class Category {
     private Set<Long> subCatID;
     //change to List? nullable? can be pushed to?
 
-    private String parent;
+    private Long parentID; 
 
     @ElementCollection (fetch = FetchType.EAGER)
     private Set<Long> questionID;

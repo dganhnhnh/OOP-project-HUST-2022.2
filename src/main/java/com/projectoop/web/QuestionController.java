@@ -2,10 +2,10 @@ package com.projectoop.web;
 
 import com.itextpdf.text.DocumentException;
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.PDFGenerator;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
+import com.projectoop.services.CategoryRepo;
+import com.projectoop.services.QuestionRepo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +105,7 @@ class QuestionController {
         Question result = questionRepo.save(ques);
 
         Long qID = ques.getId();
-        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategory().getId());
+        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
         Category cat = optionalCat.orElseThrow();
         Set<Long> qIDSet = cat.getQuestionID();
         qIDSet.add(qID);
@@ -131,15 +131,14 @@ class QuestionController {
 
         Optional<Question> question = questionRepo.findById(id);
         Question ques = question.orElseThrow();
-        if (ques.getCategory() != null) {
-            Optional<Category> optionalCat = categoryRepo.findById(ques.getCategory().getId());
-            Category cat = optionalCat.orElseThrow();
-            Set<Long> qIDSet = cat.getQuestionID();
-            log.info("set of qID: {}", qIDSet);
-            qIDSet.remove(id);
-            cat.setQuestionID(qIDSet);
-            categoryRepo.save(cat);
-        }
+
+        Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
+        Category cat = optionalCat.orElseThrow();
+        Set<Long> qIDSet = cat.getQuestionID();
+        log.info("set of qID: {}", qIDSet);
+        qIDSet.remove(id);
+        cat.setQuestionID(qIDSet);
+        categoryRepo.save(cat);
 
         questionRepo.deleteById(id);
         return ResponseEntity.ok().build();

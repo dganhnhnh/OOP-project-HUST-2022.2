@@ -1,4 +1,17 @@
 {
+<<<<<<< HEAD
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ProjectOopApplication",
+            "request": "launch",
+            "mainClass": "com.projectoop.ProjectOopApplication",
+            "projectName": "project-oop"
+=======
     "configurations": [
         {
             "type": "java",
@@ -9,6 +22,7 @@
             "projectName": "project-oop",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+>>>>>>> 73b88983f77f38ef7545a3ebee95609ba04d286b
         }
     ]
 }

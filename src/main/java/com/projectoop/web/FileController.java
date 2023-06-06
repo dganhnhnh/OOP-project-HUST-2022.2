@@ -26,12 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.projectoop.model.Category;
-import com.projectoop.model.CategoryRepo;
+//import com.projectoop.model.CategoryRepo;
 import com.projectoop.model.ImportResult;
 import com.projectoop.model.Question;
-import com.projectoop.model.QuestionRepo;
+//import com.projectoop.model.QuestionRepo;
 import com.projectoop.model.ResponseObject;
+import com.projectoop.services.CategoryRepo;
 import com.projectoop.services.IStorageService;
+import com.projectoop.services.QuestionRepo;
 
 @CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept" })
 @Controller
@@ -119,33 +121,43 @@ public class FileController {
     }
 
     @GetMapping("/createQuestion/{fileName:.+}")
-    public ResponseEntity<?> creatQuestionFromFile(@PathVariable String fileName) {
+    public ResponseEntity<?> creatQuestionFromFile(@RequestParam("categoryID") Long categoryID,
+            @PathVariable String fileName) {
         // if text file do this, if docx file do that
         try {
             String fileText = new String();
+            ImportResult importResult = new ImportResult(0, null);
             String fileExtention = FilenameUtils.getExtension(fileName);
             if (fileExtention.equals(new String("txt"))) {
                 byte[] fileContent = storageService.readFileContent(fileName);
                 fileText = new String(fileContent, StandardCharsets.UTF_8);
+                importResult = storageService.readQuestionFromFile(fileText, fileName);
+                if (importResult.getQuesLine() < 0) {
+                    for (Question question : importResult.getQuesList()) {
+                        question.setImageURL(null);
+                    }
+                }
             } else if (fileExtention.equals(new String("docx"))) {
                 fileText = storageService.readMultimediaFile(fileName);
+                importResult = storageService.readQuestionFromFile(fileText, fileName);
             }
-            ImportResult importResult = storageService.readQuestionFromFile(fileText, fileName);
             if (importResult.getQuesLine() >= 0) {
                 return ResponseEntity.ok().body("Error at " + importResult.getQuesLine());
             } else {
-                // for (Question ques : importResult.getQuesList()) {
-                // questionRepo.save(ques);
-                // Long qID = ques.getId();
-                // Optional<Category> optionalCat =
-                // categoryRepo.findById(ques.getCategory().getId());
-                // Category cat = optionalCat.orElseThrow();
-                // Set<Long> qIDSet = cat.getQuestionID();
-                // qIDSet.add(qID);
-                // cat.setQuestionID(qIDSet);
-                // categoryRepo.save(cat);
-                // }
-                return ResponseEntity.ok().body("Success " + importResult.getQuesList());
+                List<Question> quesToSave = new ArrayList<>();
+                for (Question ques : importResult.getQuesList()) {
+                    questionRepo.save(ques);
+                    quesToSave.add(ques);
+                    Long qID = ques.getId();
+                    ques.setCategoryID(categoryID);
+                    Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
+                    Category cat = optionalCat.orElseThrow();
+                    Set<Long> qIDSet = cat.getQuestionID();
+                    qIDSet.add(qID);
+                    cat.setQuestionID(qIDSet);
+                    categoryRepo.save(cat);
+                }
+                return ResponseEntity.ok().body("Success " + quesToSave.size());
             }
         } catch (Exception e) {
             throw new RuntimeException("Cannot read file");
