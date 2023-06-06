@@ -6,11 +6,11 @@ const MyEditor = ({text, setText}) => {
 
   const handleVideoUpload = (blobInfo, cb) => {
     var xhr, formData;
-    const endPoint = "http://localhost:8080/api/File/Image/";
+    const endPoint = "http://localhost:8080/api/File/video/";
   
     xhr = new XMLHttpRequest();
     xhr.withCredentials = false;
-    xhr.open('POST', 'http://localhost:8080/api/File/uploadImage');
+    xhr.open('POST', 'http://localhost:8080/api/File/uploadVideo');
   
     xhr.onload = function () {
       var res;
@@ -20,16 +20,15 @@ const MyEditor = ({text, setText}) => {
         return;
       }
   
-      res = JSON.parse(xhr.responseText);
-      cb(endPoint + res.fileName);
+      res = xhr.responseText;
+      console.log(res);
+      cb(endPoint + res);
     };
   
     formData = new FormData();
     formData.append('video', blobInfo.blob, blobInfo.filename);
-  
     xhr.send(formData);
   };
-  
   
   const handleImageUpload = (blobInfo, success) => {
     var xhr, formData;
