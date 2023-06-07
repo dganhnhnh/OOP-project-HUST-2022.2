@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 @Component
 class Initializer implements CommandLineRunner {
     private final CategoryRepo categoryRepo;
@@ -29,7 +32,8 @@ class Initializer implements CommandLineRunner {
     private final QuizRepo quizRepo;
     private final QuizAttemptRepo quizAttemptRepo;
 
-    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo, QuizAttemptRepo quizAttemptRepo) {
+    public Initializer(CategoryRepo categoryRepo, QuestionRepo questionRepo, QuizRepo quizRepo,
+            QuizAttemptRepo quizAttemptRepo) {
         this.categoryRepo = categoryRepo;
         this.questionRepo = questionRepo;
         this.quizRepo = quizRepo;

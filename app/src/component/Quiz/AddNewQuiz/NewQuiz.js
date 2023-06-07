@@ -131,7 +131,7 @@ const NewQuiz = () => {
 					<label htmlFor="TimeOpenQuiz">
 						Time Open:
 						<input
-							id="TimeOpenQuiz"
+							className="TimeOpenQuiz"
 							type="datetime-local"
 							name="partydate"
 							value={timeOpen}
@@ -142,7 +142,7 @@ const NewQuiz = () => {
 					<label htmlFor="TimeCloseQuiz">
 						Time Close:
 						<input
-							id="TimeCloseQuiz"
+							className="TimeCloseQuiz"
 							type="datetime-local"
 							name="partydate"
 							value={timeClose}
