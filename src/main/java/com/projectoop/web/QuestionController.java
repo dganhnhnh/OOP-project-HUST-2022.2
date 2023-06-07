@@ -28,8 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept",
-        "Access-Control-Allow-Origin" })
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 class QuestionController {
@@ -148,7 +147,7 @@ class QuestionController {
     // de tam nao chuyen sang quiz
     @GetMapping("/ExportToPDF")
     public void generatePdf(HttpServletResponse response) throws DocumentException, IOException {
-        response.setContentType("application/pdf");
+        response.setContentType(null);
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
         String currentDateTime = dateFormat.format(new Date());
         String headerkey = "Content-Disposition";

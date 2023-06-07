@@ -73,6 +73,7 @@ const Import = () => {
    }
    const handleCategoryChange = event => {
       setSelectedCategory(event.target.value);
+      console.log(selectedCategory);
    };
 
    const handleFileChange = async (e) => {
@@ -124,7 +125,7 @@ const Import = () => {
             try
             {
                // Replace this URL with your server-side endpoint for handling file uploads
-               const response = await fetch(`http://localhost:8080/api/File/createQuestion/${uploadedFileName}?categoryID=${selectedCategory.id}`, {
+               const response = await fetch(`http://localhost:8080/api/File/createQuestion/${uploadedFileName}?categoryID=${selectedCategory}`, {
                   method: "GET",
 
                })

@@ -1,9 +1,18 @@
 package com.projectoop.web;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
+import org.mp4parser.IsoFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +25,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.projectoop.model.Category;
+//import com.projectoop.model.CategoryRepo;
+import com.projectoop.model.ImportResult;
+import com.projectoop.model.Question;
+//import com.projectoop.model.QuestionRepo;
+import com.projectoop.model.ResponseObject;
+import com.projectoop.services.CategoryRepo;
 import com.projectoop.services.IStorageService;
+import com.projectoop.services.QuestionRepo;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept","Access-Control-Allow-Origin" })
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept",
+        "Access-Control-Allow-Origin" })
 @Controller
 @RequestMapping(path = "/api/File")
 public class FileController {
     @Autowired
     private IStorageService storageService;
+
+    @Autowired
+    private QuestionRepo questionRepo;
+
+    @Autowired
+    private CategoryRepo categoryRepo;
 
     // upload image
     @PostMapping("/uploadImage")
@@ -32,7 +56,8 @@ public class FileController {
             String generatedFileName = storageService.storeImageFile(file);
             return ResponseEntity.status(HttpStatus.OK).body(generatedFileName);
         } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("ok", "you can upload only image/gif file", ""));
         }
     }
 
@@ -46,7 +71,41 @@ public class FileController {
         } catch (Exception exception) {
             return ResponseEntity.noContent().build();
         }
-        // http://localhost:8080/api/File/Image/6e3660550e6a482d94dc388a82dcc857.png
+    }
+
+    // upload video file
+    @PostMapping("/uploadVideo")
+    public ResponseEntity<?> upLoadVideo(@RequestParam("video") MultipartFile file) {
+        try {
+            String generatedFileName = storageService.storeVideoFile(file);
+            File newfile = new File(System.getProperty("java.io.tmpdir") + "/" +
+                    file.getOriginalFilename());
+            file.transferTo(newfile);
+            IsoFile isoFile = new IsoFile(newfile);
+            double actualVideoDurationInSeconds = (double) isoFile.getMovieBox().getMovieHeaderBox().getDuration() /
+                    isoFile.getMovieBox().getMovieHeaderBox().getTimescale();
+            isoFile.close();
+            if (actualVideoDurationInSeconds > 10 || actualVideoDurationInSeconds < 1) {
+                storageService.deleteUploadedFile(generatedFileName);
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                        new ResponseObject("ok", "You can upload only 1-10s video", ""));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(generatedFileName);
+            }
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("ok", "You can upload only video file", ""));
+        }
+    }
+
+    // get video's url
+    @GetMapping("/video/{fileName:.+}")
+    public ResponseEntity<Resource> getVideoByName(@PathVariable("fileName") String fileName) {
+        byte[] bytes = storageService.readFileContent(fileName);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new ByteArrayResource(bytes));
     }
 
     // upload textfile
@@ -57,30 +116,50 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.OK).body(generatedTextName);
 
         } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ResponseObject("ok", "You can upload only text file", file));
         }
     }
 
     @GetMapping("/createQuestion/{fileName:.+}")
-    public ResponseEntity<?> creatQuestionFromFile(@PathVariable String fileName) {
-        // if text file do this, if docx file do that 
+    public ResponseEntity<?> creatQuestionFromFile(@RequestParam("categoryID") Long categoryID,
+            @PathVariable String fileName) {
+        // if text file do this, if docx file do that
         try {
-            String reply = new String();
+            String fileText = new String();
+            ImportResult importResult = new ImportResult(0, null);
             String fileExtention = FilenameUtils.getExtension(fileName);
-            if(fileExtention.equals(new String("txt"))){
+            if (fileExtention.equals(new String("txt"))) {
                 byte[] fileContent = storageService.readFileContent(fileName);
-                String fileText = new String(fileContent, StandardCharsets.UTF_8);
-                reply += storageService.readQuestionFromFile(fileText, fileName);
+                fileText = new String(fileContent, StandardCharsets.UTF_8);
+                importResult = storageService.readQuestionFromFile(fileText, fileName);
+                if (importResult.getQuesLine() < 0) {
+                    for (Question question : importResult.getQuesList()) {
+                        question.setImageURL(null);
+                    }
+                }
+            } else if (fileExtention.equals(new String("docx"))) {
+                fileText = storageService.readMultimediaFile(fileName);
+                importResult = storageService.readQuestionFromFile(fileText, fileName);
             }
-            else if(fileExtention.equals(new String("docx"))){
-
-                String fileText = storageService.readMultimediaFile(fileName);
-                reply += storageService.readQuestionFromFile(fileText, fileName);
-                // hủy comment chỗ này sau khi đã sửa xong readQuestionFromFile
-                // reply += fileText;
+            if (importResult.getQuesLine() >= 0) {
+                return ResponseEntity.ok().body("Error at " + importResult.getQuesLine());
+            } else {
+                List<Question> quesToSave = new ArrayList<>();
+                for (Question ques : importResult.getQuesList()) {
+                    questionRepo.save(ques);
+                    quesToSave.add(ques);
+                    Long qID = ques.getId();
+                    ques.setCategoryID(categoryID);
+                    Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
+                    Category cat = optionalCat.orElseThrow();
+                    Set<Long> qIDSet = cat.getQuestionID();
+                    qIDSet.add(qID);
+                    cat.setQuestionID(qIDSet);
+                    categoryRepo.save(cat);
+                }
+                return ResponseEntity.ok().body("Success " + quesToSave.size());
             }
-
-            return ResponseEntity.ok().body(reply);
         } catch (Exception e) {
             throw new RuntimeException("Cannot read file");
         }

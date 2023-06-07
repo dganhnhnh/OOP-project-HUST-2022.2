@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 @Component
 class Initializer implements CommandLineRunner {
     private final CategoryRepo categoryRepo;
@@ -41,10 +44,10 @@ class Initializer implements CommandLineRunner {
     public void run(String... strings) {
 
         // Stream.of("Kien truc may tinh", "OOP", "Ky thuat lap trinh", "CSDL")
-        //         .forEach(name -> categoryRepo.save(new Category(name)));
+        // .forEach(name -> categoryRepo.save(new Category(name)));
 
         // Stream.of("Question 1", "Question 2", "mot cong ba bang may")
-        //         .forEach(text -> questionRepo.save(new Question(text)));
+        // .forEach(text -> questionRepo.save(new Question(text)));
 
         // Question question1 = questionRepo.findByText("Question 1");
         // Category e = categoryRepo.findByName("OOP");

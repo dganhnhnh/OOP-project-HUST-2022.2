@@ -1,0 +1,11 @@
+mot cong mot bang may
+A. 1
+ANSWER: A
+
+mot cong ba bang may
+A. 4
+B. 6
+ANSWER: A
+
+
+
