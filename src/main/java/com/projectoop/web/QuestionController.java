@@ -161,5 +161,4 @@ class QuestionController {
         generator.generate(response);
     }
 
-    
 }
