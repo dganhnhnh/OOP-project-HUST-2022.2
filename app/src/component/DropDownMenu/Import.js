@@ -109,24 +109,25 @@ const Import = () => {
       }
       const formData = new FormData();
       formData.append("text", file);
-      formData.append("category", selectedCategory);
+      formData.append("categoryId", selectedCategory);
       try
       {
          // Replace this URL with your server-side endpoint for handling file uploads
          const response = await fetch("http://localhost:8080/api/File/uploadTextFile", {
             method: "POST",
-            body: formData
+         
          });
          const uploadedFileName = await response.text();
          if (response.ok)
          {
             alert("File upload is successfully");
-            console.log(uploadedFileName);
+            console.log(uploadedFileName)
             try
             {
                // Replace this URL with your server-side endpoint for handling file uploads
                const response = await fetch(`http://localhost:8080/api/File/createQuestion/${uploadedFileName}`, {
-                  method: "GET"
+                  method: "GET",
+
                })
                const data = await response.text();
                if (response.ok)
