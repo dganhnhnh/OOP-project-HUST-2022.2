@@ -44,9 +44,9 @@ function PopUpMenu() {
           <div className="popup-menu">
             <div className="popup-header">
               <h3>Question Bank</h3>
-              <div className="popup-close" onClick={closeMenu}>
-                <FaTimes />
-              </div>
+              <button className="closeButton" onClick={closeMenu}>
+              x
+            </button>
             </div>
             <div className="popup-items">
               <NavLink to="/Question" onClick={closeMenu} className="popup-item">

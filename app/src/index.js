@@ -19,6 +19,7 @@ import NewQuiz from './component/Quiz/AddNewQuiz/NewQuiz';
 import EditingQuiz from './component/Quiz/EditingQuiz/EditingQuiz'
 import QuestionBank from './component/Quiz/AddQuestion/QuestionBank/QuestionBank';
 import RandomQuestion from './component/Quiz/AddQuestion/RandomQuestion/RandomQuestion';
+import PreviewQuiz from './component/Quiz/PreviewQuiz/PreviewQuiz';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -32,9 +33,7 @@ root.render(
           <Route exact path='/EditingQuiz' element={<EditingQuiz />} />
           <Route exact path='/QuestionBank' element={<QuestionBank />} />
           <Route exact path='/RandomQuestion' element={<RandomQuestion />} />
-
           <Route exact path='/Thicuoiki' element={<Thicuoiki />} />
-
           <Route path='/EditQuestion' element={<EditQuestion />} />
           <Route path='/AddNewQuestion' element={<AddNewQuestion />} />
           <Route path='/' element={<Navigation />}>
@@ -43,8 +42,8 @@ root.render(
             <Route path='/Import' element={<Import />} />
             <Route path='/Export' element={<Export />} />
           </Route>
-
           <Route path='/Addnewquiz' element={<NewQuiz />} />
+          <Route path='/PreviewQuiz' element={<PreviewQuiz/>} />
         </Route>
 
       </Routes>

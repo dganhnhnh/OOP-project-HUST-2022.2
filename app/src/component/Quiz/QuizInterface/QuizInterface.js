@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./QuizInterface.css";
 import { AiFillSetting } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link} from "react-router-dom";
+
 const QuizInterface = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -15,6 +16,8 @@ const QuizInterface = () => {
   const [ongoingAttempt, setOngoingAttempt] = useState(false);
   const [quizMaxGrade, setQuizMaxGrade] = useState(0.0);
   const [showPreviewPopup, setShowPreviewPopup] = useState(false);
+  const navigate = useNavigate();
+
   // lấy giá trị của id từ query parameter
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -48,7 +51,7 @@ const QuizInterface = () => {
   }
 
   const handleStartAttempt = () => {
-    // TODO: handle start attempt logic
+    navigate("/PreviewQuiz");
   };
 
   const handleCancel = () => {
@@ -56,7 +59,8 @@ const QuizInterface = () => {
   };
 
   return (
-    <div className="QuizInterface">
+    <div className={`wrapper ${showPreviewPopup ? 'showPopup' : ''}`}>
+      <div className="QuizInterface">
       <p className="quizName">{name}</p>
       <div className="editIcon">{toEditingQuiz(id)}</div>
       <div className="line2">
@@ -102,16 +106,20 @@ const QuizInterface = () => {
               start now?
             </p>
           </div>
-
-          <button className="startattempt_btn" onClick={handleStartAttempt}>
+          <div className="popup_footer">
+            <button className="startattempt_btn" onClick={handleStartAttempt}>
             START ATTEMPT
           </button>
           <button className="cancel_btn" onClick={handleCancel}>
             CANCEL
           </button>
+          </div>
+          
         </div>
       )}
     </div>
+    </div>
+    
   );
 };
 

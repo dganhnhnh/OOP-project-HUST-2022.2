@@ -65,7 +65,7 @@ const Question = () => {
   };
 
   return (
-    <div className="questionpage">
+    <div className="question-page">
       <h1 className="title">Question Bank</h1>
 
       <div className="selected-menu">
@@ -91,7 +91,7 @@ const Question = () => {
           onChange={handleShowOldQuestionsChange}
         />
       </div>
-      <button className="button-in-question" onClick={handleCreateNewQues}>
+      <button className="btn-in-question" onClick={handleCreateNewQues}>
         CREATE A NEW QUESTION
       </button>
 
