@@ -1,5 +1,8 @@
 .add-category-page{
     padding: 0px 20px;
+    border: 1px solid black;
+    margin-top: 20px;
+    height: 100vh;
 }
 
 .add-category-page h5{

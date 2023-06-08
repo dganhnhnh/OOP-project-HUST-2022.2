@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Category.css";
 import { FaChevronDown } from "react-icons/fa";
 import SelectCategory from "../Category/SelectCategory";
+import Navigation from "../DropDownMenu/Navigation";
 
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -45,6 +46,7 @@ const Categories = () => {
 
   return (
     <div className="add-category-page">
+      <Navigation/>
       <h5>
         <FaChevronDown style={{ color: "blue" }}/>Add Category {" "}
       </h5>

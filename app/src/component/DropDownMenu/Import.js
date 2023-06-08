@@ -3,6 +3,7 @@ import { RxTriangleDown } from "react-icons/rx";
 import { IoMdCloudUpload } from "react-icons/io";
 import "./Import.css";
 import SelectCategory from "../Category/SelectCategory";
+import Navigation from "./Navigation";
 
 const Import = () => {
   const [file, setFile] = useState(null);
@@ -93,7 +94,9 @@ const Import = () => {
 
   return (
     <div>
-      <div className="line1">
+      <div className="import-page">
+      <Navigation/>
+        <div className="line1">
         <p>Import questions from file </p>
       </div>
       <ul className="list">
@@ -170,6 +173,8 @@ const Import = () => {
         </div>
       </div>
     </div>
+      </div>
+      
   );
 };
 export default Import;

@@ -1,3 +1,9 @@
+.import-page{
+	padding: 0px 20px;
+	border: 1px solid black;
+    margin-top: 20px;
+    height: 100vh;
+}
 .New_quiz {
 	display: flex;
 	flex-direction: column;

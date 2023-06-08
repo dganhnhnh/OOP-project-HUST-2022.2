@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Question.css";
 import { decode } from "html-entities";
 import SelectCategory from "../Category/SelectCategory";
+import Navigation from "../DropDownMenu/Navigation";
 
 const deleteQuestion = async (id, setQuestions, questions) => {
   try {
@@ -56,18 +57,20 @@ const Question = () => {
   };
 
   function handleEditButtonClick(question) {
-    const url = `/EditQuestion?id=${question.id}`;
+    const url = `/MyCourses/Question/EditQuestion?id=${question.id}`;
     navigate(url);
   }
 
   const handleCreateNewQues = () => {
-    navigate("/AddNewQuestion");
+    navigate("/MyCourses/Question/AddNewQuestion");
   };
 
   return (
-    <div className="question-page">
+    
+      
+      <div className="question-page">
+        <Navigation/>
       <h1 className="title">Question Bank</h1>
-
       <div className="selected-menu">
         <p>Select a category:</p>
         <SelectCategory

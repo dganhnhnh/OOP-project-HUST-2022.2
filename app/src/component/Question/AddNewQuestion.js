@@ -95,7 +95,7 @@ const AddNewQuestion = () => {
         console.log("Success:", data);
         alert("Question saved!");
         // Điều hướng đến trang editing mới cho question vừa tạo, với ID được trả về từ API
-        navigate(`/EditQuestion?id=${data.id}`);
+        navigate(`/MyCourses/Question/EditQuestion?id=${data.id}`);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -162,7 +162,7 @@ const AddNewQuestion = () => {
         console.log("Success:", data);
         console.log(JSON.stringify(newQuestion));
         alert("Question saved!");
-        navigate(`/Question`);
+        navigate(`/MyCourses/Question`);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -170,7 +170,7 @@ const AddNewQuestion = () => {
   };
 
   const handleCancel = () => {
-    navigate("/Question");
+    navigate("/MyCourses/Question");
   };
 
   return (

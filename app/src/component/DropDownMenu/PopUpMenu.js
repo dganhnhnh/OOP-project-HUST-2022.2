@@ -49,19 +49,19 @@ function PopUpMenu() {
             </button>
             </div>
             <div className="popup-items">
-              <NavLink to="/Question" onClick={closeMenu} className="popup-item">
+              <NavLink to="/MyCourses/Question" onClick={closeMenu} className="popup-item">
               Questions
             </NavLink>
 
-            <NavLink to="/Categories" onClick={closeMenu} className="popup-item">
+            <NavLink to="/MyCourses/Categories" onClick={closeMenu} className="popup-item">
               Categories
             </NavLink>
 
-            <NavLink to="/Import" onClick={closeMenu} className="popup-item">
+            <NavLink to="/MyCourses/Import" onClick={closeMenu} className="popup-item">
               Import
             </NavLink>
 
-            <NavLink to="/Export" onClick={closeMenu} className="popup-item">
+            <NavLink to="/MyCourses/Export" onClick={closeMenu} className="popup-item">
               Export
             </NavLink>
             </div>

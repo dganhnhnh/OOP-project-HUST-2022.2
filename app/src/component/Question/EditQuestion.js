@@ -190,14 +190,14 @@ const EditQuestion = () => {
       .then((data) => {
         console.log('Question saved:', data);
         alert("Question saved!")
-        navigate("/Question");
+        navigate("/MyCourses/Question");
 
       })
       .catch((error) => console.log(error));
   };
 
   const handleCancel = () => {
-    navigate("/Question");
+    navigate("/MyCourses/Question");
   };
   
 

@@ -44,14 +44,14 @@ const QuizInterface = () => {
 
   function toEditingQuiz() {
     return (
-      <Link to={`/EditingQuiz?id=${id}`}>
+      <Link to={`/MyCourses/QuizInterface/EditingQuiz?id=${id}`}>
         <AiFillSetting />
       </Link>
     );
   }
 
   const handleStartAttempt = () => {
-    navigate("/PreviewQuiz");
+    navigate("/MyCourses/QuizInterface/PreviewQuiz");
   };
 
   const handleCancel = () => {
