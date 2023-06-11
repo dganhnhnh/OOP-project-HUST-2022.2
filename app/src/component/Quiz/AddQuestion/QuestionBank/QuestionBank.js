@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import { SlMagnifierAdd } from 'react-icons/sl'
+import { useLocation, useNavigate } from "react-router-dom";
 import './QuestionBank.css';
-
-const deleteQuestion = async (id, setQuestions, questions) => {
-  try
-  {
-    await fetch(`http://localhost:8080/api/question/${id}`, {
-      method: 'DELETE',
-    });
-    const updatedQuestions = questions.filter(question => question.id !== id);
-    setQuestions(updatedQuestions);
-  } catch (error)
-  {
-    console.log(error);
-  }
-};
 
 const Checkbox = ({ label, checked, onChange }) => {
   return (
@@ -66,7 +52,13 @@ const QuestionBank = () => {
   const [showOldQuestions, setShowOldQuestions] = useState(false);
   const [categories, setCategories] = useState([]);
   const [questionsByCategory, setQuestionsByCategory] = useState({});
+  const [checkedQuestionIds, setCheckedQuestionIds] = useState([]);
   const navigate = useNavigate();
+
+  // lấy giá trị của id từ query parameter
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
 
   useEffect(() => {
     fetch('http://localhost:8080/api/categories')
@@ -121,14 +113,71 @@ const QuestionBank = () => {
     setShowOldQuestions(event.target.checked);
   };
 
-  function handleEditButtonClick(question) {
-    const url = `/EditQuestion?id=${question.id}`;
-    navigate(url);
-  }
+  const handleCheckboxChange = (event, id) => {
+    const isChecked = event.target.checked;
 
-  const handleCreateNewQues = () => {
-    navigate("/AddNewQuestion");
+    if (isChecked)
+    {
+      setCheckedQuestionIds([...checkedQuestionIds, id]);
+    } else
+    {
+      setCheckedQuestionIds(checkedQuestionIds.filter(checkedId => checkedId !== id));
+    }
+    const updatedQuestions = questions.map(question => {
+      if (question.id === id)
+      {
+        return {
+          ...question,
+          checked: isChecked
+        };
+      }
+      return question;
+    });
+
+    setQuestions(updatedQuestions);
+    return updatedQuestions; // add this line
   };
+
+  // add question to quiz
+  const addCheckedQuestionsToQuiz = () => {
+    // get the current quiz object from the server
+    fetch(`http://localhost:8080/api/quiz/${id}`)
+      .then(response => response.json())
+      .then(quiz => {
+        // get the existing array of question IDs and append the new ones to it
+        const existingQuestions = quiz.questionsID || [];
+        const newQuestionIds = questions
+          .filter(question => question.checked)
+          .map(question => question.id);
+        const updatedQuestions = [...existingQuestions, ...newQuestionIds];
+
+        // create an updated quiz object with the new question IDs
+        const updatedQuiz = { ...quiz, questionsID: updatedQuestions };
+
+        // update the quiz object on the server
+        return fetch(`http://localhost:8080/api/quiz/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedQuiz),
+        });
+      })
+      .then(response => {
+        if (response.ok)
+        {
+          console.log('Quiz updated successfully');
+        }
+        else
+        {
+          throw new Error('Failed to update quiz');
+        }
+      })
+      .catch(error => console.error(error)); // TODO: handle error appropriately
+  };
+
+
+
+
+
 
   return (
     <div className='questionpage'>
@@ -147,13 +196,23 @@ const QuestionBank = () => {
       </div>
 
 
-      <div className='display-question'>
+      <div className="display-question">
         {questions.length > 0 ? (
           questions.map(question => (
             <div key={question.id}>
-              <div>{question.name}</div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  type="checkbox"
+                  style={{ marginTop: "15px", marginRight: "20px" }}
+                  checked={question.checked}
+                  onChange={event => handleCheckboxChange(event, question.id)}
+                />
+                <div style={{ fontSize: "17px", marginTop: "15px" }}>{question.name}</div>
+              </div>
               <div className="action-btns">
-                <button className="detail-btn"><SlMagnifierAdd style={{ color: "rgb(31, 130, 201)" }} /></button>
+                <button className="detail-btn">
+                  <SlMagnifierAdd style={{ color: "rgb(31, 130, 201)" }} />
+                </button>
               </div>
             </div>
           ))
@@ -161,10 +220,10 @@ const QuestionBank = () => {
           <p>No questions found.</p>
         )}
       </div>
-      <button
-        className='button-in-question'>
+      <button className="button-in-question" onClick={() => addCheckedQuestionsToQuiz()}>
         ADD SELECTED QUESTION TO THE QUIZ
       </button>
+
     </div>
   )
 }

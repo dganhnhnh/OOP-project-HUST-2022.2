@@ -93,7 +93,13 @@ td {
 .detail-btn {
 	margin-right: 5px;
 }
-
+.action-btns {
+	padding: 5px;
+	border: 1px solid rgb(160, 158, 158);
+	margin-top: -25px;
+	display: flex;
+	justify-content: flex-end;
+  }
 .detail-btn,
 .delete-btn {
 	padding: 5px 10px;
