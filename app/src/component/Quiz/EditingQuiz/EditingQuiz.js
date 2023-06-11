@@ -111,7 +111,7 @@ const QuizInterface = () => {
 
   const QuestionRandomLink = ({ id }) => {
     return (
-      <Link to={`/RandomQuestion?id=${id}`}>
+      <Link to={`/ExistingCategory?id=${id}`}>
         <BiPlus style={{ color: "rgb(71, 137, 237)", paddingTop: "5px" }} />
         <span> a random question</span>
       </Link>

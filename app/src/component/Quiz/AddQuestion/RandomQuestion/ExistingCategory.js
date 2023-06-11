@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SlMagnifierAdd } from 'react-icons/sl'
 import { useLocation, useNavigate } from "react-router-dom";
+import './RandomQuetion.css';
+import { NavLink } from 'react-router-dom';
 import { AiOutlineUnorderedList } from 'react-icons/ai'
-import { TiPlus } from 'react-icons/ti'
-import './QuestionBank.css';
 
 const Checkbox = ({ label, checked, onChange }) => {
   return (
@@ -47,14 +47,15 @@ function renderCategoryOptions(categories, questionsByCategory, level = 0) {
   return options;
 }
 
-const QuestionBank = () => {
+const ExistingCategory = () => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [checkedQuestionIds, setCheckedQuestionIds] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [questions, setQuestions] = useState([]);
-  const [showSubcategories, setShowSubcategories] = useState(false);
-  const [showOldQuestions, setShowOldQuestions] = useState(false);
+  const [showSubcategories, setShowSubcategories] = useState(false);;
   const [categories, setCategories] = useState([]);
   const [questionsByCategory, setQuestionsByCategory] = useState({});
-  const [checkedQuestionIds, setCheckedQuestionIds] = useState([]);
+  const [numberRandom, setNumberRandom] = useState('0');
   const navigate = useNavigate();
 
   // lấy giá trị của id từ query parameter
@@ -111,46 +112,51 @@ const QuestionBank = () => {
     setShowSubcategories(event.target.checked);
   };
 
-  const handleShowOldQuestionsChange = event => {
-    setShowOldQuestions(event.target.checked);
-  };
+  const selectedQuestions = questions
+    .sort(() => Math.random() - 0.5) // randomly shuffle the questions
+    .slice(0, numberRandom); // select the first numberRandom questions
 
-  const handleCheckboxChange = (event, id) => {
-    const isChecked = event.target.checked;
+  const displayQuestions = selectedQuestions.map(question => (
+    <div key={question.id}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <AiOutlineUnorderedList style={{ marginTop: "20px", marginLeft: "10px" }} />
+        <div style={{ fontSize: "17px", marginTop: "15px", paddingLeft: "20px" }}>{question.name}</div>
+      </div>
+      <div className="action-btns">
+        <button className="detail-btn">
+          <SlMagnifierAdd style={{ color: "rgb(31, 130, 201)" }} />
+        </button>
+      </div>
+    </div>
+  ));
 
-    if (isChecked)
+  const listRandomQuestions = (event) => {
+    const numRandom = parseInt(event.target.value, 10); // parse the input value as an integer
+    setNumberRandom(numRandom); // update the numberRandom state variable
+
+    const availableQuestions = questionsByCategory[selectedCategoryId] || [];
+    const numQuestions = Math.min(numRandom, availableQuestions.length);
+    const selectedQuestions = [];
+    while (selectedQuestions.length < numQuestions)
     {
-      setCheckedQuestionIds([...checkedQuestionIds, id]);
-    } else
-    {
-      setCheckedQuestionIds(checkedQuestionIds.filter(checkedId => checkedId !== id));
-    }
-    const updatedQuestions = questions.map(question => {
-      if (question.id === id)
+      const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+      const randomQuestion = availableQuestions[randomIndex];
+      if (!selectedQuestions.find(q => q.id === randomQuestion.id))
       {
-        return {
-          ...question,
-          checked: isChecked
-        };
+        selectedQuestions.push(randomQuestion);
       }
-      return question;
-    });
-
-    setQuestions(updatedQuestions);
-    return updatedQuestions; // add this line
+    }
+    setCheckedQuestionIds(selectedQuestions.map(q => q.id)); // update the checkedQuestionIds state variable
+    setQuestions(selectedQuestions); // update the questions state variable
   };
-
-  // add question to quiz
-  const addCheckedQuestionsToQuiz = () => {
+  const addRandomQuestionsToQuiz = () => {
     // get the current quiz object from the server
     fetch(`http://localhost:8080/api/quiz/${id}`)
       .then(response => response.json())
       .then(quiz => {
         // get the existing array of question IDs and append the new ones to it
         const existingQuestions = quiz.questionsID || [];
-        const newQuestionIds = questions
-          .filter(question => question.checked)
-          .map(question => question.id);
+        const newQuestionIds = checkedQuestionIds;
         const updatedQuestions = [...existingQuestions, ...newQuestionIds];
 
         // create an updated quiz object with the new question IDs
@@ -167,8 +173,7 @@ const QuestionBank = () => {
         if (response.ok)
         {
           console.log('Quiz updated successfully');
-        }
-        else
+        } else
         {
           throw new Error('Failed to update quiz');
         }
@@ -177,59 +182,51 @@ const QuestionBank = () => {
   };
 
 
-
-
-
-
   return (
-    <div className='questionpage'>
-      <p className='title'>Add from the question bank at the end</p>
-
+    <div className='questionrandom'>
+      <p className='title'>Add a random question to page 1</p>
+      <div className="navbarRandom">
+        <ul className='randomBar'>
+          <li>
+            <NavLink to="/ExistingCategory"> Existing Category</NavLink>
+          </li>
+          <li>
+            <NavLink to="/NewCategory" className={location.pathname === "/NewCategory" ? "active-link" : ""}> New Category </NavLink>
+          </li>
+        </ul>
+      </div>
       <div className='selected-menu'>
-        <p>Select a category:</p>
+        <p>Category:</p>
         <select value={selectedCategory} onChange={handleCategoryChange}>
           {renderCategoryOptions(categories, questionsByCategory)}
         </select>
       </div>
-      <div className='checkbox'>
-        <p className='search'>Search options</p>
-        <Checkbox label="Also show questions from subcategories" checked={showSubcategories} onChange={handleShowSubcategoriesChange} />
-        <Checkbox label="Also show old question" checked={showOldQuestions} onChange={handleShowOldQuestionsChange} />
+      <div>
+        <Checkbox className="include"
+          label="include questions from subcategories too"
+          checked={showSubcategories}
+          onChange={handleShowSubcategoriesChange} />
       </div>
 
+      <label htmlFor='num-questions'>Number of random questions:</label>
+      <input className="num-questions" type='number' value={numberRandom}
+        onChange={event => listRandomQuestions(event)} />
 
-      <div className="display-question">
-        {questions.length > 0 ? (
-          questions.map(question => (
-            <div key={question.id}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <TiPlus style={{ marginTop: "15px", color: "rgb(8, 79, 123)" }} />
-                <input
-                  type="checkbox"
-                  style={{ marginTop: "15px", marginRight: "5px" }}
-                  checked={question.checked}
-                  onChange={event => handleCheckboxChange(event, question.id)}
-                />
-                <AiOutlineUnorderedList style={{ marginTop: "15px", marginRight: "20px" }} />
-                <div style={{ fontSize: "17px", marginTop: "15px" }}>{question.name}</div>
-              </div>
-              <div className="action-btns">
-                <button className="detail-btn">
-                  <SlMagnifierAdd style={{ color: "rgb(31, 130, 201)" }} />
-                </button>
-              </div>
-            </div>
-          ))
+      <div className="display-question-random">
+        {selectedQuestions.length > 0 ? (
+          displayQuestions
         ) : (
           <p>No questions found.</p>
         )}
       </div>
-      <button className="button-in-question" onClick={() => addCheckedQuestionsToQuiz()}>
-        ADD SELECTED QUESTION TO THE QUIZ
+
+      <button className="button-in-question" onClick={() => addRandomQuestionsToQuiz()}>
+        ADD RANDOM QUESTION TO THE QUIZ
       </button>
+
 
     </div>
   )
 }
 
-export default QuestionBank
+export default ExistingCategory
