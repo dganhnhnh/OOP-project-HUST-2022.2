@@ -51,8 +51,34 @@ const QuizInterface = () => {
   }
 
   const handleStartAttempt = () => {
-    navigate("/MyCourses/QuizInterface/PreviewQuiz");
-  };
+    const data = {
+      quizID: id,
+      //Thêm các thuộc tính khác nếu cần
+    };
+
+    fetch("http://localhost:8080/api/quiz_attempt", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Chuyển đổi response body thành object JSON
+      })
+      .then((data) => {
+        //lấy id của quiz attempt vừa post
+        const { id } = data; // Trích xuất giá trị id từ response object
+        const url = `/MyCourses/QuizInterface/PreviewQuiz?id=${id}`;
+        navigate(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };  
 
   const handleCancel = () => {
     setShowPreviewPopup(false);

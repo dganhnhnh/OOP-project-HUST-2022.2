@@ -45,7 +45,7 @@ class Initializer implements CommandLineRunner {
 
         // TODO: category init only "Default"
         // FROM HERE
-        /*    
+        /* 
          Stream.of("Default","Kien truc may tinh", "OOP","CSDL")
          .forEach(name ->
              categoryRepo.save(new Category(name))
@@ -101,10 +101,11 @@ class Initializer implements CommandLineRunner {
         // TO HERE
         
         Quiz newQuiz = new Quiz("Quiz 1");
-        newQuiz.setTimeOpen(LocalDateTime.now());
-        newQuiz.setDefaultTimeClose();
+        List<Long> questionsID = Arrays.asList(1L, 2L, 3L);
+        newQuiz.setQuestionsID(questionsID);
         quizRepo.save(newQuiz);
         */
+        
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
         quizRepo.findAll().forEach(System.out::println);
