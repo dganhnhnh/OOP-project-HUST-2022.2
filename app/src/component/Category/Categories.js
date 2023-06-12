@@ -18,7 +18,7 @@ const Categories = () => {
     const data = {
       name: name,
       info: info,
-      parent: selectedCategory,
+      parentID: selectedCategory,
     };
     
     fetch(url, {
