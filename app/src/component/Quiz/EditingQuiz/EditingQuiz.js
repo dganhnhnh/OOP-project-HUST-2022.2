@@ -8,8 +8,8 @@ import { MdArrowDropDown } from 'react-icons/md';
 import { BiPlus } from 'react-icons/bi'
 import { BsFillTrash3Fill } from 'react-icons/bs'
 import { BsFillPencilFill } from 'react-icons/bs'
-
 import { HiPlusSm } from 'react-icons/hi'
+import { decode } from "html-entities";
 
 const QuizInterface = () => {
   const [name, setName] = useState("");
@@ -160,10 +160,12 @@ const QuizInterface = () => {
 
         {questionsID.map((questionID) => {
           const question = questions.find((question) => question.id === questionID);
+           const plainText = decode(question.text).replace(/<[^>]+>/g, "");
           if (!question) return <div key={questionID}>Question not found</div>;
           return (
             <div key={questionID} className="question-row">
-              <div className="question-name">{question.name}</div>
+              <div className="question-name">
+                {plainText}  </div>
               <div className="question-delete">
                 <BsFillTrash3Fill
                   style={{ marginRight: "20px", cursor: "pointer" }}
