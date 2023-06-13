@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import './QuizInterface.css'
-import { AiFillSetting } from 'react-icons/ai'
+import React, { useEffect, useState } from "react";
+import "./QuizInterface.css";
+import { AiFillSetting } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link} from "react-router-dom";
+
 const QuizInterface = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -11,9 +12,12 @@ const QuizInterface = () => {
   const [timeOpen, setTimeOpen] = useState(""); // Default value
   const [timeClose, setTimeClose] = useState(""); // Default value
   const [quizAttemptID, setQuizAttemptID] = useState([]);
-  const [quizState, setQuizState] = useState(null)
+  const [quizState, setQuizState] = useState(null);
   const [ongoingAttempt, setOngoingAttempt] = useState(false);
   const [quizMaxGrade, setQuizMaxGrade] = useState(0.0);
+  const [showPreviewPopup, setShowPreviewPopup] = useState(false);
+  const navigate = useNavigate();
+
   // lấy giá trị của id từ query parameter
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -39,23 +43,36 @@ const QuizInterface = () => {
   }, [id]);
 
   function toEditingQuiz() {
-    return <Link to={`/EditingQuiz?id=${id}`}><AiFillSetting /></Link>;
+    return (
+      <Link to={`/MyCourses/QuizInterface/EditingQuiz?id=${id}`}>
+        <AiFillSetting />
+      </Link>
+    );
   }
 
+  const handleStartAttempt = () => {
+    navigate("/MyCourses/QuizInterface/PreviewQuiz");
+  };
+
+  const handleCancel = () => {
+    setShowPreviewPopup(false);
+  };
+
   return (
-    <div className='QuizInterface'>
-      <p className='quizName'>{name}</p>
-      <div className='editIcon'>{toEditingQuiz(id)}</div>
-      <div className='line2'>
+    <div className={`wrapper ${showPreviewPopup ? 'showPopup' : ''}`}>
+      <div className="QuizInterface">
+      <p className="quizName">{name}</p>
+      <div className="editIcon">{toEditingQuiz(id)}</div>
+      <div className="line2">
         <p>Time limit: {timeLimit} minutes</p>
         <p>Grading method: Last attempt</p>
       </div>
 
-      <p className='caption'>Summary of your previous attempts</p>
+      <p className="caption">Summary of your previous attempts</p>
 
-      <table className='table'>
+      <table className="table">
         <thead>
-          <tr >
+          <tr>
             <th>Attempt</th>
             <th>State</th>
           </tr>
@@ -63,15 +80,46 @@ const QuizInterface = () => {
         <tr>
           <td>Preview</td>
           <td>Never submited</td>
-
         </tr>
-
-
       </table>
 
-      <button className='previewQuizButton'>Preview quiz now</button>
-
+      <button
+        className="previewQuizButton"
+        onClick={() => setShowPreviewPopup(true)}
+      >
+        Preview quiz now
+      </button>
+      {showPreviewPopup && (
+        <div className="PreviewPopup">
+          <div className="popup_header">
+            <button className="closeButton" onClick={handleCancel}>
+              x
+            </button>
+            <h2>Start attempt</h2>
+          </div>
+          <div className="popup_body">
+            <h4>Time limit</h4>
+            <p>
+              Your attempt will have a time limit {timeLimit} minutes. When you start, the
+              timer will begin to count down and cannot be paused. You must
+              finish your attempt before it expires. Are you sure you wish to
+              start now?
+            </p>
+          </div>
+          <div className="popup_footer">
+            <button className="startattempt_btn" onClick={handleStartAttempt}>
+            START ATTEMPT
+          </button>
+          <button className="cancel_btn" onClick={handleCancel}>
+            CANCEL
+          </button>
+          </div>
+          
+        </div>
+      )}
     </div>
+    </div>
+    
   );
 };
 

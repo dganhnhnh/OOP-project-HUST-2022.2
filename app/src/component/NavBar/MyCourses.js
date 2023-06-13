@@ -54,7 +54,7 @@ const MyCourses = () => {
   const navigate = useNavigate();
 
   function QuizLink(quiz) {
-    return <Link to={`/QuizInterface?id=${quiz.id}`}>{quiz.name}</Link>;
+    return <Link to={`/MyCourses/QuizInterface?id=${quiz.id}`}>{quiz.name}</Link>;
   }
 
   return (

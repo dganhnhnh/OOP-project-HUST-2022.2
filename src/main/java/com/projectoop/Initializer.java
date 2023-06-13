@@ -70,32 +70,26 @@ class Initializer implements CommandLineRunner {
         // questionRepo.save(ques2);
         // categoryRepo.save(e);
 
-        // Question ques3 = questionRepo.findByText("mot cong ba bang may");
-        // ques3.setCategoryID(e.getId());
-        // a.add(ques3.getId());
-        // e.setQuestionID(a);
-        // ques3.setDefaultMark(1);
-        // List<Choice> choices = new ArrayList<>();
-        // Choice choice1 = new Choice("hai", 0.0f);
-        // choices.add(choice1);
-        // Choice choice2 = new Choice("bon", 0.5f);
-        // choice2.setC_imageURL("http://localhost:8080/api/File/Image/25ac2a5d4ae345e39c375eec60574ada.jpg");
-        // choices.add(choice2);
-        // Choice choice3 = new Choice("4", 0.5f);
-        // choices.add(choice3);
-        // ques3.setChoices(choices);
-        // questionRepo.save(ques3);
-        // categoryRepo.save(e);
-
+        //  Question ques3 = questionRepo.findByText("Question 3");
+        //  Category x = categoryRepo.findByName("ck-OOP");
+        //  ques3.setCategoryID(x.getId());
+        //  Set<Long> xx= new HashSet<>();
+        //  xx.add(ques3.getId());
+        //  x.setQuestionID(xx);
+        //  ques3.setDefaultMark(1);
+        //  questionRepo.save(ques3);
+        //  categoryRepo.save(x);
+        
         // TO HERE
+        
         Quiz newQuiz = new Quiz("Quiz 1");
         newQuiz.setTimeOpen(LocalDateTime.now());
-        // newQuiz.setTimeLimitDay(2);
         newQuiz.setDefaultTimeClose();
         quizRepo.save(newQuiz);
-
+        
         categoryRepo.findAll().forEach(System.out::println);
         questionRepo.findAll().forEach(System.out::println);
         quizRepo.findAll().forEach(System.out::println);
+        
     }
 }

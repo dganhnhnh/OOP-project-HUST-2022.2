@@ -8,20 +8,19 @@ const Navigation = () => {
     <>
     <div className ='Navigation'>
         <div className='nav-bar'>
-      <NavLink to='/Question' className={`nav-item ${location.pathname === '/Question' ? 'activelink' : ''}`}>
+      <NavLink to='/MyCourses/Question' className={`nav-item ${location.pathname === '/MyCourses/Question' ? 'activelink' : ''}`}>
         Questions
       </NavLink>
-      <NavLink to='/Categories' className={`nav-item ${location.pathname === '/Categories' ? 'activelink' : ''}`}>
+      <NavLink to='/MyCourses/Categories' className={`nav-item ${location.pathname === '/MyCourses/Categories' ? 'activelink' : ''}`}>
         Categories
       </NavLink>
-      <NavLink to='/Import' className={`nav-item ${location.pathname === '/Import' ? 'activelink' : ''}`}>
+      <NavLink to='/MyCourses/Import' className={`nav-item ${location.pathname === '/MyCourses/Import' ? 'activelink' : ''}`}>
         Import
       </NavLink>
-      <NavLink to='/Export' className={`nav-item ${location.pathname === '/Export' ? 'activelink' : ''}`}>
+      <NavLink to='/MyCourses/Export' className={`nav-item ${location.pathname === '/MyCourses/Export' ? 'activelink' : ''}`}>
         Export
       </NavLink>
         </div>
-        <Outlet/>
     </div>
     </>
   )

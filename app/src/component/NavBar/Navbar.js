@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import DropDownMenu from '../DropDownMenu/DropDownMenu';
+import PopUpMenu from '../DropDownMenu/PopUpMenu';
+import Breadcrumbs from './Breadcrumbs';
 const Navbar = () => {
 	const location = useLocation();
 	return (
@@ -8,24 +9,9 @@ const Navbar = () => {
 				<div className ='navbar_text'>
 					<p> IT </p>
 				</div>
-				<DropDownMenu />
-				<div className="navbar_menu">
-					<ul className='menu'>
-						<li>
-							<NavLink to="/Home" className={location.pathname === "/Home" ? "active-link" : ""}> Home</NavLink>
-						</li>
-						<li> / </li>
-						<li>
-							<NavLink to="/MyCourses" className={location.pathname === "/MyCourses" ? "active-link" : ""}> My Courses</NavLink>
-						</li>
-						<li> / </li>
-						<li>
-							<NavLink to="/Thicuoiki" className={location.pathname === "/Thicuoiki" ? "active-link" : ""}> THI CUỐI KÌ</NavLink>
-						</li>
-					</ul>
-				</div>
-				
-				<NavLink to="/Addnewquiz" className={location.pathname === "/NewQuiz" ? "active-link" : ""}>
+				<PopUpMenu />
+				<Breadcrumbs/>
+				<NavLink to="/MyCourses/Addnewquiz" className={location.pathname === "/NewQuiz" ? "active-link" : ""}>
 					<button className='button_navbar'>TURN EDITING ON</button>
 				</NavLink>
 			</navbar>

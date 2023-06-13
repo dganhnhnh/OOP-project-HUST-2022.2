@@ -1,8 +1,11 @@
-.questionpage {
-  padding-left: 20px;
+.question-page {
+  padding: 0px 20px;
+  border: 1px solid black;
+  margin-top: 20px;
+  height: 100vh
 }
 
-.title {
+.question-page .title {
   color: rgb(208, 12, 12);
   font-size: 40px;
   font-weight: normal;
@@ -23,24 +26,28 @@
   border: 1px solid black;
 }
 
-p {
+.question-page p {
   font-size: 18px;
 }
 
-.checkbox {
-  display: flex;
-  flex-direction: column;
+.checkbox-in-question{
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-in-question label{
   font-size: 17px;
 }
 
-.checkbox label input[type="checkbox"] {
+.checkbox-in-question label input[type="checkbox"] {
   transform: scale(1.4);
   margin-right: 20px;
   margin-top: 10px;
 }
 
 
-.button-in-question {
+.btn-in-question {
+  margin-bottom: 20px;
   margin-top: 20px;
   font-size: 20px;
   width: 300px;
@@ -51,7 +58,7 @@ p {
   background-color: rgb(31, 130, 201);
 }
 
-.button-in-question:hover {
+.btn-in-question:hover {
   background-color: rgb(12, 79, 126);
 }
 
