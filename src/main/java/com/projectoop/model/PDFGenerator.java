@@ -26,9 +26,13 @@ public class PDFGenerator {
         this.questions = questions;
     }
 
-    public void generate(HttpServletResponse respone) throws IOException, DocumentException {
+    public void generatePDFWithPassWord(HttpServletResponse respone, String password)
+            throws IOException, DocumentException {
         Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, respone.getOutputStream());
+        PdfWriter writer = PdfWriter.getInstance(document, respone.getOutputStream());
+        writer.setEncryption(password.getBytes(), password.getBytes(),
+                PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128
+                        | PdfWriter.DO_NOT_ENCRYPT_METADATA);
         document.open();
 
         Font fontTitle = FontFactory.getFont(FontFactory.TIMES_ROMAN);
@@ -94,5 +98,6 @@ public class PDFGenerator {
             }
         }
         document.close();
+
     }
 }

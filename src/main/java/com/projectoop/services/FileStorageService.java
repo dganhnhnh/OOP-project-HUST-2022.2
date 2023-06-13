@@ -238,7 +238,7 @@ public class FileStorageService implements IStorageService {
             if (nowline.matches("^[A-Z][.]\\s(?=\\s*\\S).*$")) {
                 if (question.getText() == null) {
                     questions = null;
-                    break; // thêm bị lỗi tại dòng <linenumber>
+                    break;
                 }
                 Choice choice = new Choice(nowline.substring(3), 0.0f);
                 anscontent[k] = choice.getChoiceText();
@@ -253,7 +253,7 @@ public class FileStorageService implements IStorageService {
                 String answer = nowline.substring(8, 9);
                 if (k < 2) {
                     questions = null;
-                    break; // thêm báo lỗi
+                    break;
                 }
                 for (int j = 0; j < k; j++) {
                     if (ans[j].trim().equals(answer.trim()))

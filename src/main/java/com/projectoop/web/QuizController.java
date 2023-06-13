@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept"})
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept" })
 @RestController
 @RequestMapping("/api")
 class QuizController {
@@ -33,7 +33,7 @@ class QuizController {
     private QuestionRepo questionRepo;
     private QuizRepo quizRepo;
 
-    public QuizController(QuizRepo quizRepo,QuestionRepo questionRepo) {
+    public QuizController(QuizRepo quizRepo, QuestionRepo questionRepo) {
         this.quizRepo = quizRepo;
         this.questionRepo = questionRepo;
     }
@@ -76,4 +76,5 @@ class QuizController {
         quizRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
 }
