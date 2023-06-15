@@ -68,32 +68,13 @@ label {
 	background-color: rgb(12, 79, 126);
 }
 
-.display-question table {
-	width: 100%;
-	table-layout: fixed;
-}
-
-.display-question th:first-child,
-td:first-child {
-	width: 80%;
-	text-align: left;
-}
-
-.display-question th:last-child,
-td:last-child {
-	width: 20%;
-	text-align: left;
-}
-
-.display-question th,
-td {
-	font-size: 19px;
-}
-
-.detail-btn {
-	margin-right: 5px;
-}
-
+.action-btns {
+	padding: 5px;
+	border: 1px solid rgb(160, 158, 158);
+	margin-top: -25px;
+	display: flex;
+	justify-content: flex-end;
+  }
 .detail-btn,
 .delete-btn {
 	padding: 5px 10px;
@@ -112,7 +93,7 @@ td {
 .action-btns button {
 	border-right: 1px solid black;
 	background-color: #fff;
-	color: blue;
+	color: rgb(8, 79, 123);
 }
 
 .action-btns button:last-child {

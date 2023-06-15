@@ -41,7 +41,7 @@ public class QuizAttempt {
     //quizAttempt Id tự tạo giá trị???
     private float totalMark;
     private boolean finished;
-    private LocalDateTime timeTaken;
+    private int timeTaken;
     private LocalDateTime timeStart;
     private LocalDateTime timeComplete;
     // Time ở đây chỉ thời gian làm bài(gồm ngày giờ nhưng timetaken chỉ hiện phút giây )

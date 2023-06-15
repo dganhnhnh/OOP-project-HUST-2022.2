@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MyCourses from './component/NavBar/MyCourses.js';
+import Thicuoiki from './component/NavBar/Thicuoiki'
 import Question from './component/Question/Question';
 import Categories from './component/Category/Categories';
 import Import from './component/DropDownMenu/Import';
@@ -15,7 +16,8 @@ import QuizInterface from './component/Quiz/QuizInterface/QuizInterface';
 import NewQuiz from './component/Quiz/AddNewQuiz/NewQuiz';
 import EditingQuiz from './component/Quiz/EditingQuiz/EditingQuiz'
 import QuestionBank from './component/Quiz/AddQuestion/QuestionBank/QuestionBank';
-import RandomQuestion from './component/Quiz/AddQuestion/RandomQuestion/RandomQuestion';
+import ExistingCategory from './component/Quiz/AddQuestion/RandomQuestion/ExistingCategory';
+import NewCategory from './component/Quiz/AddQuestion/RandomQuestion/NewCategory'
 import PreviewQuiz from './component/Quiz/PreviewQuiz/PreviewQuiz';
 import QuizResult from './component/Quiz/PreviewQuiz/QuizResult';
 
@@ -32,7 +34,10 @@ root.render(
           <Route path='/MyCourses/QuizInterface/PreviewQuiz' element={<PreviewQuiz/>} />
           <Route path='/MyCourses/QuizInterface/PreviewQuiz/QuizResult' element={<QuizResult/>} />
           <Route exact path='/QuestionBank' element={<QuestionBank />} />
-          <Route exact path='/RandomQuestion' element={<RandomQuestion />} />
+          <Route exact path='/ExistingCategory' element={<ExistingCategory />} />
+          <Route exact path='/NewCategory' element={<NewCategory />} />
+          <Route exact path='/Thicuoiki' element={<Thicuoiki />} />
+
           <Route path='/MyCourses/Question/EditQuestion' element={<EditQuestion />} />
           <Route path='/MyCourses/Question/AddNewQuestion' element={<AddNewQuestion />} />
             <Route path='/MyCourses/Question' element={<Question />} />

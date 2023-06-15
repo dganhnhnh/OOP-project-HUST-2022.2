@@ -8,6 +8,8 @@ function PreviewQuiz() {
   const [choiceChosenList, setChoiceChosenList] = useState([]);
   const [selectedQuizId, setSelectedQuizId] = useState(null);
   const [flaggedQues, setFlaggedQues] = useState({});
+  const [timeLimit, setTimeLimit] = useState(0);
+  const [timeLeft, setTimeLeft] = useState();
 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
@@ -23,11 +25,13 @@ function PreviewQuiz() {
         const quesInQuizListUpdated = data.quesInQuizList.map((quesInQuiz) => {
           return {
             ...quesInQuiz,
+            categoryID: null,
             text: null,
             choices: null,
           };
         });
-
+        setTimeLimit(data.quiz.timeLimit * 60);
+        setTimeLeft(data.quiz.timeLimit * 60);
         setQuesInQuizList(quesInQuizListUpdated);
         setChoiceChosenList(new Array(quesInQuizListUpdated.length).fill([]));
 
@@ -46,6 +50,7 @@ function PreviewQuiz() {
           const quesInQuizListWithQuestions = quesInQuizListUpdated.map(
             (quesInQuiz, index) => ({
               ...quesInQuiz,
+              categoryID: questions[index].categoryID,
               text: questions[index].text,
               choices: questions[index].choices.map((choice) => ({
                 ...choice,
@@ -115,6 +120,24 @@ function PreviewQuiz() {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+
+    fetch(
+      `http://localhost:8080/api/question/${newQuesInQuizList[questionIndex].questionID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: newQuesInQuizList[questionIndex].questionID,
+          text: newQuesInQuizList[questionIndex].text,
+          categoryID: newQuesInQuizList[questionIndex].categoryID,
+          choices: newQuesInQuizList[questionIndex].choices,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   }
 
   const handleNavClick = (idInQuiz) => {
@@ -165,6 +188,18 @@ function PreviewQuiz() {
       return total + quesInQuiz.quesMark;
     }, 0);
 
+    //hiện giờ địa phương
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const hours = String(currentDate.getHours()).padStart(2, "0");
+    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+    const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+    const milliseconds = String(currentDate.getMilliseconds()).padStart(3, "0");
+
+    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+
     // PUT the updated quiz attempt data to the API endpoint
     fetch(`http://localhost:8080/api/quiz_attempt/${id}`, {
       method: "PUT",
@@ -175,7 +210,8 @@ function PreviewQuiz() {
         quesInQuizList: quesInQuizList,
         totalMark: totalMark,
         finished: true,
-        timeComplete: new Date(),
+        timeTaken: timeLimit - timeLeft, //hiện giây
+        timeComplete: formattedDate,
       }),
     })
       .then((response) => response.json())
@@ -183,17 +219,44 @@ function PreviewQuiz() {
         // Xử lý phản hồi từ API sau khi nộp bài
         console.log(data);
         // Chuyển hướng đến trang kết quả bài kiểm tra hoặc trang khác tùy vào yêu cầu của bạn
-        const url = `/MyCourses/QuizInterface/PreviewQuiz/QuizResult?id=${id}`
+        const url = `/MyCourses/QuizInterface/PreviewQuiz/QuizResult?id=${id}`;
         navigate(url);
       });
   }
-  
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleFinishAttempt();
+    }
+  }, [timeLeft]);
+
+  function formatTime(time) {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
 
   return (
     <div className="quiz-page">
       <div className="quiz">
         <header className="quiz-header">
-          <div className="quiz-timer">00:00</div>
+          <div className="quiz-timer">Time left: {formatTime(timeLeft)}</div>
         </header>
         <main>
           <section className="question-container">

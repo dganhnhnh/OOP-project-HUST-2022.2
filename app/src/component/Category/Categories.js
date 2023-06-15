@@ -8,8 +8,6 @@ const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [questionsByCategory, setQuestionsByCategory] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -59,10 +57,6 @@ const Categories = () => {
         <SelectCategory
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
-          categories={categories}
-          setCategories={setCategories}
-          questionsByCategory={questionsByCategory}
-          setQuestionsByCategory={setQuestionsByCategory}
         />
         </div>
       </div>

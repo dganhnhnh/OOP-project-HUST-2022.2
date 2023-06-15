@@ -32,11 +32,10 @@ const Question = () => {
   const [showSubcategories, setShowSubcategories] = useState(false);
   const [showOldQuestions, setShowOldQuestions] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [questionsByCategory, setQuestionsByCategory] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    const categoryId = selectedCategory || categories[0]?.id;
+    const categoryId = selectedCategory;
     const url = `http://localhost:8080/api/category/${categoryId}/questions?show_from_subcategory=${showSubcategories}`;
     fetch(url)
       .then((response) => response.json())
@@ -78,8 +77,6 @@ const Question = () => {
           setSelectedCategory={setSelectedCategory}
           categories={categories}
           setCategories={setCategories}
-          questionsByCategory={questionsByCategory}
-          setQuestionsByCategory={setQuestionsByCategory}
         />
       </div>
       <div className="checkbox-in-question">
@@ -98,7 +95,7 @@ const Question = () => {
         CREATE A NEW QUESTION
       </button>
 
-      <div className="display-question">
+      <div className="display_question">
         {questions.length > 0 ? (
           <table>
             <thead>
@@ -113,21 +110,21 @@ const Question = () => {
                 return (
                   <tr key={question.id}>
                     <td>{plainText}</td>
-                    <td className="action-btns">
-                      <button
+                    <td className="action_btns">
+                      <a
                         className="edit-btn"
                         onClick={() => handleEditButtonClick(question)}
                       >
                         Edit
-                      </button>
-                      <button
+                      </a>
+                      <a
                         className="delete-btn"
                         onClick={() =>
                           deleteQuestion(question.id, setQuestions, questions)
                         }
                       >
                         Delete
-                      </button>
+                      </a>
                     </td>
                   </tr>
                 );

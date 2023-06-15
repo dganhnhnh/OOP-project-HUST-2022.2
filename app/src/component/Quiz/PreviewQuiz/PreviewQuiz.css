@@ -1,30 +1,45 @@
-.quiz {
-  padding: 0px 20px;
+.quiz-page .quiz {
+  padding: 20px 20px;
   border: 1px solid black;
   margin-top: 20px;
   height: 100%;
   width: 75%;
 }
 
-.quesInQuiz{
+.quiz-timer {
+  margin-left: 60vw;
+  background-color: #ffffff;
+  padding: 10px 10px;
+  border: 2px solid rgb(183, 29, 29);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.question-container{
+  padding-top: 20px;
+}
+
+ .quesInQuiz{
     height: 60%;
-    width: 80%;
+    width: 70vw;
     background-color: #eff9fc;
     margin-left: 15%;
     padding-top: 1px;
+    padding-left: 20px;
 }
 
-li label {
+.quiz-page li label {
   display: flex;
   align-items: center;
   height: 20px;
 }
 
-li label input {
+.quiz-page li label input {
   margin-right: 0.5rem;
 }
 
-.quesInQuiz-status {
+ .quesInQuiz-status {
     float: left;
     border: 1px solid black ;
     padding: 10px;
@@ -35,13 +50,13 @@ li label input {
     color: rgb(183, 29, 29);
 }
 
-.quesInQuiz-status-flag::before {
+ .quesInQuiz-status-flag::before {
     content: "\2691";
     display: inline-block;
     font-size: 1rem;
   }
   
-  .quesInQuiz-status-flag.flagged::before {
+.quesInQuiz-status-flag.flagged::before {
     color: rgb(183, 29, 29);
   }
   
@@ -114,4 +129,49 @@ li label input {
   .quiz-navigation-box button:hover{
     text-decoration: underline;
   }
+
+  .correct{
+    color: rgb(8, 151, 8);
+    margin-left: 10px;
+    font-size: 25px;
+  }
+  
+  .incorrect{
+    color: red;
+    margin-left: 10px;
+    font-size: 25px;
+  }
+
+  .correct-answer{
+    height: 50px;
+    width: 70vw;
+    background-color: #fff3cd;
+    margin-left: 15%;
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+
+  .quiz-summary {
+    width: 100%;
+  }
+  
+  .quiz-summary table {
+    width: 100%;
+  }
+
+  .quiz-summary td{
+    padding: 5px 5px;
+  }
+  
+  .quiz-summary .gray-row {
+    background-color: #f1f1f1; /* Màu xám cho dòng xám */
+  }
+  
+  .quiz-summary .column1 {
+    width: 6%; /* Cột 1 chiếm 20% */
+    color: #cf1628;
+    font-weight: bold;
+  }
+  
+  /* Định dạng khác tùy theo yêu cầu của bạn */
   
