@@ -59,8 +59,8 @@ class QuizAttemptController {
     }
 
     @PostMapping("/quiz_attempt")
-    ResponseEntity<QuizAttempt> createQuiz(@Valid @RequestBody QuizAttempt quizAttempt) throws URISyntaxException {
-        log.info("Request to create Quiz: {}", quizAttempt);
+    ResponseEntity<QuizAttempt> createQuizAttempt(@Valid @RequestBody QuizAttempt quizAttempt) throws URISyntaxException {
+        log.info("Request to create QuizAttempt: {}", quizAttempt);
         
         // Quiz quiz = quizAttempt.getQuiz();
         Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
@@ -92,10 +92,15 @@ class QuizAttemptController {
 
         quizAttempt.setTimeStart(LocalDateTime.now());
         quizAttempt.setTimeComplete(quizAttempt.getTimeStart().plusMinutes(quiz.getTimeLimit()));
-        quiz.setOngoingAttempt(true);
-        quizRepo.save(quiz);
 
         QuizAttempt  result = quizAttemptRepo.save(quizAttempt);
+
+        quiz.setOngoingAttempt(true);
+        List<Long> attemptList = quiz.getQuizAttemptID();
+        attemptList.add(quizAttempt.getId());
+        quiz.setQuizAttemptID(attemptList);
+        quizRepo.save(quiz);
+
         return ResponseEntity.created(new URI("/api/quiz_attempt/" + result.getId()))
                 .body(result);
     }
