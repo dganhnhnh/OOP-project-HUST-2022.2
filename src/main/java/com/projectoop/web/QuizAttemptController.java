@@ -9,6 +9,7 @@ import com.projectoop.services.QuestionRepo;
 import com.projectoop.services.QuizAttemptRepo;
 import com.projectoop.services.QuizRepo;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanWrapper;
@@ -58,14 +59,56 @@ class QuizAttemptController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    //TODO: không submit 2 lần 
+    @GetMapping("/quiz_attempt/{id}/submit")
+    ResponseEntity<?> submitQuizAttempt (@PathVariable Long id) {
+        Optional<QuizAttempt> quizAttemptOptional = quizAttemptRepo.findById(id);
+        QuizAttempt quizAttempt = quizAttemptOptional.orElseThrow();
+
+        for(QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()){
+            quesInQuiz.calcMark();
+        }
+        quizAttempt.calcTotalMark();
+
+        quizAttempt.setFinished(true);      // cấm truy cập sửa đổi kể từ đây
+        quizAttempt.setTimeComplete(LocalDateTime.now());
+        quizAttempt.calcTimeTaken();
+        quizAttemptRepo.save(quizAttempt);
+
+        Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
+        Quiz quiz = quizOptional.orElseThrow();
+        quiz.setOngoingAttempt(false);
+        quizRepo.save(quiz);
+
+        return quizAttemptOptional.map(response -> ResponseEntity.ok().body(response))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping("/quiz_attempt")
-    ResponseEntity<QuizAttempt> createQuizAttempt(@Valid @RequestBody QuizAttempt quizAttempt) throws URISyntaxException {
+    ResponseEntity<?> createQuizAttempt(@Valid @RequestBody QuizAttempt quizAttempt) throws URISyntaxException {
         log.info("Request to create QuizAttempt: {}", quizAttempt);
         
         // Quiz quiz = quizAttempt.getQuiz();
         Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
         Quiz quiz = quizOptional.orElseThrow();
         log.info(quiz.toString());
+
+        log.info(quiz.getTimeClose().toString());
+        log.info((quiz.getTimeClose().isBefore(LocalDateTime.now()))?"closed":"not closed");
+
+        //xử lí các trường hợp Quiz không mở
+        if (quiz.isOngoingAttempt()){
+            // return ResponseEntity.ok().body();
+            throw new QuizNotOpenException("Another attempt is still going!");
+        }
+        else if(quiz.getTimeClose().isBefore(LocalDateTime.now())){
+            throw new QuizNotOpenException("Quiz is closed!");
+        }
+        else if(quiz.getTimeOpen().isAfter(LocalDateTime.now())){
+            throw new QuizNotOpenException("Quiz is not open yet!");
+        }
+
+
         quizAttempt.setQuiz(quiz);
         // vì quiz lưu trong DB nên mỗi lần gửi request sửa attempt thì không cần truyền thông tin của quiz nữa
 
@@ -117,6 +160,9 @@ class QuizAttemptController {
 
         QuizAttempt existingEntity = optionalEntity.get();
         BeanWrapper beanWrapper = new BeanWrapperImpl(existingEntity);
+
+        //TODO if finished == true, return forbidden message ,... 
+        //TODO calc mark của ques
         
         // kiểm tra thuộc tính có được nhắc tới trong request thì sẽ không update lại bằng giá trị mặc định là null hay 0, ..
         for (PropertyDescriptor descriptor : beanWrapper.getPropertyDescriptors()) {
@@ -129,7 +175,7 @@ class QuizAttemptController {
             if (beanWrapper.isWritableProperty(propertyName) 
                 && !propertyName.equals("id") 
                 && !propertyName.equals("class")
-                && descriptor.getPropertyType() != boolean.class
+                // && descriptor.getPropertyType() != boolean.class
                 ) {
 
                 Object requestValue = new BeanWrapperImpl(quizAttempt).getPropertyValue(propertyName);

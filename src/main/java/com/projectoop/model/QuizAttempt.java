@@ -46,9 +46,8 @@ public class QuizAttempt {
     private LocalDateTime timeComplete;
     // Time ở đây chỉ thời gian làm bài(gồm ngày giờ nhưng timetaken chỉ hiện phút giây )
     public void calcTimeTaken (){
-       
-        Duration timeTaken = Duration.between(timeStart, timeComplete);
-        // long seconds = timeTaken.getSeconds();
+        Duration duration = Duration.between(timeStart, timeComplete); 
+        timeTaken = (int)duration.toSeconds();
     }
     
     public void calcTotalMark() {
