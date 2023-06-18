@@ -158,24 +158,34 @@ const QuizInterface = () => {
       </div>
       <div style={{ height: "300px", overflow: "auto" }}>
 
-        {questionsID.map((questionID) => {
-          const question = questions.find((question) => question.id === questionID);
-           const plainText = decode(question.text).replace(/<[^>]+>/g, "");
-          if (!question) return <div key={questionID}>Question not found</div>;
-          return (
-            <div key={questionID} className="question-row">
-              <div className="question-name">
-                {plainText}  </div>
-              <div className="question-delete">
-                <BsFillTrash3Fill
-                  style={{ marginRight: "20px", cursor: "pointer" }}
-                  onClick={() => handleDeleteQuestion(question.id)}
-                />
-                <div className='boxDefaultMark'>{question.defaultMark}<BsFillPencilFill style={{ marginLeft: "20px" }} /></div>
-              </div>
-            </div>
-          );
-        })}
+      {questionsID.map((questionID) => {
+    const question = questions.find((question) => question.id === questionID);
+    if (!question) {
+      return (
+        <div key={questionID}>
+          Question not found for ID: {questionID}
+        </div>
+      );
+    }
+    const plainText = decode(question.text).replace(/<[^>]+>/g, "");
+    return (
+      <div key={questionID} className="question-row">
+        <div className="question-name">
+          {plainText}
+        </div>
+        <div className="question-delete">
+          <BsFillTrash3Fill
+            style={{ marginRight: "20px", cursor: "pointer" }}
+            onClick={() => handleDeleteQuestion(question.id)}
+          />
+          <div className='boxDefaultMark'>
+            {question.defaultMark}
+            <BsFillPencilFill style={{ marginLeft: "20px" }} />
+          </div>
+        </div>
+      </div>
+    );
+  })}
       </div>
     </div >
   );
