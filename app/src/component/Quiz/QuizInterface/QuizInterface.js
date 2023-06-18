@@ -30,6 +30,8 @@ const QuizInterface = () => {
       .then((quiz) => {
         setName(quiz.name);
         setDescription(quiz.description);
+        setTimeOpen(quiz.timeOpen)
+        setTimeClose(quiz.timeClose)
         setTimeLimit(quiz.timeLimit);
         setQuizAttemptID(quiz.quizAttemptID);
         setQuizState(quiz.quizState);
@@ -64,6 +66,8 @@ const QuizInterface = () => {
       <p className="quizName">{name}</p>
       <div className="editIcon">{toEditingQuiz(id)}</div>
       <div className="line2">
+        <p>Time open: {timeOpen}</p>
+        <p>Time close: {timeClose}</p>
         <p>Time limit: {timeLimit} minutes</p>
         <p>Grading method: Last attempt</p>
       </div>

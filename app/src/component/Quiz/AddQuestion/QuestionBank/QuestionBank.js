@@ -185,43 +185,47 @@ const QuestionBank = () => {
 //   }
 // };
 
-    const addCheckedQuestionsToQuiz = () => {
+  const addCheckedQuestionsToQuiz = () => {
     // get the current quiz object from the server
     fetch(`http://localhost:8080/api/quiz/${id}`)
-      .then(response => response.json())
-      .then(quiz => {
+      .then((response) => response.json())
+      .then((quiz) => {
         // get the existing array of question IDs and append the new ones to it
         const existingQuestions = quiz.questionsID || [];
         console.log(existingQuestions);
-        const newQuestionIds = questions.filter(question => question.checked).map(question => question.id);
-        console.log(newQuestionIds)
-         // Remove any question IDs that are already present in existingQuestions
-      const filteredNewQuestionIds = newQuestionIds.filter(newQuestionId => !existingQuestions.includes(newQuestionId));
-      console.log(filteredNewQuestionIds);
+        const newQuestionIds = questions
+          .filter((question) => question.checked)
+          .map((question) => question.id);
+        console.log(newQuestionIds);
+        // Remove any question IDs that are already present in existingQuestions
+        const filteredNewQuestionIds = newQuestionIds.filter(
+          (newQuestionId) => !existingQuestions.includes(newQuestionId)
+        );
+        console.log(filteredNewQuestionIds);
 
-      const updatedQuestions = [...existingQuestions, ...filteredNewQuestionIds];
-      console.log(updatedQuestions)
-      // create an updated quiz object with the new question IDs
-      const updatedQuiz = { ...quiz, questionsID: updatedQuestions };
-      console.log(updatedQuestions)
-      // update the quiz object on the server
-      return fetch(`http://localhost:8080/api/quiz/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedQuiz),
-      });
-    })
-    .then(response => {
-      if (response.ok)
-      {
-        console.log('Quiz updated successfully');
-      }
-      else
-      {
-        throw new Error('Failed to update quiz');
-      }
-    })
-    .catch(error => console.error(error)); // TODO: handle error appropriately
+        const updatedQuestions = [
+          ...existingQuestions,
+          ...filteredNewQuestionIds,
+        ];
+        console.log(updatedQuestions);
+        // create an updated quiz object with the new question IDs
+        const updatedQuiz = { ...quiz, questionsID: updatedQuestions };
+        console.log(updatedQuestions);
+        // update the quiz object on the server
+        return fetch(`http://localhost:8080/api/quiz/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedQuiz),
+        });
+      })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Quiz updated successfully");
+        } else {
+          throw new Error("Failed to update quiz");
+        }
+      })
+      .catch((error) => console.error(error)); // TODO: handle error appropriately
   };
 
   return (

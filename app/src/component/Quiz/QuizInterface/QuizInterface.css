@@ -1,7 +1,7 @@
 .QuizInterface {
 	margin-top: 20px;
 	border: 1px solid black;
-	height: 130vh;
+	padding-bottom: 300px;
 }
 
 .quizName {
