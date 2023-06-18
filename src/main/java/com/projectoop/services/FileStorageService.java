@@ -172,8 +172,9 @@ public class FileStorageService implements IStorageService {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(byteData);
 
             XWPFDocument document = new XWPFDocument(inputStream);
-            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-            fileText += extractor.getText();
+            try (XWPFWordExtractor extractor = new XWPFWordExtractor(document)) {
+                fileText += extractor.getText();
+            }
             // fileText += "END OF QUESTION TEXT\n";
             int imgId = 0;
 
@@ -261,6 +262,7 @@ public class FileStorageService implements IStorageService {
                 }
                 question.setChoices(choices);
                 question.setImageURL(pathForFile + "Image/DocxIm_" + fileName + "_img_" + quesCount + ".png");
+                
                 quesCount++;
 
                 questions.add(question);
