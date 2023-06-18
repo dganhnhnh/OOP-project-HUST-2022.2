@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept","Access-Control-Allow-Origin" })
 @RestController
 @RequestMapping("/api")
 class CategoryController {
@@ -50,8 +50,27 @@ class CategoryController {
     @PostMapping("/category")
     ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
         log.info("Request to create Category: {}", category);
-        
+
         Category result = categoryRepo.save(category);
+
+        Long parentCatID = category.getParentID();
+        if (parentCatID != null){
+            Optional<Category> parentCategoryOptional = categoryRepo.findById(category.getParentID());
+            Category parentCategory = parentCategoryOptional.orElseThrow();
+
+            log.info(category.getParentID().toString());
+            log.info(parentCategory.toString());
+
+            if (parentCategory != null) {
+                Set<Long> subCatIDList = parentCategory.getSubCatID();
+                subCatIDList.add(category.getId());
+                parentCategory.setSubCatID(subCatIDList);
+                log.info(subCatIDList.toString());
+    
+                categoryRepo.save(parentCategory);
+            }
+        }
+            
         return ResponseEntity.created(new URI("/api/category/" + result.getId()))
                 .body(result);
     }
@@ -79,6 +98,23 @@ class CategoryController {
                 b.setCategoryID(null);
                 //TODO đưa categoryID về 1 mục mặc định "default" id=1
                 // questionRepo.deleteById(qIDList.get(i));
+            }
+        }
+
+        Long parentCatID = category.getParentID();
+        if (parentCatID != null){
+            Optional<Category> parentCategoryOptional = categoryRepo.findById(category.getParentID());
+            Category parentCategory = parentCategoryOptional.orElseThrow();
+
+            log.info(category.getParentID().toString());
+            log.info(parentCategory.toString());
+
+            if (parentCategory != null) {
+                Set<Long> subCatIDList = parentCategory.getSubCatID();
+                subCatIDList.remove(category.getId());
+                parentCategory.setSubCatID(subCatIDList);
+    
+                categoryRepo.save(parentCategory);
             }
         }
 

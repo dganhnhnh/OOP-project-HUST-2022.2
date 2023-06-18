@@ -3,8 +3,10 @@ package com.projectoop.web;
 import com.projectoop.model.Category;
 import com.projectoop.model.Question;
 import com.projectoop.model.Quiz;
+import com.projectoop.model.QuizAttempt;
 import com.projectoop.services.CategoryRepo;
 import com.projectoop.services.QuestionRepo;
+import com.projectoop.services.QuizAttemptRepo;
 import com.projectoop.services.QuizRepo;
 
 import org.slf4j.Logger;
@@ -23,19 +25,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = {"Content-Type","Accept"})
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept",
+        "Access-Control-Allow-Origin" })
 @RestController
 @RequestMapping("/api")
 class QuizController {
 
     private final Logger log = LoggerFactory.getLogger(QuizController.class);
-    private CategoryRepo categoryRepo;
     private QuestionRepo questionRepo;
     private QuizRepo quizRepo;
+    private QuizAttemptRepo quizAttemptRepo;
 
-    public QuizController(QuizRepo quizRepo,QuestionRepo questionRepo) {
+    public QuizController(QuizRepo quizRepo, QuestionRepo questionRepo,QuizAttemptRepo quizAttemptRepo) {
         this.quizRepo = quizRepo;
         this.questionRepo = questionRepo;
+        this.quizAttemptRepo = quizAttemptRepo;
     }
 
     @GetMapping("/quizzes")
@@ -54,8 +58,8 @@ class QuizController {
     @PostMapping("/quiz")
     ResponseEntity<Quiz> createQuiz(@Valid @RequestBody Quiz quiz) throws URISyntaxException {
         log.info("Request to create Quiz: {}", quiz);
-        quiz.setTimeOpen(LocalDateTime.now());
-        quiz.setDefaultTimeClose();
+        // quiz.setTimeOpen(LocalDateTime.now());
+        // quiz.setDefaultTimeClose();
         Quiz result = quizRepo.save(quiz);
         return ResponseEntity.created(new URI("/api/quiz/" + result.getId()))
                 .body(result);
@@ -64,8 +68,8 @@ class QuizController {
     @PutMapping("/quiz/{id}")
     ResponseEntity<Quiz> updateQuiz(@Valid @RequestBody Quiz quiz) {
         log.info("Request to update Quiz: {}", quiz);
-        quiz.setTimeOpen(LocalDateTime.now());
-        quiz.setDefaultTimeClose();
+        // quiz.setTimeOpen(LocalDateTime.now());
+        // quiz.setDefaultTimeClose();
         Quiz result = quizRepo.save(quiz);
         return ResponseEntity.ok().body(result);
     }
@@ -73,6 +77,13 @@ class QuizController {
     @DeleteMapping("/quiz/{id}")
     public ResponseEntity<?> deleteQuiz(@PathVariable Long id) {
         log.info("Request to delete Quiz: {}", id);
+
+        Optional<Quiz> qOptional = quizRepo.findById(id);
+        List <Long> attemptIDList = qOptional.orElseThrow().getQuizAttemptID();
+        log.info(attemptIDList.toString());
+        quizAttemptRepo.deleteAllById(attemptIDList);
+        log.info(attemptIDList.toString());
+
         quizRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }

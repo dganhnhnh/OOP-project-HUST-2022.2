@@ -1,13 +1,13 @@
 import React  from "react";
 import './EditQuestion.css'
+import MyEditor from "./MyEditor";
 
 function InputField({ id, value, onChange}) {
   return (
-    <textarea
+    <MyEditor
       id={id}
-      value={value}
-      onChange={onChange}
-      type="text"
+      text={value}
+      setText={onChange}
     />
   );
 }
@@ -34,8 +34,8 @@ function ChoiceField({label, text, setText, grade, setGrade}) {
           </div>
           <div className="col-80">
             <InputField
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+            value={text}
+            onChange ={setText}
             />
           </div>
       </div>
