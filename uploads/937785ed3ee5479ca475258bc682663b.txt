@@ -1,13 +1,12 @@
 what is the largest organ in humanbody?
 A. Heart
-B. Skin
-ANSWER: B
+ANSWER: A
 
 who invented the telephone
 A. Giang
 B. Edison
 ANSWER: A
 
-mot cong ba bang may
-A. 4
-B. 6
+which planet is closest to the sun
+A. Venus
+ANSWER: A
