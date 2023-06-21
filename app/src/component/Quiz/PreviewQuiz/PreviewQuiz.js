@@ -3,6 +3,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./PreviewQuiz.css";
 import QuizNavigation from "./QuizNavigation";
 
+function shuffleArray(n) {
+  let arr = Array.from({length: n}, (_, i) => i + 1); // create an array of length n with the original permutation
+  for (let i = n - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); // generate a random index between 0 and i
+    [arr[i], arr[j]] = [arr[j], arr[i]]; // swap the elements at index i and j
+  }
+  return arr; // return the shuffled array
+}
+
+// biến để chứa thứ tự sắp xếp lại của choice text, choice grade, choice chosen
+let orderVector = []
+// qiqlist là hằng số, vì nếu nó thay đổi app sẽ load lại và thực hiện lại function tốn kém này?
+function shuffleChoiceOfQuiz(qiqlist){
+    qiqlist.forEach((qiq)=>{
+      if(orderVector.length == qiqlist.length) return
+      orderVector.push(shuffleArray(qiq.choiceChosen.length))
+    })
+}
+
 function PreviewQuiz() {
   const [quesInQuizList, setQuesInQuizList] = useState([]);
   const [choiceChosenList, setChoiceChosenList] = useState([]);
@@ -16,15 +35,36 @@ function PreviewQuiz() {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
   const navigate = useNavigate();
+  // let quesInQuizListWithQuestions;
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
+  // let qiq;
+  // useEffect(async () => {
+  //   const response = await fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
+  //     .then(async (response) => response.json())
+  //     .then(async (data) => {
+  //       const qiq = await data.quesInQuizList
+  //       shuffleChoiceOfQuiz(qiq);
+  //       console.log(orderVector);
+  //     })
+  //   // const data = await response.json()
+  //   // console.log("data "+ await data)
+    
+  //   // console.log( qiq)
+    
+  // }, []);
+
+
+  useEffect( () => {
+     fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
+      .then( (response) => response.json())
+      .then( (data) => {
         // lưu thông tin các câu hỏi vào state và chuyển các câu hỏi có 2 choice trở lên lớn hơn 0 điểm thành dạng chọn nhiều câu trả lời
+        // biến này dùng để gộp qiq và question real 
+        // qiq = await data.quesInQuizList
         const quesInQuizListUpdated = data.quesInQuizList.map((quesInQuiz) => {
           return {
             ...quesInQuiz,
+            // các trường null chuẩn bị chứa thông tin từ question 
             categoryID: null,
             text: null,
             choices: null,
@@ -47,6 +87,7 @@ function PreviewQuiz() {
           )
         ).then((questions) => {
           // cập nhật state với thông tin câu hỏi đã lấy được
+          // biến gộp 
           const quesInQuizListWithQuestions = quesInQuizListUpdated.map(
             (quesInQuiz, index) => ({
               ...quesInQuiz,
@@ -58,7 +99,28 @@ function PreviewQuiz() {
               })),
             })
           );
+          
+          // NẾU BẬT SHUFFLED THÌ MỚI THỰC HIỆN NHƯ SAU
 
+          // shuffleChoiceOfQuiz(quesInQuizListWithQuestions);
+          shuffleChoiceOfQuiz(data.quesInQuizList);
+          console.log(orderVector);
+          // order vector bị thêm 2 lần??   
+
+          //tráo lại giá trị của choiceGrade dựa vào dãy thứ tự đc khởi tạo khi shuffle
+          let tempArr =[]
+          quesInQuizListWithQuestions.forEach(
+            (qiq)=>{
+              orderVector[qiq.idInQuiz-1].forEach(
+                (orderElement,id)=>{
+                  let tmp = qiq.choiceGrade[orderElement-1]
+                  tempArr[id] = tmp;
+                }
+              )
+              qiq.choiceGrade = [...tempArr]
+            }
+          )
+          
           setQuesInQuizList(quesInQuizListWithQuestions);
           console.log(quesInQuizListWithQuestions);
         });
@@ -69,12 +131,14 @@ function PreviewQuiz() {
     const choiceChosen = [...choiceChosenList[questionIndex]];
     choiceChosen[choiceIndex] = !choiceChosen[choiceIndex];
     console.log(choiceChosen);
+
     const newChoiceChosenList = [
       ...choiceChosenList.slice(0, questionIndex),
       choiceChosen,
       ...choiceChosenList.slice(questionIndex + 1),
     ];
 
+    // sửa choice chosen ở đây 
     setChoiceChosenList(newChoiceChosenList);
     const newQuesInQuizList = [...quesInQuizList];
     if (
@@ -173,7 +237,7 @@ function PreviewQuiz() {
 
       if (choices && choices.length > 0) {
         for (let i = 0; i < choices.length; i++) {
-          if (choices[i].chosen && choiceGrade[i] > 0) {
+          if (choiceChosen[i] && choiceGrade[i] > 0) {
             questionMark += choiceGrade[i];
           }
         }
@@ -307,6 +371,8 @@ function PreviewQuiz() {
                                 quesInQuiz.choiceGrade.filter(
                                   (grade) => grade > 0
                                 ).length > 1
+                                // đoạn code thế này (duyệt cả list quesInQuiz để đếm số đáp án) có bị thực hiện nhiều lần hơn cần thiết không?
+                                // bởi vì app sẽ load nó lại mỗi lần có thay đổi state 
                                   ? "checkbox"
                                   : "radio"
                               }
@@ -318,9 +384,12 @@ function PreviewQuiz() {
                             />
                             <div
                               dangerouslySetInnerHTML={{
-                                __html: choice.choiceText,
+                                // __html: choice.choiceText,
+                                __html: quesInQuiz.choices[orderVector[quesInQuiz.idInQuiz-1][choiceIndex]-1].choiceText,
                               }}
-                            ></div>
+                              // orderVector[quesInQuiz.idInQuiz-1][choiceIndex]-1 : index mới 
+                            >
+                            </div>
                           </label>
                         </li>
                       ))}
