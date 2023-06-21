@@ -77,4 +77,5 @@ class QuizController {
         quizRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
 }

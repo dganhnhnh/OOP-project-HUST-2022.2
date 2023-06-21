@@ -145,20 +145,4 @@ class QuestionController {
         return ResponseEntity.ok().build();
     }
 
-    // de tam nao chuyen sang quiz
-    @GetMapping("/ExportToPDF")
-    public void generatePdf(HttpServletResponse response) throws DocumentException, IOException {
-        response.setContentType(null);
-        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
-        String currentDateTime = dateFormat.format(new Date());
-        String headerkey = "Content-Disposition";
-        String headervalue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
-        response.setHeader(headerkey, headervalue);
-
-        Collection<Question> questions = questionRepo.findAll();
-
-        PDFGenerator generator = new PDFGenerator(questions);
-        generator.generate(response);
-    }
-
 }

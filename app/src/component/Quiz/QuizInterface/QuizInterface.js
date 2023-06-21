@@ -139,6 +139,9 @@ const QuizInterface = () => {
           <button className="cancel_btn" onClick={handleCancel}>
             CANCEL
           </button>
+          <button className="export_btn" >
+            EXPORT
+          </button>
           </div>
           
         </div>
