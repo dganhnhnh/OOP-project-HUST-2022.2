@@ -56,7 +56,11 @@ const QuizInterface = () => {
       //Thêm các thuộc tính khác nếu cần
     };
 
-    fetch("http://localhost:8080/api/quiz_attempt", {
+    fetch("http://localhost:8080/api/quiz_attempt?"
+      +new URLSearchParams({
+        shuffle_option: true
+    })
+    , {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
