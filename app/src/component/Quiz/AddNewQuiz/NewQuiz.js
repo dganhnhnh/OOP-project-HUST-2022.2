@@ -59,7 +59,7 @@ const NewQuiz = () => {
 			return;
 		}
 		setIsSubmitted(true);
-		const NewQuiz = {
+		let NewQuiz = {
 			name,
 			description,
 			questionsID,

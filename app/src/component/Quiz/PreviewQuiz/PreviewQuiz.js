@@ -200,19 +200,22 @@ function PreviewQuiz() {
 
     const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
 
-    // PUT the updated quiz attempt data to the API endpoint
-    fetch(`http://localhost:8080/api/quiz_attempt/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        quesInQuizList: quesInQuizList,
-        totalMark: totalMark,
-        finished: true,
-        timeTaken: timeLimit - timeLeft, //hiện giây
-        timeComplete: formattedDate,
-      }),
+    // // PUT the updated quiz attempt data to the API endpoint
+    // fetch(`http://localhost:8080/api/quiz_attempt/${id}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     quesInQuizList: quesInQuizList,
+    //     totalMark: totalMark,
+    //     finished: true,
+    //     timeTaken: timeLimit - timeLeft, //hiện giây
+    //     timeComplete: formattedDate,
+    //   }),
+    // })
+    fetch(`http://localhost:8080/api/quiz_attempt/${id}/submit`, {
+      method: "GET"
     })
       .then((response) => response.json())
       .then((data) => {

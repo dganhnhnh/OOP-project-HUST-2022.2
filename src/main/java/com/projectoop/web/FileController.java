@@ -140,6 +140,9 @@ public class FileController {
             } else if (fileExtention.equals(new String("docx"))) {
                 fileText = storageService.readMultimediaFile(fileName);
                 importResult = storageService.readQuestionFromFile(fileText, fileName);
+                for (Question question : importResult.getQuesList()) {
+                    question.setText(question.getText()+"<p><img src="+question.getImageURL()+"></p>");
+                }
             }
             if (importResult.getQuesLine() >= 0) {
                 return ResponseEntity.ok().body("Error at " + importResult.getQuesLine());

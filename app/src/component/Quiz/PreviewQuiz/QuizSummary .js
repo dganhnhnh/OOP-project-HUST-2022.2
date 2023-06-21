@@ -36,6 +36,7 @@ const QuizSummary = ({ id }) => {
   }
 
     let quizMarkGrade = 0;
+    // hơi cồng kềnh 
     quizAttempt.quesInQuizList.forEach((quesInQuiz) => {
       quesInQuiz.choiceGrade.forEach((choice) => {
         quizMarkGrade += choice;

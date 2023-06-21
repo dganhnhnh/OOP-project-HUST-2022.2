@@ -3,8 +3,10 @@ package com.projectoop.web;
 import com.projectoop.model.Category;
 import com.projectoop.model.Question;
 import com.projectoop.model.Quiz;
+import com.projectoop.model.QuizAttempt;
 import com.projectoop.services.CategoryRepo;
 import com.projectoop.services.QuestionRepo;
+import com.projectoop.services.QuizAttemptRepo;
 import com.projectoop.services.QuizRepo;
 
 import org.slf4j.Logger;
@@ -30,13 +32,14 @@ import java.util.Set;
 class QuizController {
 
     private final Logger log = LoggerFactory.getLogger(QuizController.class);
-    private CategoryRepo categoryRepo;
     private QuestionRepo questionRepo;
     private QuizRepo quizRepo;
+    private QuizAttemptRepo quizAttemptRepo;
 
-    public QuizController(QuizRepo quizRepo, QuestionRepo questionRepo) {
+    public QuizController(QuizRepo quizRepo, QuestionRepo questionRepo,QuizAttemptRepo quizAttemptRepo) {
         this.quizRepo = quizRepo;
         this.questionRepo = questionRepo;
+        this.quizAttemptRepo = quizAttemptRepo;
     }
 
     @GetMapping("/quizzes")
@@ -74,6 +77,13 @@ class QuizController {
     @DeleteMapping("/quiz/{id}")
     public ResponseEntity<?> deleteQuiz(@PathVariable Long id) {
         log.info("Request to delete Quiz: {}", id);
+
+        Optional<Quiz> qOptional = quizRepo.findById(id);
+        List <Long> attemptIDList = qOptional.orElseThrow().getQuizAttemptID();
+        log.info(attemptIDList.toString());
+        quizAttemptRepo.deleteAllById(attemptIDList);
+        log.info(attemptIDList.toString());
+
         quizRepo.deleteById(id);
         return ResponseEntity.ok().build();
     }

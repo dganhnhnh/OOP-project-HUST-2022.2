@@ -63,8 +63,12 @@ const QuizInterface = () => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
+          if (response.status === 405) {
+            console.log('Method not allowed error');
+            alert(await response.text());
+          }
           throw new Error("Network response was not ok");
         }
         return response.json(); // Chuyển đổi response body thành object JSON

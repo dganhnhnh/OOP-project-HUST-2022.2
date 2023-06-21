@@ -126,6 +126,7 @@ const QuizInterface = () => {
         <div className='numberOfQs'>Question: 0 </div>
         <div className='onGoingAttempt'> | </div>
         <div className='onGoingAttempt'>{(ongoingAttempt) ? ' This quiz is open' : ' This quiz is close'}</div>
+        {/* logic này chưa đúng, ongoingAttempt là để check xem có attempt nào đang diễn ra không */}
         <div className='maxgrade'>Maximum grade:
           <input type='number'></input>
           <button>save</button>
