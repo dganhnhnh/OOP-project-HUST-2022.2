@@ -194,7 +194,7 @@ class QuizAttemptController {
             PDFGenerator generator = new PDFGenerator(questions);
             generator.generatePDFWithPassWord(response, password);
         } catch (Exception e) {
-            throw new RuntimeException("Cannot find quiz to export");
+            throw new RuntimeException();
         }
 
     }

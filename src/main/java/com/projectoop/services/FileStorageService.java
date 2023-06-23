@@ -33,6 +33,7 @@ import com.projectoop.model.Question;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.*;
+import org.hibernate.Remove;
 
 @Service
 public class FileStorageService implements IStorageService {
@@ -172,15 +173,22 @@ public class FileStorageService implements IStorageService {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(byteData);
 
             XWPFDocument document = new XWPFDocument(inputStream);
+
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-            fileText += extractor.getText();
+            // fileText += extractor.getText();
             // fileText += "END OF QUESTION TEXT\n";
             int imgId = 0;
 
+            System.out.println(document.getParagraphs().size());
+            boolean[] paragraphHasImage = new boolean[100];
+            int pos = 0;
+
             for (XWPFParagraph paragraph : document.getParagraphs()) {
+                boolean check = false;
                 // Loop through all runs of the paragraph
                 for (XWPFRun run : paragraph.getRuns()) {
                     if (run.getEmbeddedPictures().size() > 0) {
+                        // XWPFRun runXwpfRun = paragraph.getRuns().get(pos);
                         // This run contains an image
                         byte[] imageBytes = run.getEmbeddedPictures().get(0).getPictureData().getData();
                         // do something with imageBytes
@@ -194,10 +202,19 @@ public class FileStorageService implements IStorageService {
                                 .normalize().toAbsolutePath();
                         File imageFile = new File(destinationFilePath.toString());
                         ImageIO.write(image, "png", imageFile);
-                        imgId++;
+                        check = true;
                     }
                 }
+                if (check == true)
+                    paragraphHasImage[pos] = true;
+                pos++;
             }
+            for (int i = document.getParagraphs().size() - 1; i >= 0; i--) {
+                if (paragraphHasImage[i]) {
+                    document.removeBodyElement(i);
+                }
+            }
+            fileText += extractor.getText();
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
