@@ -138,7 +138,7 @@ function QuizResult() {
                                   : "radio"
                               }
                               name={`choices_${questionIndex}`}
-                              checked={choice.chosen}
+                              checked={quesInQuiz.choiceChosen[choiceIndex]}
                               disabled // Không cho phép thay đổi đáp án
                             />
                             <div

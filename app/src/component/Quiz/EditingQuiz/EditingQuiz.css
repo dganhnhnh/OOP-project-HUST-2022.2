@@ -53,7 +53,12 @@
 	text-align: right;
 	margin-right: 120px;
 }
-
+.REPAGINATEButton:hover,
+.SELECTMULTIPLEITEMSButton:hover,
+.btnSaveMaxGrade:hover,
+.deleteButton:hover{
+	background-color: rgb(26, 80, 145);
+}
 
 
 .REPAGINATEButton,
@@ -161,6 +166,7 @@
 
 /* scrollbar styles */
 ::-webkit-scrollbar {
+	height: 1000px !important;
 	width: 8px;
 }
 
@@ -175,4 +181,21 @@
 
 ::-webkit-scrollbar-thumb:hover {
 	background-color: #b8c6d1;
+}
+.detail-btn1{
+	margin-top: 5px;
+	font-size: 20px;
+	border: none;
+	background-color: #c5c3c3;
+	margin-left: auto;
+}
+.deleteButton{
+	margin-top: -400px;
+	margin-left: 20px;
+	font-size: 17px;
+	background-color: rgb(78, 153, 223);
+	border: none;
+	padding: 15px;
+	color: white;
+	border-radius: 5px;
 }

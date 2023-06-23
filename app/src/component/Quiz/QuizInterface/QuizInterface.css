@@ -1,7 +1,7 @@
 .QuizInterface {
 	margin-top: 20px;
 	border: 1px solid black;
-	height: 130vh;
+	padding-bottom: 300px;
 }
 
 .quizName {
@@ -34,7 +34,7 @@
 
 
 /*TABLE*/
-.table {
+.summary_attempt_table {
 
 	background-color: rgb(236, 246, 249);
 	border-radius: 5px;
@@ -43,18 +43,27 @@
 	width: 95%;
 }
 
-.table tr td {
+.summary_attempt_table tr td {
 	text-align: center;
 	height: 40px;
 }
 
-.table thead {
+.summary_attempt_table thead {
 	font-size: 20px;
 	height: 60px;
 	color: white;
 	background-color: rgb(28, 142, 248);
 }
 
+.summary_attempt_table th:first-child,
+td:first-child {
+  width: 10%;
+}
+
+.summary_attempt_table th:nth-child(2),
+.summary_attempt_table td:nth-child(2) {
+  width: 50%;
+}
 
 .caption {
 	margin-left: 18px;
@@ -200,3 +209,19 @@
 	align-items: center;
 	margin-top: 20px;
  }
+
+ .continueQuizButton{
+	margin-top: 50px;
+	font-size: 20px;
+	margin-left: 70vw;
+	background-color: rgb(28, 142, 248);
+	border: none;
+	padding: 15px;
+	color: white;
+	border-radius: 5px;
+}
+
+.continueQuizButton:hover{
+	background-color: blue;
+	cursor: pointer;
+}

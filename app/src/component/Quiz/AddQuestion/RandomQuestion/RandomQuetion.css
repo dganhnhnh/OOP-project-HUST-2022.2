@@ -10,38 +10,49 @@
 	justify-content: center;
 }
 
+.navbarRandom {
+  display: flex;
+  justify-content: center;
+}
+
 .randomBar {
-	list-style: none;
-	display: flex;
-	margin: 0;
-	padding: 0;
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
 .randomBar li {
-	margin-left: 20px;
+  margin-left: 20px;
 }
 
 .randomBar li:first-child {
-	margin-left: 0;
+  margin-left: 0;
 }
 
 .active-link {
-	font-weight: bold;
-	color: black;
+  font-weight: bold;
+  color: black;
 }
 
 .randomBar li a {
-	display: inline-block;
-	padding: 10px;
-	border: 1px solid #ccc;
-	text-decoration: none;
-	color: blue;
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #ccc; /* Remove this line to remove the border */
+  text-decoration: none;
+  color: rgb(6, 93, 193);
 }
 
 .randomBar li a:hover {
-	color: black;
+  color: black;
 }
 
+.randomBar li a .active-link {
+  font-weight: bold;
+  color: black !important;
+  /* Add the following line to remove border bottom */
+  border-bottom: none !important; 
+}
 
 .title {
 	color: rgb(208, 12, 12);

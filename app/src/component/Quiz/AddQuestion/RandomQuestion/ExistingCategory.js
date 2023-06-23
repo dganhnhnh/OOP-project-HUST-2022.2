@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SlMagnifierAdd } from 'react-icons/sl'
 import { useLocation, useNavigate } from "react-router-dom";
 import './RandomQuetion.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { AiOutlineUnorderedList } from 'react-icons/ai'
+import { decode } from "html-entities";
 
 const Checkbox = ({ label, checked, onChange }) => {
   return (
@@ -107,21 +108,20 @@ const ExistingCategory = () => {
 
   const handleCategoryChange = event => {
     setSelectedCategory(event.target.value);
+    console.log(selectedCategory);
   };
 
   const handleShowSubcategoriesChange = event => {
     setShowSubcategories(event.target.checked);
   };
 
-  const selectedQuestions = questions
-    .sort(() => Math.random() - 0.5) // randomly shuffle the questions
-    .slice(0, numberRandom); // select the first numberRandom questions
 
+  const selectedQuestions = Array.isArray(questions)? questions.sort(() => Math.random() - 0.5).slice(0, numberRandom):[];
   const displayQuestions = selectedQuestions.map(question => (
     <div key={question.id}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <AiOutlineUnorderedList style={{ marginTop: "20px", marginLeft: "10px" }} />
-        <div style={{ fontSize: "17px", marginTop: "15px", paddingLeft: "20px" }}>{question.name}</div>
+        <div style={{ fontSize: "17px", marginTop: "15px", paddingLeft: "20px" }}>{decode(question.text).replace(/<[^>]+>/g, "")}</div>
       </div>
       <div className="action-btns">
         <button className="detail-btn">
@@ -134,9 +134,14 @@ const ExistingCategory = () => {
   const listRandomQuestions = (event) => {
     const numRandom = parseInt(event.target.value, 10); // parse the input value as an integer
     setNumberRandom(numRandom); // update the numberRandom state variable
-
-    const availableQuestions = questionsByCategory[selectedCategoryId] || [];
+    // console.log(numberRandom)
+    // console.log(selectedCategory);
+    const categoryId = parseInt(selectedCategory, 10);
+    // console.log(categoryId)
+    const availableQuestions = questionsByCategory[categoryId];
+    // console.log(availableQuestions);
     const numQuestions = Math.min(numRandom, availableQuestions.length);
+    
     const selectedQuestions = [];
     while (selectedQuestions.length < numQuestions)
     {
@@ -145,54 +150,76 @@ const ExistingCategory = () => {
       if (!selectedQuestions.find(q => q.id === randomQuestion.id))
       {
         selectedQuestions.push(randomQuestion);
+        
       }
     }
+    console.log(selectedQuestions)
     setCheckedQuestionIds(selectedQuestions.map(q => q.id)); // update the checkedQuestionIds state variable
     setQuestions(selectedQuestions); // update the questions state variable
   };
-  const addRandomQuestionsToQuiz = () => {
+  const addRandomQuestionsToQuiz = async () => {
+  try {
     // get the current quiz object from the server
-    fetch(`http://localhost:8080/api/quiz/${id}`)
-      .then(response => response.json())
-      .then(quiz => {
-        // get the existing array of question IDs and append the new ones to it
-        const existingQuestions = quiz.questionsID || [];
-        const newQuestionIds = checkedQuestionIds;
-        const updatedQuestions = [...existingQuestions, ...newQuestionIds];
+    const response = await fetch(`http://localhost:8080/api/quiz/${id}`);
+    const quiz = await response.json();
 
-        // create an updated quiz object with the new question IDs
-        const updatedQuiz = { ...quiz, questionsID: updatedQuestions };
+    // get the existing array of question IDs and append the new ones to it
+    const existingQuestions = quiz.questionsID || [];
+    console.log(existingQuestions);
 
-        // update the quiz object on the server
-        return fetch(`http://localhost:8080/api/quiz/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedQuiz),
-        });
-      })
-      .then(response => {
-        if (response.ok)
-        {
-          console.log('Quiz updated successfully');
-        } else
-        {
-          throw new Error('Failed to update quiz');
-        }
-      })
-      .catch(error => console.error(error)); // TODO: handle error appropriately
+    const newQuestionIds = questions.map(question => question.id);
+    console.log(newQuestionIds);
+
+    const updatedQuestions = [...existingQuestions, ...newQuestionIds.filter(id => !existingQuestions.includes(id))];
+    console.log(updatedQuestions);
+
+    // create an updated quiz object with the new question IDs
+    const updatedQuiz = { ...quiz, questionsID: updatedQuestions };
+    console.log(updatedQuestions);
+
+    // update the quiz object on the server
+    const putResponse = await fetch(`http://localhost:8080/api/quiz/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedQuiz),
+    });
+
+    if (putResponse.ok) {
+      console.log('Quiz add more questions successfully');
+    } else {
+      throw new Error('Failed to update quiz');
+    }
+  }
+  catch (error) {
+    console.error(error);
+    // TODO: handle error appropriately
+  }
+};
+
+  const QuestionRandomLink = ({ id }) => {
+    return (
+      <Link to={`/ExistingCategory?id=${id}`}>
+        <span> ExistingCategory</span>
+      </Link>
+    );
   };
-
-
+  const NewCategory = ({ id }) => {
+    return (
+      <Link to={`/NewCategory?id=${id}`}>
+        <span> New Category</span>
+      </Link>
+    );
+  };
   return (
     <div className='questionrandom'>
       <p className='title'>Add a random question to page 1</p>
       <div className="navbarRandom">
         <ul className='randomBar'>
           <li>
-            <NavLink to="/ExistingCategory"> Existing Category</NavLink>
+          <QuestionRandomLink id={id}></QuestionRandomLink>
           </li>
           <li>
-            <NavLink to="/NewCategory" className={location.pathname === "/NewCategory" ? "active-link" : ""}> New Category </NavLink>
+          <NewCategory id={id}></NewCategory>
           </li>
         </ul>
       </div>
@@ -206,7 +233,8 @@ const ExistingCategory = () => {
         <Checkbox className="include"
           label="include questions from subcategories too"
           checked={showSubcategories}
-          onChange={handleShowSubcategoriesChange} />
+          onChange={handleShowSubcategoriesChange}
+        />
       </div>
 
       <label htmlFor='num-questions'>Number of random questions:</label>
@@ -214,13 +242,14 @@ const ExistingCategory = () => {
         onChange={event => listRandomQuestions(event)} />
 
       <div className="display-question-random">
-        {selectedQuestions.length > 0 ? (
-          displayQuestions
-        ) : (
-          <p>No questions found.</p>
-        )}
-      </div>
-
+  {selectedQuestions.length === 0 ? (
+    <p>No questions found.</p>
+  ) : selectedQuestions.length < numberRandom ? (
+    <p>Not enough questions in the question bank.</p>
+  ) : (
+    displayQuestions
+  )}
+</div>
       <button className="button-in-question" onClick={() => addRandomQuestionsToQuiz()}>
         ADD RANDOM QUESTION TO THE QUIZ
       </button>

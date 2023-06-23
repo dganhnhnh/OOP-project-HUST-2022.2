@@ -35,23 +35,6 @@ function PreviewQuiz() {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
   const navigate = useNavigate();
-  // let quesInQuizListWithQuestions;
-
-  // let qiq;
-  // useEffect(async () => {
-  //   const response = await fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
-  //     .then(async (response) => response.json())
-  //     .then(async (data) => {
-  //       const qiq = await data.quesInQuizList
-  //       shuffleChoiceOfQuiz(qiq);
-  //       console.log(orderVector);
-  //     })
-  //   // const data = await response.json()
-  //   // console.log("data "+ await data)
-    
-  //   // console.log( qiq)
-    
-  // }, []);
 
 
   useEffect( () => {
@@ -105,7 +88,7 @@ function PreviewQuiz() {
           // shuffleChoiceOfQuiz(quesInQuizListWithQuestions);
           shuffleChoiceOfQuiz(data.quesInQuizList);
           console.log(orderVector);
-          // order vector bị thêm 2 lần??   
+          // order vector bị thêm 2 lần??   c
 
           //tráo lại giá trị của choiceGrade dựa vào dãy thứ tự đc khởi tạo khi shuffle
           let tempArr =[]
@@ -137,6 +120,7 @@ function PreviewQuiz() {
       choiceChosen,
       ...choiceChosenList.slice(questionIndex + 1),
     ];
+    console.log(newChoiceChosenList)
 
     // sửa choice chosen ở đây 
     setChoiceChosenList(newChoiceChosenList);
@@ -184,24 +168,6 @@ function PreviewQuiz() {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
-
-    fetch(
-      `http://localhost:8080/api/question/${newQuesInQuizList[questionIndex].questionID}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: newQuesInQuizList[questionIndex].questionID,
-          text: newQuesInQuizList[questionIndex].text,
-          categoryID: newQuesInQuizList[questionIndex].categoryID,
-          choices: newQuesInQuizList[questionIndex].choices,
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => console.log(data));
   }
 
   const handleNavClick = (idInQuiz) => {
@@ -230,54 +196,9 @@ function PreviewQuiz() {
   };
 
   function handleFinishAttempt() {
-    // Calculate mark for each question
-    quesInQuizList.forEach((quesInQuiz) => {
-      const { choices, choiceGrade, choiceChosen } = quesInQuiz;
-      let questionMark = 0;
-
-      if (choices && choices.length > 0) {
-        for (let i = 0; i < choices.length; i++) {
-          if (choiceChosen[i] && choiceGrade[i] > 0) {
-            questionMark += choiceGrade[i];
-          }
-        }
-      }
-
-      // Update the question mark in quesInQuiz object
-      quesInQuiz.quesMark = questionMark;
-    });
-
-    // Calculate total mark
-    let totalMark = quesInQuizList.reduce((total, quesInQuiz) => {
-      return total + quesInQuiz.quesMark;
-    }, 0);
-
-    //hiện giờ địa phương
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getDate()).padStart(2, "0");
-    const hours = String(currentDate.getHours()).padStart(2, "0");
-    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
-    const seconds = String(currentDate.getSeconds()).padStart(2, "0");
-    const milliseconds = String(currentDate.getMilliseconds()).padStart(3, "0");
-
-    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-
-    // // PUT the updated quiz attempt data to the API endpoint
-    // fetch(`http://localhost:8080/api/quiz_attempt/${id}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     quesInQuizList: quesInQuizList,
-    //     totalMark: totalMark,
-    //     finished: true,
+    
     //     timeTaken: timeLimit - timeLeft, //hiện giây
-    //     timeComplete: formattedDate,
-    //   }),
-    // })
+
     fetch(`http://localhost:8080/api/quiz_attempt/${id}/submit`, {
       method: "GET"
     })
@@ -285,7 +206,7 @@ function PreviewQuiz() {
       .then((data) => {
         // Xử lý phản hồi từ API sau khi nộp bài
         console.log(data);
-        // Chuyển hướng đến trang kết quả bài kiểm tra hoặc trang khác tùy vào yêu cầu của bạn
+        // Chuyển hướng đến trang kết quả bài kiểm tra
         const url = `/MyCourses/QuizInterface/PreviewQuiz/QuizResult?id=${id}`;
         navigate(url);
       });
@@ -377,7 +298,7 @@ function PreviewQuiz() {
                                   : "radio"
                               }
                               name={`choices_${questionIndex}`}
-                              checked={choice.chosen}
+                              checked={quesInQuiz.choiceChosen[choiceIndex]}
                               onChange={() =>
                                 handleChoiceSelect(questionIndex, choiceIndex)
                               }
