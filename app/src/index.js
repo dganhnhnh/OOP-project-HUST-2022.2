@@ -20,7 +20,6 @@ import ExistingCategory from './component/Quiz/AddQuestion/RandomQuestion/Existi
 import NewCategory from './component/Quiz/AddQuestion/RandomQuestion/NewCategory'
 import PreviewQuiz from './component/Quiz/PreviewQuiz/PreviewQuiz';
 import QuizResult from './component/Quiz/PreviewQuiz/QuizResult';
-import ShuffleOptionContext from './component/Quiz/EditingQuiz/ShuffleOptionManager';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
