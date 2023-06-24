@@ -3,25 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./PreviewQuiz.css";
 import QuizNavigation from "./QuizNavigation";
 
-function shuffleArray(n) {
-  let arr = Array.from({length: n}, (_, i) => i + 1); // create an array of length n with the original permutation
-  for (let i = n - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1)); // generate a random index between 0 and i
-    [arr[i], arr[j]] = [arr[j], arr[i]]; // swap the elements at index i and j
-  }
-  return arr; // return the shuffled array
-}
-
-// biến để chứa thứ tự sắp xếp lại của choice text, choice grade, choice chosen
-let orderVector = []
-// qiqlist là hằng số, vì nếu nó thay đổi app sẽ load lại và thực hiện lại function tốn kém này?
-function shuffleChoiceOfQuiz(qiqlist){
-    qiqlist.forEach((qiq)=>{
-      if(orderVector.length == qiqlist.length) return
-      orderVector.push(shuffleArray(qiq.choiceChosen.length))
-    })
-}
-
 function PreviewQuiz() {
   const [quesInQuizList, setQuesInQuizList] = useState([]);
   const [choiceChosenList, setChoiceChosenList] = useState([]);
@@ -36,11 +17,11 @@ function PreviewQuiz() {
   const id = queryParams.get("id");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
 
-  useEffect( () => {
-     fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
-      .then( (response) => response.json())
-      .then( (data) => {
         // lưu thông tin các câu hỏi vào state và chuyển các câu hỏi có 2 choice trở lên lớn hơn 0 điểm thành dạng chọn nhiều câu trả lời
         // biến này dùng để gộp qiq và question real 
         // qiq = await data.quesInQuizList
@@ -82,30 +63,11 @@ function PreviewQuiz() {
               })),
             })
           );
-          
-          // NẾU BẬT SHUFFLED THÌ MỚI THỰC HIỆN NHƯ SAU
 
-          // shuffleChoiceOfQuiz(quesInQuizListWithQuestions);
-          shuffleChoiceOfQuiz(data.quesInQuizList);
-          console.log(orderVector);
-          // order vector bị thêm 2 lần??   c
-
-          //tráo lại giá trị của choiceGrade dựa vào dãy thứ tự đc khởi tạo khi shuffle
-          let tempArr =[]
-          quesInQuizListWithQuestions.forEach(
-            (qiq)=>{
-              orderVector[qiq.idInQuiz-1].forEach(
-                (orderElement,id)=>{
-                  let tmp = qiq.choiceGrade[orderElement-1]
-                  tempArr[id] = tmp;
-                }
-              )
-              qiq.choiceGrade = [...tempArr]
-            }
-          )
-          
           setQuesInQuizList(quesInQuizListWithQuestions);
           console.log(quesInQuizListWithQuestions);
+
+
         });
       });
   }, [id]);
@@ -306,7 +268,7 @@ function PreviewQuiz() {
                             <div
                               dangerouslySetInnerHTML={{
                                 // __html: choice.choiceText,
-                                __html: quesInQuiz.choices[orderVector[quesInQuiz.idInQuiz-1][choiceIndex]-1].choiceText,
+                                __html: choice.choiceText,
                               }}
                               // orderVector[quesInQuiz.idInQuiz-1][choiceIndex]-1 : index mới 
                             >

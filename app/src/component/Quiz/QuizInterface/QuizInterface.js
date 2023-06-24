@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import "./QuizInterface.css";
 import { AiFillSetting } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -18,12 +18,11 @@ const QuizInterface = () => {
   const [showPreviewPopup, setShowPreviewPopup] = useState(false);
   const navigate = useNavigate();
   const [attemptData, setAttemptData] = useState([]);
-
+ 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  const [quizs, setQuizs] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/quiz/${id}`)
@@ -73,7 +72,11 @@ const QuizInterface = () => {
       //Thêm các thuộc tính khác nếu cần
     };
 
-    fetch("http://localhost:8080/api/quiz_attempt", {
+    fetch("http://localhost:8080/api/quiz_attempt?"
+      +new URLSearchParams({
+        shuffle_option: true
+    })
+    ,{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -135,7 +138,7 @@ const QuizInterface = () => {
   };
 
   return (
-    <div className={`wrapper ${showPreviewPopup ? "showPopup" : ""}`}>
+      <div className={`wrapper ${showPreviewPopup ? "showPopup" : ""}`}>
       <div className="QuizInterface">
         <p className="quizName">{name}</p>
         <div className="editIcon">{toEditingQuiz(id)}</div>

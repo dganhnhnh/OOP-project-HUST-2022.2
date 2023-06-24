@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -92,7 +93,7 @@ class QuizAttemptController {
     }
 
     @PostMapping("/quiz_attempt")
-    ResponseEntity<?> createQuizAttempt(@Valid @RequestBody QuizAttempt quizAttempt) throws URISyntaxException {
+    ResponseEntity<?> createQuizAttempt(@Valid @RequestBody QuizAttempt quizAttempt, @RequestParam("shuffle_option") boolean shuffleOption) throws URISyntaxException {
         log.info("Request to create QuizAttempt: {}", quizAttempt);
         
         // Quiz quiz = quizAttempt.getQuiz();
@@ -121,17 +122,29 @@ class QuizAttemptController {
         // thông tin của quiz nữa
 
         int id = 1;
-        for (Long questionsID : quiz.getQuestionsID()) {
-            Optional<Question> questionOptional = questionRepo.findById(questionsID);
+        for(Long questionID : quiz.getQuestionsID()){
+            Optional<Question> questionOptional = questionRepo.findById(questionID); 
             Question questionbyid = questionOptional.orElseThrow();
-            // da loc ra duoc question theo id
+
+            List<Choice> choiceList = questionbyid.getChoices();
+            // ham shuffle
+            // Collection<Choice> collection = choiceList;
+            if (shuffleOption == true){
+                Collections.shuffle(choiceList);
+                questionRepo.save(questionbyid);
+            
+            }
+            
+            //da loc ra duoc question theo id
             // khởi tạo ques in quiz bằng ques ID
-            QuestionInQuiz newQInQuiz = new QuestionInQuiz(questionsID);
+            QuestionInQuiz newQInQuiz = new QuestionInQuiz(questionID);
             // tạo 2 dãy này để tương tác
             List<Integer> choiceChosenList = new ArrayList<>();
             List<Float> choiceGradeList = new ArrayList<>();
 
-            for (Choice choice : questionbyid.getChoices()) {
+            
+            
+            for(Choice choice : questionbyid.getChoices()){
                 choiceChosenList.add(0);
                 choiceGradeList.add(choice.getGrade());
             }

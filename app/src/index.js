@@ -20,6 +20,7 @@ import ExistingCategory from './component/Quiz/AddQuestion/RandomQuestion/Existi
 import NewCategory from './component/Quiz/AddQuestion/RandomQuestion/NewCategory'
 import PreviewQuiz from './component/Quiz/PreviewQuiz/PreviewQuiz';
 import QuizResult from './component/Quiz/PreviewQuiz/QuizResult';
+import ShuffleOptionContext from './component/Quiz/EditingQuiz/ShuffleOptionManager';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,8 +30,8 @@ root.render(
         <Route path="/" element={<Navigate to="/MyCourses" replace />} />
         <Route exact path='/' element={<App />}>
           <Route path='/MyCourses/*' element={<MyCourses/>}/>
-          <Route exact path='/MyCourses/QuizInterface' element={<QuizInterface />} />
-          <Route exact path='/MyCourses/QuizInterface/EditingQuiz' element={<EditingQuiz />}/>
+          <Route path="/MyCourses/QuizInterface" element={<QuizInterface />}/>
+          <Route path="/MyCourses/QuizInterface/EditingQuiz" element={<EditingQuiz />}/>
           <Route path='/MyCourses/QuizInterface/PreviewQuiz' element={<PreviewQuiz/>} />
           <Route path='/MyCourses/QuizInterface/PreviewQuiz/QuizResult' element={<QuizResult/>} />
           <Route exact path='/QuestionBank' element={<QuestionBank />} />
