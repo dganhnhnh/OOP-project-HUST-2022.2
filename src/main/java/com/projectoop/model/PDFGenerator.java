@@ -31,22 +31,6 @@ public class PDFGenerator {
     public void generatePDFWithPassWord(HttpServletResponse respone, String password)
             throws IOException, DocumentException {
 
-        // Xóa nếu test xong
-        // String input = "<>nội dung của câu hỏi ở đây</p>\n<p><
-        // src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&amp;usqp=CAU\"
-        // alt=\"TinyPNG &ndash; Compress WebP, PNG and JPEG images intelligently\"
-        // width=\"318\" height=\"159\"></p>";
-        // Pattern pattern = Pattern.compile("<p>(.*?)</p>");
-        // Matcher matcher = pattern.matcher(input);
-        // while (matcher.find()) {
-        // String textBetweenTags = matcher.group(1);
-        // System.out.println(textBetweenTags);
-        // }
-        // String encodedText = "H&ocirc;m nay l&agrave; thứ mấy";
-        // String decodedText = StringEscapeUtils.unescapeHtml4(encodedText);
-        // System.out.println(decodedText);
-        // Đến đây
-
         Document document = new Document(PageSize.A4);
 
         // Set password
@@ -79,13 +63,14 @@ public class PDFGenerator {
             }
             // Trường hợp có text và ảnh
             else if (questext.matches("<p>(.*?)</p>\n<p>(.*?)</p>")) {
+                System.out.println(questext);
                 int textStart = questext.indexOf("<p>", 0) + 3;
                 int textEnd = questext.indexOf("</p>", 0);
                 String extractedText = questext.substring(textStart, textEnd);
                 question.setText(StringEscapeUtils.unescapeHtml4(extractedText));
 
-                int urlStart = questext.indexOf("<img src=\"") + 10;
-                int urlEnd = questext.indexOf("\" alt");
+                int urlStart = questext.indexOf("src=\"") + 5;
+                int urlEnd = questext.indexOf("\" ");
                 String imgURL = questext.substring(urlStart, urlEnd);
                 question.setImageURL(imgURL);
             }
@@ -130,8 +115,8 @@ public class PDFGenerator {
                     String extractedText = choiceText.substring(textStart, textEnd);
                     choice.setChoiceText(StringEscapeUtils.unescapeHtml4(extractedText));
 
-                    int urlStart = choiceText.indexOf("<img src=\"") + 10;
-                    int urlEnd = choiceText.indexOf("\" alt");
+                    int urlStart = choiceText.indexOf("src=\"") + 5;
+                    int urlEnd = choiceText.indexOf("\" ");
                     String imgURL = choiceText.substring(urlStart, urlEnd);
                     choice.setC_imageURL(imgURL);
                 }
