@@ -1,8 +1,6 @@
 package com.projectoop.web;
 
-import com.itextpdf.text.DocumentException;
 import com.projectoop.model.Category;
-import com.projectoop.model.PDFGenerator;
 import com.projectoop.model.Question;
 import com.projectoop.services.CategoryRepo;
 import com.projectoop.services.QuestionRepo;
@@ -13,17 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
