@@ -1,23 +1,25 @@
 package com.projectoop.model;
 
-// import com.projectoop.model.Question;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
+// import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.net.URL;
-//import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.text.StringEscapeUtils;
 
 public class PDFGenerator {
     private Collection<Question> questions;
@@ -28,24 +30,56 @@ public class PDFGenerator {
 
     public void generatePDFWithPassWord(HttpServletResponse respone, String password)
             throws IOException, DocumentException {
+
         Document document = new Document(PageSize.A4);
+
+        // Set password
         PdfWriter writer = PdfWriter.getInstance(document, respone.getOutputStream());
         writer.setEncryption(password.getBytes(), password.getBytes(),
                 PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128
                         | PdfWriter.DO_NOT_ENCRYPT_METADATA);
         document.open();
 
-        Font fontTitle = FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        fontTitle.setSize(20);
-
-        Font fontBody = FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        fontBody.setSize(15);
+        // Tạo font hỗ trợ tiếng việt
+        BaseFont bf = BaseFont.createFont(
+                "src\\main\\resources\\SVN-Times New Roman.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font fontTitle = new Font(bf, 20, 1);
+        Font fontBody = new Font(bf, 15);
 
         Paragraph paragraph = new Paragraph("Quiz", fontTitle);
         paragraph.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(paragraph);
 
         for (Question question : questions) {
+            String questext = question.getText();
+
+            // Trường hợp chỉ có text không ảnh
+            if (questext.matches("<p>(.*?)</p>")) {
+                int start = questext.indexOf("<p>") + 3; // add 3 to skip past the <p> tag
+                int end = questext.indexOf("</p>");
+                String extractedText = questext.substring(start, end);
+                question.setText(StringEscapeUtils.unescapeHtml4(extractedText));
+            }
+            // Trường hợp có text và ảnh
+            else if (questext.matches("<p>(.*?)</p>\n<p>(.*?)</p>")) {
+                System.out.println(questext);
+                int textStart = questext.indexOf("<p>", 0) + 3;
+                int textEnd = questext.indexOf("</p>", 0);
+                String extractedText = questext.substring(textStart, textEnd);
+                question.setText(StringEscapeUtils.unescapeHtml4(extractedText));
+
+                int urlStart = questext.indexOf("src=\"") + 5;
+                int urlEnd = questext.indexOf("\" ");
+                String imgURL = questext.substring(urlStart, urlEnd);
+                question.setImageURL(imgURL);
+            }
+            // Trong trường hợp câu hỏi được import từ file word (chứa ảnh)
+            else if (questext.matches("(.*?)<p>(.*?)</p>")) {
+                int textEnd = questext.indexOf("<p>");
+                String extractedText = questext.substring(0, textEnd);
+                question.setText(StringEscapeUtils.unescapeHtml4(extractedText));
+            }
 
             Paragraph paragraphQ = new Paragraph(question.getText(), fontBody);
             List<Choice> q_choices = question.getChoices();
@@ -64,6 +98,29 @@ public class PDFGenerator {
                 document.add(image);
             }
             for (Choice choice : q_choices) {
+
+                String choiceText = choice.getChoiceText();
+
+                // Choice chỉ có text
+                if (choiceText.matches("<p>(.*?)</p>")) {
+                    int choicestart = choiceText.indexOf("<p>") + 3;
+                    int choiceend = choiceText.indexOf("</p>");
+                    String extractedChoiceText = choiceText.substring(choicestart, choiceend);
+                    choice.setChoiceText(StringEscapeUtils.unescapeHtml4(extractedChoiceText));
+                }
+                // Choice có cả ảnh và text
+                else if (choiceText.matches("<p>(.*?)</p>\n<p>(.*?)</p>")) {
+                    int textStart = choiceText.indexOf("<p>", 0) + 3;
+                    int textEnd = choiceText.indexOf("</p>", 0);
+                    String extractedText = choiceText.substring(textStart, textEnd);
+                    choice.setChoiceText(StringEscapeUtils.unescapeHtml4(extractedText));
+
+                    int urlStart = choiceText.indexOf("src=\"") + 5;
+                    int urlEnd = choiceText.indexOf("\" ");
+                    String imgURL = choiceText.substring(urlStart, urlEnd);
+                    choice.setC_imageURL(imgURL);
+                }
+
                 Paragraph paragraphC = new Paragraph(choice.getChoiceText(), fontBody);
                 document.add(paragraphC);
                 if (choice.getC_imageURL() != null

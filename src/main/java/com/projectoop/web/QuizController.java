@@ -36,7 +36,7 @@ class QuizController {
     private QuizRepo quizRepo;
     private QuizAttemptRepo quizAttemptRepo;
 
-    public QuizController(QuizRepo quizRepo, QuestionRepo questionRepo,QuizAttemptRepo quizAttemptRepo) {
+    public QuizController(QuizRepo quizRepo, QuestionRepo questionRepo, QuizAttemptRepo quizAttemptRepo) {
         this.quizRepo = quizRepo;
         this.questionRepo = questionRepo;
         this.quizAttemptRepo = quizAttemptRepo;
@@ -79,7 +79,7 @@ class QuizController {
         log.info("Request to delete Quiz: {}", id);
 
         Optional<Quiz> qOptional = quizRepo.findById(id);
-        List <Long> attemptIDList = qOptional.orElseThrow().getQuizAttemptID();
+        List<Long> attemptIDList = qOptional.orElseThrow().getQuizAttemptID();
         log.info(attemptIDList.toString());
         quizAttemptRepo.deleteAllById(attemptIDList);
         log.info(attemptIDList.toString());

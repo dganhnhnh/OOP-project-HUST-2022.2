@@ -77,13 +77,12 @@
 			<version>1.9.27</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.itextpdf/itext7-core
 		<dependency>
-			<groupId>com.itextpdf</groupId>
-			<artifactId>itext7-core</artifactId>
-			<version>7.0.4</version>
-			<type>pom</type>
-		</dependency> -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.10.0</version>
+		</dependency>
+
 
 
 	
