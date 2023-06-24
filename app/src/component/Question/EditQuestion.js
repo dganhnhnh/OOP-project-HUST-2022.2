@@ -3,38 +3,8 @@ import "./EditQuestion.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import ChoiceField from "./ChoiceField";
-
-function renderCategoryOptions(categories, questionsByCategory, level = 0) {
-  const options = [];
-
-  categories.forEach(category => {
-    const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
-
-    const questions = questionsByCategory[category.id] || [];
-    if(!isSubcategory)
-    options.push(
-      <option key={category.id} value={category.id}>
-        {category.name} ({questions.length})
-      </option>
-    );
-
-    if (!isSubcategory) {
-      const subcategories = categories.filter(c => c.parentId === category.id);
-
-      subcategories.forEach(subcategory => {
-        const subQuestions = questionsByCategory[subcategory.id] || [];
-
-        options.push(
-          <option key={subcategory.id} value={subcategory.id}>
-            { '\u00A0'.repeat(level + 5) + subcategory.name }({subQuestions.length})
-          </option>
-        );
-      });
-    }
-  });
-
-  return options;
-}
+import MyEditor from "./MyEditor";
+import SelectCategory from "../Category/SelectCategory";
 
 const EditQuestion = () => {
   const [selectedCategory, setSelectedCategory] = useState(1);
@@ -79,56 +49,24 @@ const EditQuestion = () => {
         setDefaultMark(question.defaultMark);
 
         setChoice1(question.choices[0].choiceText);
-        setChoice1Grade(question.choices[0].grade); 
+        setChoice1Grade(question.choices[0].grade);
 
         setChoice2(question.choices[1].choiceText);
-        setChoice2Grade(question.choices[1].grade); 
+        setChoice2Grade(question.choices[1].grade);
 
         setChoice3(question.choices[2].choiceText);
-        setChoice3Grade(question.choices[2].grade); 
-    
+        setChoice3Grade(question.choices[2].grade);
+ 
         setChoice4(question.choices[3].choiceText);
-        setChoice4Grade(question.choices[3].grade); 
+        setChoice4Grade(question.choices[3].grade);
     
         setChoice5(question.choices[4].choiceText);
         setChoice5Grade(question.choices[4].grade); 
-  
       })
       .catch((error) => {
         console.log(error);
       });
-
-    // lấy danh sách các category
-    fetch('http://localhost:8080/api/categories')
-      .then(response => response.json())
-      .then(categories => {
-        const subcategories = categories.flatMap(category => category.subCatID.map(subcatID => ({
-          ...categories.find(c => c.id === subcatID),
-          parentId: category.id
-        })));
-        const allCategories = subcategories.concat(categories);
-        setCategories(allCategories);
-        Promise.all(allCategories.map(category => {
-          const url = `http://localhost:8080/api/category/${category.id}/questions?show_from_subcategory=true`;
-          return fetch(url)
-            .then(response => response.json())
-            .then(questions => ({ categoryId: category.id, questions }));
-        })).then(results => {
-          const newQuestionsByCategory = {};
-          results.forEach(({ categoryId, questions }) => {
-            newQuestionsByCategory[categoryId] = questions;
-          });
-          setQuestionsByCategory(newQuestionsByCategory);
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }, []);
-
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -137,18 +75,49 @@ const EditQuestion = () => {
   const handleSaveChangesAndContinueEditing = (event) => {
     event.preventDefault();
     const questionBody = {
-      name,
-      text,
-      defaultMark,
+      id: id,
+      name: name,
+      text: text,
+      defaultMark: defaultMark,
       categoryID: selectedCategory,
-      choices: [
-        { choiceText: choice1, grade: choice1Grade },
-        { choiceText: choice2, grade: choice2Grade },
-        { choiceText: choice3, grade: choice3Grade },
-        { choiceText: choice4, grade: choice4Grade },
-        { choiceText: choice5, grade: choice5Grade },
-      ],
+      choices: [],
     };
+    
+    if (choice1) {
+      questionBody.choices.push({
+        choiceText: choice1,
+        grade: choice1Grade,
+      });
+    }
+
+    if (choice2) {
+      questionBody.choices.push({
+        choiceText: choice2,
+        grade: choice2Grade,
+      });
+    }
+
+    if (choice3) {
+      questionBody.choices.push({
+        choiceText: choice3,
+        grade: choice3Grade,
+      });
+    }
+
+    if (choice4) {
+      questionBody.choices.push({
+        choiceText: choice4,
+        grade: choice4Grade,
+      });
+    }
+
+    if (choice5) {
+      questionBody.choices.push({
+        choiceText: choice5,
+        grade: choice5Grade,
+      });
+    }
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -157,8 +126,10 @@ const EditQuestion = () => {
     fetch(`http://localhost:8080/api/question/${id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(id);
         console.log(data);
         alert("Question saved!")
+        
       })
       .catch((error) => console.log(error));
   };
@@ -166,18 +137,49 @@ const EditQuestion = () => {
   const handleSaveChanges = (event) => {
     event.preventDefault();
     const questionBody = {
-      name,
-      text,
-      defaultMark,
+      id: id,
+      name: name,
+      text: text,
+      defaultMark: defaultMark,
       categoryID: selectedCategory,
-      choices: [
-          { choiceText: choice1, grade: choice1Grade },
-          { choiceText: choice2, grade: choice2Grade },
-          { choiceText: choice3, grade: choice3Grade },
-          { choiceText: choice4, grade: choice4Grade },
-          { choiceText: choice5, grade: choice5Grade },
-      ],
+      choices: [],
     };
+    
+    if (choice1) {
+      questionBody.choices.push({
+        choiceText: choice1,
+        grade: choice1Grade,
+      });
+    }
+
+    if (choice2) {
+      questionBody.choices.push({
+        choiceText: choice2,
+        grade: choice2Grade,
+      });
+    }
+
+    if (choice3) {
+      questionBody.choices.push({
+        choiceText: choice3,
+        grade: choice3Grade,
+      });
+    }
+
+    if (choice4) {
+      questionBody.choices.push({
+        choiceText: choice4,
+        grade: choice4Grade,
+      });
+    }
+
+    if (choice5) {
+      questionBody.choices.push({
+        choiceText: choice5,
+        grade: choice5Grade,
+      });
+    }
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -188,14 +190,14 @@ const EditQuestion = () => {
       .then((data) => {
         console.log('Question saved:', data);
         alert("Question saved!")
-        navigate("/Question");
+        navigate("/MyCourses/Question");
 
       })
       .catch((error) => console.log(error));
   };
 
   const handleCancel = () => {
-    navigate("/Question");
+    navigate("/MyCourses/Question");
   };
   
 
@@ -211,12 +213,14 @@ const EditQuestion = () => {
           <p>Category</p>
         </div>
         <div className="col-60">
-          <select
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            {renderCategoryOptions(categories, questionsByCategory)}
-          </select>
+        <SelectCategory
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          categories={categories}
+          setCategories={setCategories}
+          questionsByCategory={questionsByCategory}
+          setQuestionsByCategory={setQuestionsByCategory}
+        />
         </div>
       </div>
 
@@ -240,12 +244,10 @@ const EditQuestion = () => {
             <label>Question text</label>
           </div>
           <div className="col-60">
-            <textarea
-              className="text"
-              type="text"
-              value={text}
-              onChange={(event) => setText(event.target.value)}
-            />
+            <MyEditor
+              text = {text}
+              setText = {setText}
+              />
           </div>
         </div>
 
@@ -266,7 +268,7 @@ const EditQuestion = () => {
         <div className="choice">
           <ChoiceField 
           label="Choice 1" 
-          text={choice1} 
+          text={choice1}
           setText={setChoice1} 
           grade={choice1Grade} 
           setGrade={setChoice1Grade} />
@@ -275,7 +277,7 @@ const EditQuestion = () => {
         <div className="choice">
           <ChoiceField 
           label="Choice 2" 
-          text={choice2} 
+          text={choice2}
           setText={setChoice2} 
           grade={choice2Grade} 
           setGrade={setChoice2Grade} />
@@ -295,7 +297,7 @@ const EditQuestion = () => {
             <div className="choice">
             <ChoiceField 
               label="Choice 4" 
-              text={choice4} 
+              text={choice4}
               setText={setChoice4} 
               grade={choice4Grade} 
               setGrade={setChoice4Grade} />
@@ -305,7 +307,7 @@ const EditQuestion = () => {
             <ChoiceField 
               label="Choice 5" 
               text={choice5} 
-              setText={setChoice5} 
+              setText={setChoice5}
               grade={choice5Grade} 
               setGrade={setChoice5Grade} />
             </div>

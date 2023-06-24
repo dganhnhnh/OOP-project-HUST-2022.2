@@ -13,7 +13,9 @@ import lombok.NonNull;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
+
 @Table(name = "questions", schema = "myschema", catalog = "mysql")
+
 public class Question {
     @Id
     @GeneratedValue
@@ -21,15 +23,19 @@ public class Question {
 
     private String name;
     @NonNull
+    @Column(name="text", length = 1000)
     private String text;
     private String imageURL;
     private float defaultMark;
 
+    // @ManyToOne(cascade=CascadeType.PERSIST)
+    // private Category category;
     private Long categoryID;
     
     @ElementCollection(fetch = FetchType.EAGER)
     @Embedded
     //private Map<Float, String> choices = new HashMap<Float, String>();
+    @Column(name="choice_text", length = 5000)
     private List<Choice> choices = new ArrayList<>();
 
     // getMark = choices[i].grade*choices[i].chosen

@@ -1,0 +1,160 @@
+.New_quiz {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	margin-top: 20px;
+	height: 100%;
+	border: 1px solid black;
+}
+
+/*----------------------- */
+.line1 {
+	margin-top: 20px;
+	margin-left: 20px;
+	display: flex;
+	flex-direction: row;
+	color: rgb(200, 48, 48);
+}
+
+.icon_test {
+	margin-right: 10px;
+	margin-top: px;
+	color: rgb(89, 147, 233);
+}
+
+.icon_question {
+	margin-left: 5px;
+	margin-top: 10px;
+	font-size: 15px;
+	color: rgb(5, 102, 172);
+}
+
+/*---------------------- */
+.form_add_quizz {
+	display: flex;
+	flex-direction: column;
+}
+
+.general {
+	margin-top: 1px;
+	margin-left: 15px;
+	font-size: 18px;
+	color: rgb(200, 48, 48);
+}
+
+.general1 {
+	border-top: 1px solid rgb(159, 156, 156);
+	margin-top: 20px;
+	margin-left: 15px;
+	font-size: 18px;
+	color: rgb(200, 48, 48);
+}
+
+.icon_general {
+	margin-top: 10px;
+	font-size: 15px;
+	color: blue;
+}
+
+/*------------------------------*/
+.form label {
+	display: flex;
+	padding: 20px;
+	font-size: 15px;
+}
+
+.form label input {
+	padding-top: -50px;
+}
+
+.Name {
+	display: flex;
+	flex-direction: row;
+}
+
+.Name input {
+	margin-left: 200px;
+	width: 50vw;
+	height: 30px;
+
+}
+
+.Description input {
+	margin-left: 165px;
+	width: 80vw;
+	height: 200px;
+}
+
+/*-------------------------*/
+.checkbox {
+	display: flex;
+	flex-direction: row;
+	margin-left: 260px;
+	margin-top: -20px;
+	font-size: 14px;
+}
+
+.icon_c {
+	margin-top: 3px;
+	margin-left: 5px;
+	color: rgb(49, 106, 186);
+}
+
+/*-------------------------*/
+.button {
+	display: flex;
+	flex-direction: row;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	font-size: 20px;
+	margin-left: 50vw;
+}
+
+.button button {
+	color: white;
+	border-radius: 5px;
+	background-color: rgb(50, 131, 188);
+	border: none;
+	padding: 10px;
+	margin-left: 30px;
+}
+
+.button button:hover {
+	background-color: rgb(12, 46, 120) !important;
+}
+
+.TimeLimit {
+	margin-left: 20px;
+	width: 50px;
+	height: 50px;
+	float: left;
+}
+
+.timeNumber {
+	margin-left: 180px;
+	width: 50px;
+	height: 38px;
+	border-radius: 5px;
+	border-color: rgb(181, 181, 181);
+}
+
+.selectedTime {
+	border-radius: 5px;
+	width: 150px;
+}
+
+.TimeOpenQuiz {
+	margin-left: 180px;
+	width: 200px;
+	height: 50px;
+	border-radius: 5px;
+	border-color: rgb(181, 181, 181);
+}
+
+.TimeCloseQuiz {
+	margin-left: 180px;
+	width: 200px;
+	height: 50px;
+	border-radius: 5px;
+	border-color: rgb(181, 181, 181);
+}

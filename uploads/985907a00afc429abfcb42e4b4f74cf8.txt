@@ -1,7 +1,0 @@
-mot cong mot bang may
-ANSWER: B
-
-mot cong ba bang may
-A. 4
-B. 6
-ANSWER: A

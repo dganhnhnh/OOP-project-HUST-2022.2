@@ -1,8 +1,11 @@
 import React from 'react'
-
+import Navigation from './Navigation'
 const Export = () => {
   return (
-    <div>Export</div>
+    <div className='import-page'>
+      <Navigation/>
+      Export
+      </div>
   )
 }
 

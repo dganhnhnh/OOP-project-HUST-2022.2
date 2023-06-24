@@ -28,7 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept" })
+@CrossOrigin(origins = "http://localhost:3000", exposedHeaders = { "Content-Type", "Accept",
+        "Access-Control-Allow-Origin" })
 @RestController
 @RequestMapping("/api")
 class QuestionController {

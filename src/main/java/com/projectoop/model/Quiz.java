@@ -44,5 +44,11 @@ public class Quiz {
     private boolean ongoingAttempt;
     private float quizMaxGrade;
     //quy ước mark, grade là số câu hay số điểm trên thang 10
+    
+    // Add a method to delete a question from the quiz
+    public boolean deleteQuestion(Long questionID) {
+        boolean isRemoved = questionsID.remove(questionID);
+        return isRemoved;
+    }
 
 }
