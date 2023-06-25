@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,8 +17,6 @@ import javax.imageio.ImageIO;
 
 import java.awt.image.BufferedImage;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -29,16 +26,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.projectoop.model.Choice;
 import com.projectoop.model.ImportResult;
 import com.projectoop.model.Question;
+import com.projectoop.model.ReadDocxFileResult;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.*;
-import org.hibernate.Remove;
 
 @Service
 public class FileStorageService implements IStorageService {
-    @Autowired
-    private QuestionRepo questionRepo;
 
     private final Path storageFolder = Paths.get("uploads");
 
@@ -161,8 +156,9 @@ public class FileStorageService implements IStorageService {
         }
     }
 
-    public String readMultimediaFile(String fileName) {
+    public ReadDocxFileResult readMultimediaFile(String fileName) {
         String fileText = new String();
+        boolean[] paragraphHasImage = new boolean[100];
 
         try {
             // ByteArrayInputStream inputStream = new
@@ -179,8 +175,6 @@ public class FileStorageService implements IStorageService {
             // fileText += "END OF QUESTION TEXT\n";
             int imgId = 0;
 
-            System.out.println(document.getParagraphs().size());
-            boolean[] paragraphHasImage = new boolean[100];
             int pos = 0;
 
             for (XWPFParagraph paragraph : document.getParagraphs()) {
@@ -197,7 +191,7 @@ public class FileStorageService implements IStorageService {
 
                         // image file rename
                         String imgFileName = new String("DocxIm_");
-                        imgFileName += fileName + "_img_" + imgId + ".png";
+                        imgFileName += fileName + "_img_" + pos + ".png";
                         Path destinationFilePath = this.storageFolder.resolve(Paths.get(imgFileName))
                                 .normalize().toAbsolutePath();
                         File imageFile = new File(destinationFilePath.toString());
@@ -209,23 +203,28 @@ public class FileStorageService implements IStorageService {
                     paragraphHasImage[pos] = true;
                 pos++;
             }
+            // remove blank line in pos of image
             for (int i = document.getParagraphs().size() - 1; i >= 0; i--) {
                 if (paragraphHasImage[i]) {
                     document.removeBodyElement(i);
                 }
             }
             fileText += extractor.getText();
+            extractor.close();
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return fileText;
+        ReadDocxFileResult result = new ReadDocxFileResult(paragraphHasImage, fileText);
+
+        return result;
     }
 
     @Override
-    public ImportResult readQuestionFromFile(String fileContent, String fileName) {
+    public ImportResult readQuestionFromFile(String fileContent, String fileName, boolean[] lineHasImage,
+            boolean isDocxFile) {
         String pathForFile = "http://localhost:8080/api/File/";
-        int quesCount = 0;
+        int imageCount = 0;
 
         // chạy vòng for cho tất cả các line
         // xảy ra các trường hợp: line dạng A. , ANSWER, dạng null, dạng <questiontext>
@@ -233,7 +232,6 @@ public class FileStorageService implements IStorageService {
         // chuyển nội dung file thành mảng các dòng
         String[] oldlines = new String[300];
         oldlines = fileContent.split("\n");
-        // int linescount = oldlines.length;
         String[] lines = Arrays.copyOf(oldlines, oldlines.length + 1);
         lines[oldlines.length] = "\n";
         int linescount = lines.length;
@@ -249,9 +247,16 @@ public class FileStorageService implements IStorageService {
         Question question = new Question();
 
         for (int i = 0; i < linescount; i++) {
+            if (lineHasImage[i] == true)
+                imageCount++;
+
             String nowline = lines[i].trim();
             linenumber++;
+
+            // TH dòng trống
             if (nowline.length() < 2) {
+
+                // Kiểm tra dòng trước dòng trống cần là dòng ANSWER
                 boolean checknullline = false;
                 for (int j = linenumber - 1; j >= 0; j--) {
                     if (lines[j].trim().length() >= 2) {
@@ -277,6 +282,7 @@ public class FileStorageService implements IStorageService {
                         questions = null;
                         break;
                     }
+                    // Dòng sau các đáp án phải là ANSWER
                     for (int j = linenumber; j < linescount; j++) {
                         if (!lines[j].trim().matches("^[A-Z][.]\\s(?=\\s*\\S).*$")) {
                             if (lines[j].trim().matches("^ANSWER:\\s[A-Z]")) {
@@ -301,6 +307,8 @@ public class FileStorageService implements IStorageService {
                     }
 
                 } else if (nowline.matches("^ANSWER:\\s[A-Z]")) {
+
+                    // Sau ANSWER phải là dòng trống
                     if (lines[linenumber].trim().length() >= 2) {
                         linenumber += 1;
                         questions = null;
@@ -311,6 +319,8 @@ public class FileStorageService implements IStorageService {
                         break;
                     }
                     String answer = nowline.substring(8, 9);
+
+                    // Tối thiểu 2 đáp án
                     if (k < 2) {
                         questions = null;
                         break;
@@ -320,8 +330,17 @@ public class FileStorageService implements IStorageService {
                             choices.set(j, new Choice(anscontent[j], 1.0f));
                     }
                     question.setChoices(choices);
-                    question.setImageURL(pathForFile + "Image/DocxIm_" + fileName + "_img_" + quesCount + ".png");
-                    quesCount++;
+                    // Nếu là file docx, setimgURL
+                    if (isDocxFile == true) {
+
+                        // System.out.println(imageCount);
+                        int imageLine = i - k - 1 + imageCount;
+                        // System.out.println(imageLine);
+                        if (lineHasImage[imageLine] == true) {
+                            question.setImageURL(pathForFile + "Image/DocxIm_" + fileName + "_img_" +
+                                    imageLine + ".png");
+                        }
+                    }
 
                     questions.add(question);
                     question = new Question();
@@ -332,6 +351,11 @@ public class FileStorageService implements IStorageService {
                     continue;
                 } else {
                     if (question == null) {
+                        questions = null;
+                        break;
+                    }
+                    // Sau câu hỏi phải là đáp án
+                    if (!lines[i + 1].trim().matches("^[A-Z][.]\\s(?=\\s*\\S).*$")) {
                         questions = null;
                         break;
                     }

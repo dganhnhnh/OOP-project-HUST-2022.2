@@ -128,20 +128,34 @@ public class FileController {
             String fileText = new String();
             ImportResult importResult = new ImportResult(0, null);
             String fileExtention = FilenameUtils.getExtension(fileName);
+            boolean[] lineHasImage = new boolean[100];
+
             if (fileExtention.equals(new String("txt"))) {
                 byte[] fileContent = storageService.readFileContent(fileName);
                 fileText = new String(fileContent, StandardCharsets.UTF_8);
-                importResult = storageService.readQuestionFromFile(fileText, fileName);
+                importResult = storageService.readQuestionFromFile(fileText, fileName, lineHasImage, false);
+
+                // Trong trường hợp đọc thành công, cần loại bỏ url ảnh
                 if (importResult.getQuesLine() < 0) {
                     for (Question question : importResult.getQuesList()) {
                         question.setImageURL(null);
                     }
                 }
             } else if (fileExtention.equals(new String("docx"))) {
-                fileText = storageService.readMultimediaFile(fileName);
-                importResult = storageService.readQuestionFromFile(fileText, fileName);
-                for (Question question : importResult.getQuesList()) {
-                    question.setText(question.getText()+"<p><img src="+question.getImageURL()+"></p>");
+                fileText = storageService.readMultimediaFile(fileName).getQuestext();
+                lineHasImage = storageService.readMultimediaFile(fileName).getImageCheck();
+                importResult = storageService.readQuestionFromFile(fileText, fileName, lineHasImage, true);
+
+                // Trong trường hợp đọc thành công, set Text như này
+                if (importResult.getQuesLine() < 0) {
+                    System.out.println(importResult.getQuesLine());
+                    for (Question question : importResult.getQuesList()) {
+                        if (question.getImageURL() != null) {
+                            question.setText(question.getText() + "<p><img src=" + question.getImageURL() + "></p>");
+                        } else {
+                            question.setText("<p>" + question.getText() + "</p>");
+                        }
+                    }
                 }
             }
             if (importResult.getQuesLine() >= 0) {
@@ -170,7 +184,7 @@ public class FileController {
     @GetMapping("/readDocxFile/{fileName:.+}")
     public ResponseEntity<?> readDocxFile(@PathVariable String fileName) {
         try {
-            String reply = storageService.readMultimediaFile(fileName);
+            String reply = storageService.readMultimediaFile(fileName).getQuestext();
             return ResponseEntity.ok().body(reply);
         } catch (Exception e) {
             throw new RuntimeException("Cannot read file");

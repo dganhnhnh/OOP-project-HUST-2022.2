@@ -61,18 +61,20 @@ public class PDFGenerator {
                 String extractedText = questext.substring(start, end);
                 question.setText(StringEscapeUtils.unescapeHtml4(extractedText));
             }
-            // Trường hợp có text và ảnh
-            else if (questext.matches("<p>(.*?)</p>\n<p>(.*?)</p>")) {
-                System.out.println(questext);
+            // Trường hợp có text và ảnh/ video
+            else if (questext.matches("<p>(.*?)</p>\n<p>.*?</p>") || questext.matches(
+                    "<p>(.*?)</p>\n<p><.*?>\n<.*?></video></p>")) {
                 int textStart = questext.indexOf("<p>", 0) + 3;
                 int textEnd = questext.indexOf("</p>", 0);
                 String extractedText = questext.substring(textStart, textEnd);
                 question.setText(StringEscapeUtils.unescapeHtml4(extractedText));
 
-                int urlStart = questext.indexOf("src=\"") + 5;
-                int urlEnd = questext.indexOf("\" ");
-                String imgURL = questext.substring(urlStart, urlEnd);
-                question.setImageURL(imgURL);
+                // Lấy ra url ảnh/video
+                Pattern pattern = Pattern.compile("src=\"([^\"]*)\"");
+                Matcher matcher = pattern.matcher(questext);
+                while (matcher.find()) {
+                    question.setImageURL(matcher.group(1));
+                }
             }
             // Trong trường hợp câu hỏi được import từ file word (chứa ảnh)
             else if (questext.matches("(.*?)<p>(.*?)</p>")) {
@@ -114,11 +116,12 @@ public class PDFGenerator {
                     int textEnd = choiceText.indexOf("</p>", 0);
                     String extractedText = choiceText.substring(textStart, textEnd);
                     choice.setChoiceText(StringEscapeUtils.unescapeHtml4(extractedText));
-
-                    int urlStart = choiceText.indexOf("src=\"") + 5;
-                    int urlEnd = choiceText.indexOf("\" ");
-                    String imgURL = choiceText.substring(urlStart, urlEnd);
-                    choice.setC_imageURL(imgURL);
+                    // Lấy ra url ảnh
+                    Pattern pattern = Pattern.compile("src=\"([^\"]*)\"");
+                    Matcher matcher = pattern.matcher(choiceText);
+                    while (matcher.find()) {
+                        choice.setC_imageURL(matcher.group(1));
+                    }
                 }
 
                 Paragraph paragraphC = new Paragraph(choice.getChoiceText(), fontBody);

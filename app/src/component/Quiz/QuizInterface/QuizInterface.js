@@ -132,7 +132,7 @@ const QuizInterface = () => {
     const password = prompt("Enter password for PDF export:");
   
     if (password) {
-      const exportURL = `http://localhost:8080/api/quiz_attempt/${id}/ExportToPDF?password=${password}`;
+      const exportURL = `http://localhost:8080/api/quiz_attempt/${quizAttemptID[quizAttemptID.length - 1]}/ExportToPDF?password=${password}`;
       window.open(exportURL);
     }
   };
