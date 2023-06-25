@@ -190,7 +190,7 @@ const EditingQuiz = () => {
 
   const QuestionBankLink = ({ id }) => {
     return (
-      <Link to={`/QuestionBank?id=${id}`}>
+      <Link to={`/MyCourses/QuizInterface/EditingQuiz/QuestionBank?id=${id}`}>
         <BiPlus style={{ color: "rgb(71, 137, 237)", paddingTop: "5px" }} />
         <span> from question bank</span>
       </Link>
@@ -199,7 +199,7 @@ const EditingQuiz = () => {
 
   const QuestionRandomLink = ({ id }) => {
     return (
-      <Link to={`/ExistingCategory?id=${id}`}>
+      <Link to={`/MyCourses/QuizInterface/EditingQuiz/ExistingCategory?id=${id}`}>
         <BiPlus style={{ color: "rgb(71, 137, 237)", paddingTop: "5px" }} />
         <span> a random question</span>
       </Link>

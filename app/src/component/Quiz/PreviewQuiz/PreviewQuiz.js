@@ -10,6 +10,7 @@ function PreviewQuiz() {
   const [flaggedQues, setFlaggedQues] = useState({});
   const [timeLimit, setTimeLimit] = useState(0);
   const [timeLeft, setTimeLeft] = useState();
+  const [ongoingAttempt, setOngoingAttempt] = useState(false);
 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
@@ -34,6 +35,7 @@ function PreviewQuiz() {
             choices: null,
           };
         });
+        setOngoingAttempt(data.quiz.ongoingAttempt);
         setTimeLimit(data.quiz.timeLimit * 60);
         setTimeLeft(data.quiz.timeLimit * 60);
         setQuesInQuizList(quesInQuizListUpdated);
@@ -157,7 +159,7 @@ function PreviewQuiz() {
     });
   };
 
-  function handleFinishAttempt() {
+  function handleSubmit() {
     
     //     timeTaken: timeLimit - timeLeft, //hiện giây
 
@@ -169,7 +171,7 @@ function PreviewQuiz() {
         // Xử lý phản hồi từ API sau khi nộp bài
         console.log(data);
         // Chuyển hướng đến trang kết quả bài kiểm tra
-        const url = `/MyCourses/QuizInterface/PreviewQuiz/QuizResult?id=${id}`;
+        const url = `/MyCourses/QuizInterface/PreviewQuiz/ConfirmFinish/QuizResult?id=${id}`;
         navigate(url);
       });
   }
@@ -186,7 +188,7 @@ function PreviewQuiz() {
 
   useEffect(() => {
     if (timeLeft === 0) {
-      handleFinishAttempt();
+      handleSubmit();
     }
   }, [timeLeft]);
 
@@ -284,7 +286,8 @@ function PreviewQuiz() {
         </main>
       </div>
       <QuizNavigation
-        handleFinishAttempt={handleFinishAttempt}
+        ongoingAttempt={ongoingAttempt}
+        id={id}
         quesInQuizList={quesInQuizList}
         handleNavClick={handleNavClick}
         selectedQuizId={selectedQuizId}

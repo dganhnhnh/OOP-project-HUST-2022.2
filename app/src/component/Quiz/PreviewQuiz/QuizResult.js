@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewQuiz.css";
+import { decode } from "html-entities";
 import QuizNavigation from "./QuizNavigation";
 import QuizSummary from "./QuizSummary ";
 
@@ -9,6 +10,7 @@ function QuizResult() {
   const [choiceChosenList, setChoiceChosenList] = useState([]);
   const [selectedQuizId, setSelectedQuizId] = useState(null);
   const [flaggedQues, setFlaggedQues] = useState({});
+  const [ongoingAttempt, setOngoingAttempt] = useState(false);
 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
@@ -27,6 +29,7 @@ function QuizResult() {
             choices: null,
           };
         });
+        setOngoingAttempt(data.quiz.ongoingAttempt);
         setQuesInQuizList(quesInQuizListUpdated);
         setChoiceChosenList(new Array(quesInQuizListUpdated.length).fill([]));
 
@@ -164,7 +167,7 @@ function QuizResult() {
                     {quesInQuiz.choices &&
                       quesInQuiz.choices
                         .filter((choice) => choice.grade > 0)
-                        .map((choice) => choice.choiceText)
+                        .map((choice) => decode(choice.choiceText).replace(/<[^>]+>/g, ""))
                         .join(", ")}
                   </p>
               </div>
@@ -173,6 +176,7 @@ function QuizResult() {
         </main>
       </div>
       <QuizNavigation
+        ongoingAttempt={ongoingAttempt}
         quesInQuizList={quesInQuizList}
         handleNavClick={handleNavClick}
         selectedQuizId={selectedQuizId}

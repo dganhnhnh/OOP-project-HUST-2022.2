@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
+import {useNavigate } from "react-router-dom";
 import "./PreviewQuiz.css";
 
-function QuizNavigation({ quesInQuizList, handleNavClick, selectedQuizId, handleFinishAttempt}) {
+function QuizNavigation({ quesInQuizList, handleNavClick, selectedQuizId, ongoingAttempt, id}) {
+  const navigate = useNavigate();
+
+  function handleFinishAttempt(){
+    const url = `/MyCourses/QuizInterface/PreviewQuiz/ConfirmFinish?id=${id}`;
+    navigate(url);
+  }
+
+  function handleFinishReview(){
+    const url = `/MyCourses`;
+    navigate(url);
+  }
+
   return (
     <div className="quiz-navigation-box">
     <div className="navigation-header">
@@ -20,7 +33,19 @@ function QuizNavigation({ quesInQuizList, handleNavClick, selectedQuizId, handle
         </div>
       ))}
     </div>
-    <button onClick={handleFinishAttempt}>Finish Attempt</button>
+    {ongoingAttempt ? (
+          <button
+            onClick={() => handleFinishAttempt()}
+          >
+            Finish Attempt
+          </button>
+        ) : (
+          <button
+            onClick={() => handleFinishReview()}
+          >
+            Finish Review
+          </button>
+        )}
     </div>
     
   );

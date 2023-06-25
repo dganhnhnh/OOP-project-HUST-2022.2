@@ -5,6 +5,7 @@ import './RandomQuetion.css';
 import { NavLink, Link } from 'react-router-dom';
 import { AiOutlineUnorderedList } from 'react-icons/ai'
 import { decode } from "html-entities";
+import SelectCategory from '../../../Category/SelectCategory';
 
 const Checkbox = ({ label, checked, onChange }) => {
   return (
@@ -15,41 +16,7 @@ const Checkbox = ({ label, checked, onChange }) => {
   );
 };
 
-function renderCategoryOptions(categories, questionsByCategory, level = 0) {
-  const options = [];
-
-  categories.forEach(category => {
-    const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
-
-    const questions = questionsByCategory[category.id] || [];
-    if (!isSubcategory)
-      options.push(
-        <option key={category.id} value={category.id}>
-          {category.name} ({questions.length})
-        </option>
-      );
-
-    if (!isSubcategory)
-    {
-      const subcategories = categories.filter(c => c.parentId === category.id);
-
-      subcategories.forEach(subcategory => {
-        const subQuestions = questionsByCategory[subcategory.id] || [];
-
-        options.push(
-          <option key={subcategory.id} value={subcategory.id}>
-            {'\u00A0'.repeat(level + 5) + subcategory.name}({subQuestions.length})
-          </option>
-        );
-      });
-    }
-  });
-
-  return options;
-}
-
 const ExistingCategory = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [checkedQuestionIds, setCheckedQuestionIds] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -105,11 +72,6 @@ const ExistingCategory = () => {
         console.log(error);
       });
   }, [selectedCategory, showSubcategories]);
-
-  const handleCategoryChange = event => {
-    setSelectedCategory(event.target.value);
-    console.log(selectedCategory);
-  };
 
   const handleShowSubcategoriesChange = event => {
     setShowSubcategories(event.target.checked);
@@ -198,14 +160,14 @@ const ExistingCategory = () => {
 
   const QuestionRandomLink = ({ id }) => {
     return (
-      <Link to={`/ExistingCategory?id=${id}`}>
+      <Link to={`/MyCourses/QuizInterface/EditingQuiz/ExistingCategory?id=${id}`}>
         <span> ExistingCategory</span>
       </Link>
     );
   };
   const NewCategory = ({ id }) => {
     return (
-      <Link to={`/NewCategory?id=${id}`}>
+      <Link to={`/MyCourses/QuizInterface/EditingQuiz/NewCategory?id=${id}`}>
         <span> New Category</span>
       </Link>
     );
@@ -225,9 +187,12 @@ const ExistingCategory = () => {
       </div>
       <div className='selected-menu'>
         <p>Category:</p>
-        <select value={selectedCategory} onChange={handleCategoryChange}>
-          {renderCategoryOptions(categories, questionsByCategory)}
-        </select>
+        <SelectCategory
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          categories={categories}
+          setCategories={setCategories}
+        />
       </div>
       <div>
         <Checkbox className="include"

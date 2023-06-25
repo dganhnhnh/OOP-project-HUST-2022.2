@@ -5,6 +5,7 @@ import { AiOutlineUnorderedList } from 'react-icons/ai'
 import { TiPlus } from 'react-icons/ti'
 import './QuestionBank.css';
 import { decode } from "html-entities";
+import SelectCategory from '../../../Category/SelectCategory';
 
 const Checkbox = ({ label, checked, onChange }) => {
   return (
@@ -15,81 +16,18 @@ const Checkbox = ({ label, checked, onChange }) => {
   );
 };
 
-function renderCategoryOptions(categories, questionsByCategory, level = 0) {
-  const options = [];
-
-  categories.forEach(category => {
-    const isSubcategory = categories.find(c => c.subCatID.includes(category.id));
-
-    const questions = questionsByCategory[category.id] || [];
-    if (!isSubcategory)
-      options.push(
-        <option key={category.id} value={category.id}>
-          {category.name} ({questions.length})
-        </option>
-      );
-
-    if (!isSubcategory)
-    {
-      const subcategories = categories.filter(c => c.parentId === category.id);
-
-      subcategories.forEach(subcategory => {
-        const subQuestions = questionsByCategory[subcategory.id] || [];
-
-        options.push(
-          <option key={subcategory.id} value={subcategory.id}>
-            {'\u00A0'.repeat(level + 5) + subcategory.name}({subQuestions.length})
-          </option>
-        );
-      });
-    }
-  });
-
-  return options;
-}
-
 const QuestionBank = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [questions, setQuestions] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(false);
   const [showOldQuestions, setShowOldQuestions] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [questionsByCategory, setQuestionsByCategory] = useState({});
   const [checkedQuestionIds, setCheckedQuestionIds] = useState([]);
-  const navigate = useNavigate();
 
   // lấy giá trị của id từ query parameter
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-
-  useEffect(() => {
-    fetch('http://localhost:8080/api/categories')
-      .then(response => response.json())
-      .then(categories => {
-        const subcategories = categories.flatMap(category => category.subCatID.map(subcatID => ({
-          ...categories.find(c => c.id === subcatID),
-          parentId: category.id
-        })));
-        const allCategories = subcategories.concat(categories);
-        setCategories(allCategories);
-        Promise.all(allCategories.map(category => {
-          const url = `http://localhost:8080/api/category/${category.id}/questions?show_from_subcategory=true`;
-          return fetch(url)
-            .then(response => response.json())
-            .then(questions => ({ categoryId: category.id, questions }));
-        })).then(results => {
-          const newQuestionsByCategory = {};
-          results.forEach(({ categoryId, questions }) => {
-            newQuestionsByCategory[categoryId] = questions;
-          });
-          setQuestionsByCategory(newQuestionsByCategory);
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
 
   useEffect(() => {
     const categoryId = selectedCategory || categories[0]?.id;
@@ -103,10 +41,6 @@ const QuestionBank = () => {
         console.log(error);
       });
   }, [selectedCategory, showSubcategories]);
-
-  const handleCategoryChange = event => {
-    setSelectedCategory(event.target.value);
-  };
 
   const handleShowSubcategoriesChange = event => {
     setShowSubcategories(event.target.checked);
@@ -235,9 +169,12 @@ const QuestionBank = () => {
 
       <div className='selected-menu'>
         <p>Select a category:</p>
-        <select value={selectedCategory} onChange={handleCategoryChange}>
-          {renderCategoryOptions(categories, questionsByCategory)}
-        </select>
+        <SelectCategory
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          categories={categories}
+          setCategories={setCategories}
+        />
       </div>
       <div className='checkbox'>
         <p className='search'>Search options</p>

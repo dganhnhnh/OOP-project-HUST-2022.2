@@ -20,6 +20,7 @@ import ExistingCategory from './component/Quiz/AddQuestion/RandomQuestion/Existi
 import NewCategory from './component/Quiz/AddQuestion/RandomQuestion/NewCategory'
 import PreviewQuiz from './component/Quiz/PreviewQuiz/PreviewQuiz';
 import QuizResult from './component/Quiz/PreviewQuiz/QuizResult';
+import ConfirmFinish from './component/Quiz/PreviewQuiz/ConfirmFinish';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -32,10 +33,11 @@ root.render(
           <Route path="/MyCourses/QuizInterface" element={<QuizInterface />}/>
           <Route path="/MyCourses/QuizInterface/EditingQuiz" element={<EditingQuiz />}/>
           <Route path='/MyCourses/QuizInterface/PreviewQuiz' element={<PreviewQuiz/>} />
-          <Route path='/MyCourses/QuizInterface/PreviewQuiz/QuizResult' element={<QuizResult/>} />
-          <Route exact path='/QuestionBank' element={<QuestionBank />} />
-          <Route exact path='/ExistingCategory' element={<ExistingCategory />} />
-          <Route exact path='/NewCategory' element={<NewCategory />} />
+          <Route path='/MyCourses/QuizInterface/PreviewQuiz/ConfirmFinish' element={<ConfirmFinish/>} />
+          <Route path='/MyCourses/QuizInterface/PreviewQuiz/ConfirmFinish/QuizResult' element={<QuizResult/>} />
+          <Route exact path='/MyCourses/QuizInterface/EditingQuiz/QuestionBank' element={<QuestionBank />} />
+          <Route exact path='/MyCourses/QuizInterface/EditingQuiz/ExistingCategory' element={<ExistingCategory />} />
+          <Route exact path='/MyCourses/QuizInterface/EditingQuiz/NewCategory' element={<NewCategory />} />
           <Route exact path='/Thicuoiki' element={<Thicuoiki />} />
 
           <Route path='/MyCourses/Question/EditQuestion' element={<EditQuestion />} />

@@ -11,10 +11,10 @@ const NewCategory = () => {
 			<div className="navbarRandom">
 				<ul className='randomBar'>
 					<li>
-						<NavLink to="/ExistingCategory"> Existing Category</NavLink>
+						<NavLink to="/MyCourses/QuizInterface/EditingQuiz/ExistingCategory"> Existing Category</NavLink>
 					</li>
 					<li>
-						<NavLink to="/NewCategory"> New Category </NavLink>
+						<NavLink to="/MyCourses/QuizInterface/EditingQuiz/NewCategory"> New Category </NavLink>
 					</li>
 				</ul>
 			</div>
