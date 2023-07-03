@@ -175,7 +175,7 @@ const QuizInterface = () => {
                 });
               });
               const grade = ongoing ? "" : ((10 / quizMarkGrade) * totalMark).toFixed(2);
-              const reviewURL = `/MyCourses/QuizInterface/PreviewQuiz/QuizResult?id=${attempt.id}`;
+              const reviewURL = `/MyCourses/QuizInterface/PreviewQuiz/ConfirmFinish/QuizResult?id=${attempt.id}`;
               return (
                 <tr key={attempt.id}>
                   <td>{attemptNumber}</td>
