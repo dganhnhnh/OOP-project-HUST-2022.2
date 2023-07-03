@@ -65,8 +65,26 @@ class QuizAttemptController {
 
     @GetMapping("/quiz_attempt/{id}")
     ResponseEntity<?> getQuizAttempt(@PathVariable Long id) {
-        Optional<QuizAttempt> quizAttempt = quizAttemptRepo.findById(id);
-        return quizAttempt.map(response -> ResponseEntity.ok().body(response))
+        Optional<QuizAttempt> quizAttemptOptional = quizAttemptRepo.findById(id);
+        QuizAttempt quizAttempt = quizAttemptOptional.get();
+
+        Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
+        Quiz quiz = quizOptional.get();
+
+        quizAttempt.calcTimeTaken();
+
+        int timeLimitSec = quiz.getTimeLimit()*60;
+        if(quizAttempt.getTimeTaken() > timeLimitSec){
+            // call submit 
+            submitQuizAttempt(id);
+            quizAttempt.setTimeTaken(timeLimitSec);
+            // quizAttempt.setFinished(true);
+        }
+
+        quizAttemptRepo.save(quizAttempt);
+        quizAttemptOptional = quizAttemptRepo.findById(id); 
+
+        return quizAttemptOptional.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -79,7 +97,11 @@ class QuizAttemptController {
         if (quizAttempt.isFinished()){
             throw new AttemptNotEditable("You cannot submit it again.");
         }
-        for(QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()){
+
+        Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
+        Quiz quiz = quizOptional.get();
+
+        for (QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()) {
             quesInQuiz.calcMark();
         }
         quizAttempt.calcTotalMark();
@@ -87,10 +109,13 @@ class QuizAttemptController {
         quizAttempt.setFinished(true); // cấm truy cập sửa đổi kể từ đây
         quizAttempt.setTimeComplete(LocalDateTime.now());
         quizAttempt.calcTimeTaken();
+
+        int timeLimitSec = quiz.getTimeLimit()*60;
+        if(quizAttempt.getTimeTaken() > timeLimitSec){
+            quizAttempt.setTimeTaken(timeLimitSec);
+        }
         quizAttemptRepo.save(quizAttempt);
 
-        Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
-        Quiz quiz = quizOptional.get();
         quiz.setOngoingAttempt(false);
         quizRepo.save(quiz);
 

@@ -50,6 +50,7 @@ const QuizInterface = () => {
         Promise.all(fetchAttemptData)
           .then((data) => {
             setAttemptData(data);
+            //resolve all promise, tạo thành array chứa các attempt data 
             console.log(data);
           })
           .catch((error) => {
