@@ -18,6 +18,8 @@ const QuizInterface = () => {
   const [showPreviewPopup, setShowPreviewPopup] = useState(false);
   const navigate = useNavigate();
   const [attemptData, setAttemptData] = useState([]);
+  // shuffle
+  const [shuffle, setShuffle] = useState(false);
  
   // lấy giá trị của id từ query parameter
   const location = useLocation();
@@ -37,6 +39,7 @@ const QuizInterface = () => {
         setQuizState(quiz.quizState);
         setOngoingAttempt(quiz.ongoingAttempt);
         setQuizMaxGrade(quiz.quizMaxGrade);
+        setShuffle(quiz.shuffle);
 
         const fetchAttemptData = quiz.quizAttemptID.map((attemptID) =>
           fetch(`http://localhost:8080/api/quiz_attempt/${attemptID}`).then(
@@ -47,6 +50,7 @@ const QuizInterface = () => {
         Promise.all(fetchAttemptData)
           .then((data) => {
             setAttemptData(data);
+            //resolve all promise, tạo thành array chứa các attempt data 
             console.log(data);
           })
           .catch((error) => {
@@ -74,7 +78,7 @@ const QuizInterface = () => {
 
     fetch("http://localhost:8080/api/quiz_attempt?"
       +new URLSearchParams({
-        shuffle_option: true
+        shuffle_option: shuffle
     })
     ,{
       method: "POST",

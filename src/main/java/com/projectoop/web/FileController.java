@@ -168,7 +168,7 @@ public class FileController {
                     Long qID = ques.getId();
                     ques.setCategoryID(categoryID);
                     Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
-                    Category cat = optionalCat.orElseThrow();
+                    Category cat = optionalCat.get();
                     Set<Long> qIDSet = cat.getQuestionID();
                     qIDSet.add(qID);
                     cat.setQuestionID(qIDSet);

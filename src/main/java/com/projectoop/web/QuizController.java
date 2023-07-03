@@ -44,14 +44,26 @@ class QuizController {
 
     @GetMapping("/quizzes")
     Collection<Quiz> quizzes() {
-        log.info(quizRepo.toString());
         return quizRepo.findAll();
     }
 
     @GetMapping("/quiz/{id}")
     ResponseEntity<?> getQuiz(@PathVariable Long id) {
-        Optional<Quiz> quiz = quizRepo.findById(id);
-        return quiz.map(response -> ResponseEntity.ok().body(response))
+        Optional<Quiz> quizOptional = quizRepo.findById(id);
+        Quiz quiz = quizOptional.get();
+
+        if (quiz.isOngoingAttempt()){
+            quiz.setQuizState("Ongoing attempt");
+        }
+        else if(quiz.getTimeClose().isBefore(LocalDateTime.now())){
+            quiz.setQuizState("Closed");
+        }
+        else if(quiz.getTimeOpen().isAfter(LocalDateTime.now())){
+            quiz.setQuizState("Upcoming");
+        }
+        quizRepo.save(quiz);
+        
+        return quizOptional.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -79,7 +91,7 @@ class QuizController {
         log.info("Request to delete Quiz: {}", id);
 
         Optional<Quiz> qOptional = quizRepo.findById(id);
-        List<Long> attemptIDList = qOptional.orElseThrow().getQuizAttemptID();
+        List <Long> attemptIDList = qOptional.get().getQuizAttemptID();
         log.info(attemptIDList.toString());
         quizAttemptRepo.deleteAllById(attemptIDList);
         log.info(attemptIDList.toString());

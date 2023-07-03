@@ -13,10 +13,20 @@ public class QuizAttemptControllerAdvice {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
                 .body("New quiz attempt cannot be created.\n"+ex.getMessage());
     }
+    @ExceptionHandler(AttemptNotEditable.class)
+    public ResponseEntity<String> handleAttemptNotEditable(AttemptNotEditable ex) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body("Attempt is submitted already.\n"+ex.getMessage());
+    }
 }
 
 class QuizNotOpenException extends RuntimeException {
     public QuizNotOpenException(String message) {
+        super(message);
+    }
+}
+class AttemptNotEditable extends RuntimeException {
+    public AttemptNotEditable(String message) {
         super(message);
     }
 }

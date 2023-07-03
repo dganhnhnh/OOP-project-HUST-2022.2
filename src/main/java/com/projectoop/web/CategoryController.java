@@ -56,7 +56,7 @@ class CategoryController {
         Long parentCatID = category.getParentID();
         if (parentCatID != null){
             Optional<Category> parentCategoryOptional = categoryRepo.findById(category.getParentID());
-            Category parentCategory = parentCategoryOptional.orElseThrow();
+            Category parentCategory = parentCategoryOptional.get();
 
             log.info(category.getParentID().toString());
             log.info(parentCategory.toString());
@@ -87,14 +87,14 @@ class CategoryController {
         log.info("Request to delete Category: {}", id);
 
         Optional<Category> cate = categoryRepo.findById(id);
-        Category category = cate.orElseThrow();
+        Category category = cate.get();
         
         Set<Long> qIDSet = category.getQuestionID();
         if(!qIDSet.isEmpty()){
             List<Long> qIDList = new ArrayList<Long>(qIDSet);
             for(int i=0; i<qIDList.size(); i++){
                 Optional<Question> a = questionRepo.findById(qIDList.get(i));
-                Question b = a.orElseThrow();
+                Question b = a.get();
                 b.setCategoryID(null);
                 //TODO đưa categoryID về 1 mục mặc định "default" id=1
                 // questionRepo.deleteById(qIDList.get(i));
@@ -104,7 +104,7 @@ class CategoryController {
         Long parentCatID = category.getParentID();
         if (parentCatID != null){
             Optional<Category> parentCategoryOptional = categoryRepo.findById(category.getParentID());
-            Category parentCategory = parentCategoryOptional.orElseThrow();
+            Category parentCategory = parentCategoryOptional.get();
 
             log.info(category.getParentID().toString());
             log.info(parentCategory.toString());
