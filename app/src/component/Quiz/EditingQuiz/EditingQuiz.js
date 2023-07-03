@@ -43,7 +43,6 @@ const EditingQuiz = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  const [quizs, setQuizs] = useState([]);
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
   const [isHovered, setHovered] = useState(false);
   const ref = useRef(null);
@@ -128,6 +127,30 @@ const EditingQuiz = () => {
 
   const handleShuffle = (event) => {
     setShuffleOption(event.target.checked);
+
+    // save change to Quiz in db
+
+    fetch(`http://localhost:8080/api/quiz/${id}`)
+      .then((response) => response.json())
+      .then((quiz) => {
+
+        const updatedQuiz = { ...quiz, shuffle: shuffleOption };
+        return fetch(`http://localhost:8080/api/quiz/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedQuiz),
+        });
+      })
+
+
+    // fetch(`http://localhost:8080/api/quiz/${id}/`, {
+    //   method: "PUT",
+    //   body: JSON.stringify(updatedQuiz),
+    // })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error("Error shuffle:", error);
+    });
   };
 
   const handleCheckboxChange = (event, id) => {

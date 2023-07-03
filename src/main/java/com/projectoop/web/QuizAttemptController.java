@@ -71,7 +71,7 @@ class QuizAttemptController {
     @GetMapping("/quiz_attempt/{id}/submit")
     ResponseEntity<?> submitQuizAttempt(@PathVariable Long id) {
         Optional<QuizAttempt> quizAttemptOptional = quizAttemptRepo.findById(id);
-        QuizAttempt quizAttempt = quizAttemptOptional.orElseThrow();
+        QuizAttempt quizAttempt = quizAttemptOptional.get();
 
         for (QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()) {
             quesInQuiz.calcMark();
@@ -84,7 +84,7 @@ class QuizAttemptController {
         quizAttemptRepo.save(quizAttempt);
 
         Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
-        Quiz quiz = quizOptional.orElseThrow();
+        Quiz quiz = quizOptional.get();
         quiz.setOngoingAttempt(false);
         quizRepo.save(quiz);
 
@@ -99,7 +99,7 @@ class QuizAttemptController {
 
         // Quiz quiz = quizAttempt.getQuiz();
         Optional<Quiz> quizOptional = quizRepo.findById(quizAttempt.getQuizID());
-        Quiz quiz = quizOptional.orElseThrow();
+        Quiz quiz = quizOptional.get();
         log.info(quiz.toString());
 
         log.info(quiz.getTimeClose().toString());

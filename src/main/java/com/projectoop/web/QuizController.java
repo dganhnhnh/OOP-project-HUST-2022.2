@@ -79,7 +79,7 @@ class QuizController {
         log.info("Request to delete Quiz: {}", id);
 
         Optional<Quiz> qOptional = quizRepo.findById(id);
-        List<Long> attemptIDList = qOptional.orElseThrow().getQuizAttemptID();
+        List <Long> attemptIDList = qOptional.get().getQuizAttemptID();
         log.info(attemptIDList.toString());
         quizAttemptRepo.deleteAllById(attemptIDList);
         log.info(attemptIDList.toString());

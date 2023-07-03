@@ -47,7 +47,7 @@ class QuestionController {
     Collection<Question> categoryQuestions(@PathVariable Long id,
             @RequestParam("show_from_subcategory") boolean showFromSub) {
         Optional<Category> cate = categoryRepo.findById(id);
-        Category category = cate.orElseThrow();
+        Category category = cate.get();
 
         Set<Long> qIDSet = category.getQuestionID();
 
@@ -60,14 +60,14 @@ class QuestionController {
                 List<Long> subCatIDList = new ArrayList<>(subCatID);
                 for (int i = 0; i < subCatIDList.size(); i++) {
                     Optional<Category> subCat = categoryRepo.findById(subCatIDList.get(i));
-                    Category subCategory = subCat.orElseThrow();
+                    Category subCategory = subCat.get();
 
                     Set<Long> qIDSetFromSubCat = subCategory.getQuestionID();
                     if (!qIDSetFromSubCat.isEmpty()) {
                         List<Long> qIDListFromSubCat = new ArrayList<>(qIDSetFromSubCat);
                         for (int j = 0; j < qIDListFromSubCat.size(); j++) {
                             Optional<Question> a = questionRepo.findById(qIDListFromSubCat.get(j));
-                            questionList.add(a.orElseThrow());
+                            questionList.add(a.get());
                         }
                     }
                 }
@@ -81,7 +81,7 @@ class QuestionController {
         List<Long> qIDList = new ArrayList<>(qIDSet);
         for (int i = 0; i < qIDList.size(); i++) {
             Optional<Question> a = questionRepo.findById(qIDList.get(i));
-            questionList.add(a.orElseThrow());
+            questionList.add(a.get());
         }
         return questionList;
     }
@@ -100,7 +100,7 @@ class QuestionController {
 
         Long qID = ques.getId();
         Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
-        Category cat = optionalCat.orElseThrow();
+        Category cat = optionalCat.get();
         Set<Long> qIDSet = cat.getQuestionID();
         qIDSet.add(qID);
         cat.setQuestionID(qIDSet);
@@ -124,10 +124,10 @@ class QuestionController {
         log.info("Request to delete Question: {}", id);
 
         Optional<Question> question = questionRepo.findById(id);
-        Question ques = question.orElseThrow();
+        Question ques = question.get();
 
         Optional<Category> optionalCat = categoryRepo.findById(ques.getCategoryID());
-        Category cat = optionalCat.orElseThrow();
+        Category cat = optionalCat.get();
         Set<Long> qIDSet = cat.getQuestionID();
         log.info("set of qID: {}", qIDSet);
         qIDSet.remove(id);
