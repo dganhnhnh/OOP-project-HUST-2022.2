@@ -10,6 +10,7 @@ import com.projectoop.model.QuizAttempt;
 import com.projectoop.services.QuestionRepo;
 import com.projectoop.services.QuizAttemptRepo;
 import com.projectoop.services.QuizRepo;
+import com.projectoop.services.QuizTimer;
 
 import org.apache.tomcat.util.json.JSONParser;
 import org.slf4j.Logger;
@@ -47,11 +48,13 @@ class QuizAttemptController {
     private QuestionRepo questionRepo;
     private QuizAttemptRepo quizAttemptRepo;
     private QuizRepo quizRepo;
+    // private QuizTimer quizTimer;
 
     public QuizAttemptController(QuizAttemptRepo quizAttemptRepo, QuestionRepo questionRepo, QuizRepo quizRepo) {
         this.quizAttemptRepo = quizAttemptRepo;
         this.questionRepo = questionRepo;
         this.quizRepo = quizRepo;
+        // this.quizTimer = quizTimer;
     }
 
     @GetMapping("/quiz_attempts")
@@ -73,7 +76,10 @@ class QuizAttemptController {
         Optional<QuizAttempt> quizAttemptOptional = quizAttemptRepo.findById(id);
         QuizAttempt quizAttempt = quizAttemptOptional.get();
 
-        for (QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()) {
+        if (quizAttempt.isFinished()){
+            throw new AttemptNotEditable("You cannot submit it again.");
+        }
+        for(QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()){
             quesInQuiz.calcMark();
         }
         quizAttempt.calcTotalMark();
@@ -102,8 +108,8 @@ class QuizAttemptController {
         Quiz quiz = quizOptional.get();
         log.info(quiz.toString());
 
-        log.info(quiz.getTimeClose().toString());
-        log.info((quiz.getTimeClose().isBefore(LocalDateTime.now())) ? "closed" : "not closed");
+        // log.info(quiz.getTimeClose().toString());
+        // log.info((quiz.getTimeClose().isBefore(LocalDateTime.now()))?"closed":"not closed");
 
         // xử lí các trường hợp Quiz không mở
         if (quiz.isOngoingAttempt()) {
@@ -162,6 +168,10 @@ class QuizAttemptController {
         quiz.setQuizAttemptID(attemptList);
         quizRepo.save(quiz);
 
+        //cài đặt giờ cho submit attempt 
+        QuizTimer quizTimer = new QuizTimer(quiz.getTimeLimit()*60, quizAttempt.getId());
+        quizTimer.start();
+
         return ResponseEntity.created(new URI("/api/quiz_attempt/" + result.getId()))
                 .body(result);
     }
@@ -179,11 +189,13 @@ class QuizAttemptController {
         QuizAttempt existingEntity = optionalEntity.get();
         BeanWrapper beanWrapper = new BeanWrapperImpl(existingEntity);
 
-        // TODO if finished == true, return forbidden message ,...
-        // TODO calc mark của ques
-
-        // kiểm tra thuộc tính có được nhắc tới trong request thì sẽ không update lại
-        // bằng giá trị mặc định là null hay 0, ..
+        //TODO if finished == true, return forbidden message ,... 
+        if (quizAttempt.isFinished()){
+            throw new AttemptNotEditable("You cannot edit submitted attempt.");
+        }
+        //TODO calc mark của ques
+        
+        // kiểm tra thuộc tính có được nhắc tới trong request thì sẽ không update lại bằng giá trị mặc định là null hay 0, ..
         for (PropertyDescriptor descriptor : beanWrapper.getPropertyDescriptors()) {
             String propertyName = descriptor.getName();
             // log.info(propertyName); //in ra kiểm tra tên thuộc tính
