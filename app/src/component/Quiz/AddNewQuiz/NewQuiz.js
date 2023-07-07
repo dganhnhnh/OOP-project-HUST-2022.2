@@ -4,7 +4,7 @@ import { RiNewspaperLine } from 'react-icons/ri';
 import { RxTriangleDown } from 'react-icons/rx';
 import Datetime from "react-datetime";
 import { DatetimepickerProps } from "react-datetime";
-import "react-datetime/css/react-datetime.css"
+import "react-datetime/css/react-datetime.css";
 import './NewQuiz.css';
 import moment from "moment";
 
@@ -17,12 +17,12 @@ const NewQuiz = () => {
 	const [timeOpen, setTimeOpen] = useState(""); // Default value
 	const [timeClose, setTimeClose] = useState(""); // Default value
 	const [quizAttemptID, setQuizAttemptID] = useState([]);
-	const [quizState, setQuizState] = useState(null)
+	const [quizState, setQuizState] = useState(null);
 	const [ongoingAttempt, setOngoingAttempt] = useState(false);
 	const [quizMaxGrade, setQuizMaxGrade] = useState(0.0);
 	const [isEnabled, setIsEnabled] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [check, setCheck] = useState(true)
+	const [check, setCheck] = useState(true);
 
 	function handleTimeOpenChange(event) {
 		setTimeOpen(event.target.value);
@@ -34,8 +34,7 @@ const NewQuiz = () => {
 
 	//general
 	const handleChangeCheck = (data) => {
-		if (data === "check")
-		{
+		if (data === "check") {
 			if (check === true)
 				setCheck(!check);
 		}
@@ -43,18 +42,17 @@ const NewQuiz = () => {
 
 	// form
 	const handleCancel = () => {
-		setName = ("");
-		setDescription = ("");
-		setTimeOpen = (null);
-		setTimeClose = (null);
-		setTimeLimit = ("");
+		setName("");
+		setDescription("");
+		setTimeOpen(null);
+		setTimeClose(null);
+		setTimeLimit("");
 	}
 
 	const handleSave = async (e) => {
 		e.preventDefault();
 		// Check if any input field is empty
-		if (!name || !timeClose || !timeOpen || !timeLimit)
-		{
+		if (!name || !timeClose || !timeOpen || !timeLimit) {
 			alert("Please fill out all fields before submitting.");
 			return;
 		}
@@ -72,8 +70,7 @@ const NewQuiz = () => {
 			quizMaxGrade
 		};
 
-		try
-		{
+		try {
 			// Replace this URL with your server-side endpoint for handling file uploads
 			const response = await fetch("http://localhost:8080/api/quiz", {
 				method: "POST",
@@ -83,25 +80,22 @@ const NewQuiz = () => {
 				body: JSON.stringify(NewQuiz)
 			})
 			const data = await response.json();
-			if (response.ok)
-			{
+			if (response.ok) {
 				console.log(data)
 				alert('Quiz created successfully!');
-			} else
-			{
+			} else {
 				alert("An error occurred.");
 			}
-		} catch (error)
-		{
+		} catch (error) {
 			console.error("Error while add new quiz", error);
 			alert("Error while add new quiz");
 		}
 		// reset form
-		setName = ("");
-		setDescription = ("");
-		setTimeOpen = (null);
-		setTimeClose = (null);
-		setTimeLimit = ("");
+		setName("");
+		setDescription("");
+		setTimeOpen(null);
+		setTimeClose(null);
+		setTimeLimit("");
 	}
 
 	return (
@@ -204,4 +198,5 @@ const NewQuiz = () => {
     </div>
   );
 }
+
 export default NewQuiz;
