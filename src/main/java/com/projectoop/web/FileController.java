@@ -135,12 +135,6 @@ public class FileController {
                 fileText = new String(fileContent, StandardCharsets.UTF_8);
                 importResult = storageService.readQuestionFromFile(fileText, fileName, lineHasImage, false);
 
-                // Trong trường hợp đọc thành công, cần loại bỏ url ảnh
-                if (importResult.getQuesLine() < 0) {
-                    for (Question question : importResult.getQuesList()) {
-                        question.setImageURL(null);
-                    }
-                }
             } else if (fileExtention.equals(new String("docx"))) {
                 fileText = storageService.readMultimediaFile(fileName).getQuestext();
                 lineHasImage = storageService.readMultimediaFile(fileName).getImageCheck();

@@ -357,6 +357,7 @@ public class FileStorageService implements IStorageService {
                     // Sau câu hỏi phải là đáp án
                     if (!lines[i + 1].trim().matches("^[A-Z][.]\\s(?=\\s*\\S).*$")) {
                         questions = null;
+                        linenumber++;
                         break;
                     }
                     question.setText(nowline);
