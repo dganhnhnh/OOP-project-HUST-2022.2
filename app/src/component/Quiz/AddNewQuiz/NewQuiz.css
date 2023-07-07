@@ -86,10 +86,10 @@
 }
 
 /*-------------------------*/
-.checkbox {
+.formcheckbox {
 	display: flex;
+	margin-left: 240px;
 	flex-direction: row;
-	margin-left: 260px;
 	margin-top: -20px;
 	font-size: 14px;
 }

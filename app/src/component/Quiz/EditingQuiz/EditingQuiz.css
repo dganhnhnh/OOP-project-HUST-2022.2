@@ -166,7 +166,7 @@
 
 /* scrollbar styles */
 ::-webkit-scrollbar {
-	height: 1000px !important;
+	height: 600px !important;
 	width: 8px;
 }
 
