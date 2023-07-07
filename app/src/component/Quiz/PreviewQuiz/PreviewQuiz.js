@@ -22,14 +22,13 @@ function PreviewQuiz() {
     fetch(`http://localhost:8080/api/quiz_attempt/${id}`)
       .then((response) => response.json())
       .then((data) => {
-
         // lưu thông tin các câu hỏi vào state và chuyển các câu hỏi có 2 choice trở lên lớn hơn 0 điểm thành dạng chọn nhiều câu trả lời
-        // biến này dùng để gộp qiq và question real 
+        // biến này dùng để gộp qiq và question real
         // qiq = await data.quesInQuizList
         const quesInQuizListUpdated = data.quesInQuizList.map((quesInQuiz) => {
           return {
             ...quesInQuiz,
-            // các trường null chuẩn bị chứa thông tin từ question 
+            // các trường null chuẩn bị chứa thông tin từ question
             categoryID: null,
             text: null,
             choices: null,
@@ -37,7 +36,17 @@ function PreviewQuiz() {
         });
         setOngoingAttempt(data.quiz.ongoingAttempt);
         setTimeLimit(data.quiz.timeLimit * 60);
-        setTimeLeft(data.quiz.timeLimit * 60);
+        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+        // Convert the timeStart to a Date object if it's stored in a different format
+        const timeStart = new Date(data.timeStart);
+
+        const elapsedTime =
+          currentTime - Math.floor(timeStart.getTime() / 1000); // Elapsed time in seconds
+        const remainingTime = data.quiz.timeLimit * 60 - elapsedTime; // Remaining time in seconds
+
+        setTimeLeft(remainingTime);
+
         setQuesInQuizList(quesInQuizListUpdated);
         setChoiceChosenList(new Array(quesInQuizListUpdated.length).fill([]));
 
@@ -53,7 +62,7 @@ function PreviewQuiz() {
           )
         ).then((questions) => {
           // cập nhật state với thông tin câu hỏi đã lấy được
-          // biến gộp 
+          // biến gộp
           const quesInQuizListWithQuestions = quesInQuizListUpdated.map(
             (quesInQuiz, index) => ({
               ...quesInQuiz,
@@ -68,8 +77,6 @@ function PreviewQuiz() {
 
           setQuesInQuizList(quesInQuizListWithQuestions);
           console.log(quesInQuizListWithQuestions);
-
-
         });
       });
   }, [id]);
@@ -84,9 +91,9 @@ function PreviewQuiz() {
       choiceChosen,
       ...choiceChosenList.slice(questionIndex + 1),
     ];
-    console.log(newChoiceChosenList)
+    console.log(newChoiceChosenList);
 
-    // sửa choice chosen ở đây 
+    // sửa choice chosen ở đây
     setChoiceChosenList(newChoiceChosenList);
     const newQuesInQuizList = [...quesInQuizList];
     if (
@@ -160,11 +167,10 @@ function PreviewQuiz() {
   };
 
   function handleSubmit() {
-    
     //     timeTaken: timeLimit - timeLeft, //hiện giây
 
     fetch(`http://localhost:8080/api/quiz_attempt/${id}/submit`, {
-      method: "GET"
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
@@ -188,7 +194,8 @@ function PreviewQuiz() {
 
   useEffect(() => {
     if (timeLeft === 0) {
-      handleSubmit();
+      const url = `/MyCourses/QuizInterface/PreviewQuiz/ConfirmFinish/QuizResult?id=${id}`;
+      navigate(url);
     }
   }, [timeLeft]);
 
@@ -256,9 +263,9 @@ function PreviewQuiz() {
                                 quesInQuiz.choiceGrade.filter(
                                   (grade) => grade > 0
                                 ).length > 1
-                                // đoạn code thế này (duyệt cả list quesInQuiz để đếm số đáp án) có bị thực hiện nhiều lần hơn cần thiết không?
-                                // bởi vì app sẽ load nó lại mỗi lần có thay đổi state 
-                                  ? "checkbox"
+                                  ? // đoạn code thế này (duyệt cả list quesInQuiz để đếm số đáp án) có bị thực hiện nhiều lần hơn cần thiết không?
+                                    // bởi vì app sẽ load nó lại mỗi lần có thay đổi state
+                                    "checkbox"
                                   : "radio"
                               }
                               name={`choices_${questionIndex}`}
@@ -272,9 +279,8 @@ function PreviewQuiz() {
                                 // __html: choice.choiceText,
                                 __html: choice.choiceText,
                               }}
-                              // orderVector[quesInQuiz.idInQuiz-1][choiceIndex]-1 : index mới 
-                            >
-                            </div>
+                              // orderVector[quesInQuiz.idInQuiz-1][choiceIndex]-1 : index mới
+                            ></div>
                           </label>
                         </li>
                       ))}

@@ -194,8 +194,8 @@ class QuizAttemptController {
         quizRepo.save(quiz);
 
         //cài đặt giờ cho submit attempt 
-        // QuizTimer quizTimer = new QuizTimer(quiz.getTimeLimit()*60, quizAttempt.getId());
-        // quizTimer.start();
+        QuizTimer quizTimer = new QuizTimer(quiz.getTimeLimit()*60, quizAttempt.getId());
+        quizTimer.start();
 
         return ResponseEntity.created(new URI("/api/quiz_attempt/" + result.getId()))
                 .body(result);
