@@ -158,7 +158,7 @@ public class FileStorageService implements IStorageService {
 
     public ReadDocxFileResult readMultimediaFile(String fileName) {
         String fileText = new String();
-        boolean[] paragraphHasImage = new boolean[100];
+        boolean[] paragraphHasImage = new boolean[1000];
 
         try {
             // ByteArrayInputStream inputStream = new
