@@ -103,6 +103,9 @@ class QuizAttemptController {
 
         for (QuestionInQuiz quesInQuiz : quizAttempt.getQuesInQuizList()) {
             quesInQuiz.calcMark();
+            Optional<Question> questionOptional = questionRepo.findById(quesInQuiz.getQuestionID());
+            Question question = questionOptional.get();
+            quesInQuiz.setQuesMark(question.getDefaultMark() * quesInQuiz.getQuesMark());
         }
         quizAttempt.calcTotalMark();
 

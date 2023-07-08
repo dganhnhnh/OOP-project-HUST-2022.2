@@ -330,6 +330,7 @@ public class FileStorageService implements IStorageService {
                             choices.set(j, new Choice(anscontent[j], 1.0f));
                     }
                     question.setChoices(choices);
+                    question.setDefaultMark(1.0f);
                     // Nếu là file docx, setimgURL
                     if (isDocxFile == true) {
 
@@ -341,7 +342,6 @@ public class FileStorageService implements IStorageService {
                                     imageLine + ".png");
                         }
                     }
-
                     questions.add(question);
                     question = new Question();
                     choices = new ArrayList<>();
