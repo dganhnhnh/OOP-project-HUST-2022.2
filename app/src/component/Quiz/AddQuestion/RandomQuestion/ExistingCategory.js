@@ -148,6 +148,7 @@ const ExistingCategory = () => {
 
     if (putResponse.ok) {
       console.log('Quiz add more questions successfully');
+      alert("Add questions to quiz successfully");
     } else {
       throw new Error('Failed to update quiz');
     }
