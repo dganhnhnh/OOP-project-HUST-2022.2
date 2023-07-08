@@ -156,6 +156,7 @@ const QuestionBank = () => {
       .then((response) => {
         if (response.ok) {
           console.log("Quiz updated successfully");
+          alert("Add questions to quiz successfully");
         } else {
           throw new Error("Failed to update quiz");
         }

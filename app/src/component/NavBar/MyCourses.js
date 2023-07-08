@@ -58,13 +58,16 @@ const MyCourses = () => {
   }
 
   return (
-    <div className='MyCourse'>
+    <div className="MyCourse">
       {quizs.map((quiz) => (
         <div key={quiz.id}>
-          <p className='listquizs'>
+          <p className="listquizs">
             <AiOutlineFileDone />
             <QuizLink id={quiz.id} name={quiz.name} />
-            <BsFillTrash3Fill onClick={() => handleDeleteQuiz(quiz.id)} />
+            <BsFillTrash3Fill
+              className="trash-icon"
+              onClick={() => handleDeleteQuiz(quiz.id)}
+            />
           </p>
         </div>
       ))}

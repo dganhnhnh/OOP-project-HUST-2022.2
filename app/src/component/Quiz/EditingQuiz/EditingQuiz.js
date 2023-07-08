@@ -126,11 +126,8 @@ const EditingQuiz = () => {
       });
   };
 
-  const handleShuffle = (event) => {
-    setShuffleOption(event.target.checked);
-
-    // save change to Quiz in db
-
+  useEffect(() => {
+    console.log(shuffleOption);
     fetch(`http://localhost:8080/api/quiz/${id}`)
       .then((response) => response.json())
       .then((quiz) => {
@@ -142,16 +139,14 @@ const EditingQuiz = () => {
           body: JSON.stringify(updatedQuiz),
         });
       })
-
-
-      // fetch(`http://localhost:8080/api/quiz/${id}/`, {
-      //   method: "PUT",
-      //   body: JSON.stringify(updatedQuiz),
-      // })
       .then((response) => response.json())
-      .catch((error) => {
-        console.error("Error shuffle:", error);
-      });
+      .then((data) => console.log(data));
+  }, [shuffleOption]);
+
+  
+
+  const handleShuffle = (event) => {
+    setShuffleOption(event.target.checked);
   };
 
   const handleCheckboxChange = (event, id) => {
