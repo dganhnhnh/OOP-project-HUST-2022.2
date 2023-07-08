@@ -17,6 +17,7 @@ const MyEditor = ({text, setText}) => {
   
       if (xhr.status !== 200) {
         console.log('HTTP Error: ' + xhr.status);
+        alert('Video upload failed!');
         return;
       }
   
